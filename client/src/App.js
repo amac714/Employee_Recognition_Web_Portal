@@ -5,6 +5,8 @@ import './App.css';
 import UserLogin from './components/userLogin';
 import Header from './components/header';
 import AdminLogin from './components/adminLogin';
+import ErrorPage from './components/error';
+import HomePage from './components/home';
 
 export const history = createHistory();
 
@@ -15,8 +17,11 @@ class App extends Component {
         <div className="App">
           <Header />
           <Switch>
-            <Route exact path="/" component={UserLogin} />
+            {/* Add routes here */}
+            <Route exact path="/" component={HomePage} />
+            <Route path="/user" component={UserLogin} />
             <Route path="/admin" component={AdminLogin}/>
+            <Route component={ErrorPage} />
           </Switch>
         </div>
       </Router>
