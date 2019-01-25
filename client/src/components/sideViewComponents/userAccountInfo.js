@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
+
 
 class UserAccountInfo extends Component {
     render() {
@@ -7,7 +9,9 @@ class UserAccountInfo extends Component {
                 <p>Username: testName</p>
                 <p>Password: ******</p>
                 <p>Signiture Image</p>
-                <button>Update Info</button>
+                <Link to="/updateUserInfo">
+                    <button>Update</button>
+                </Link>
             </div>
         );
     }

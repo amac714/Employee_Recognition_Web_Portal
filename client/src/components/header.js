@@ -36,7 +36,7 @@ class Header extends Component {
           </NavItem>
         </Nav>
       )
-    else if(path === "/userHomePage")
+    else if(path === "/userHomePage" || path === "/updateUserInfo")
       item = (
         <Nav className="ml-auto" navbar>
           <NavItem>
