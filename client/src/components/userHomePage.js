@@ -20,6 +20,14 @@ class UserHomePage extends Component {
                     <Col xs="2" style={{border: "1px solid black"}}>
                         <SideSection userType={this.state.userType}/>
                     </Col>
+
+                    <Col xs="5" style={{border: "1px solid red"}}>
+                        <h1>My Awards</h1>
+                    </Col>
+
+                    <Col xs="5" style={{border: "1px solid green"}}>
+                        <h1>Submitted Awards</h1>
+                    </Col>
                 </Row>
             </div>
         );
