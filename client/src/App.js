@@ -10,7 +10,8 @@ import HomePage from './components/home';
 import AdminMenu from './components/adminMenu';
 import ViewUsers from './components/adminViewUsers';
 import UserHomePage from './components/userHomePage';
-import Login from './components/login'
+import Login from './components/login';
+import UpdateUserInfo from './components/updateUserInfo';
 
 
 export const history = createHistory();
@@ -29,6 +30,7 @@ class App extends Component {
             <Route exact path="/admin" component={AdminLogin}/>
             <Route path="/admin/menu" component={AdminMenu} />
             <Route path="/admin/viewUsers" component={ViewUsers} />
+            <Route path="/updateUserInfo" component={UpdateUserInfo} />
             <Route component={ErrorPage} />
           </Switch>
         </div>
