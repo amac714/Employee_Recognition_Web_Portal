@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request, json
-from datetime import datetime
+# from datetime import datetime
 from flask_cors import CORS
 #from flask_bcrypt import Bcrypt #bcrypt is for hashing passwords
 from flask_sqlalchemy import SQLAlchemy
@@ -78,12 +78,9 @@ def add():
     admin = Admins('admin1','pass')
     db.session.add(admin)
     db.session.commit()
-    return 'Data is added'
+    return "Data is added"
 
 
 if __name__ == '__main__':
-<<<<<<< HEAD
-=======
   db.create_all()
->>>>>>> upstream/master
   app.run(debug=True)
