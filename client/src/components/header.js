@@ -5,6 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 class Header extends Component {
 
   render() {
+    // NavItems on Navbar depends on current pathname
     const path = this.props.location.pathname;
     let item;
     if(path === "/")
@@ -21,9 +22,24 @@ class Header extends Component {
             <NavLink tag={Link} to="/admin"><h5>Admin</h5></NavLink>
           </NavItem>
         </Nav>)
-    else if(path === "/admin" || path === "/user")
+    else if(path === "/admin" || path === "/admin/menu" || path === "/admin/viewUsers")
       item = (
         <Nav className="ml-auto" navbar>
+          <NavItem>
+            <NavLink tag={Link} to="/admin/menu"><h5>Dashboard</h5></NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink tag={Link} to="/"><h5>Logout</h5></NavLink>
+          </NavItem>
+        </Nav>
+      )
+    else if(path === "/user")
+      item = (
+        <Nav className="ml-auto" navbar>
+          <NavItem>
+          {/* TODO: update so profile links to correct page */}
+            <NavLink tag={Link} to="/"><h5>Profile</h5></NavLink>
+          </NavItem>
           <NavItem>
             <NavLink tag={Link} to="/"><h5>Logout</h5></NavLink>
           </NavItem>
