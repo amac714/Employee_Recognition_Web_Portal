@@ -3,84 +3,95 @@ from flask import Flask, jsonify, request, json
 from flask_cors import CORS
 #from flask_bcrypt import Bcrypt #bcrypt is for hashing passwords
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 #from flask_jwt_extended import JWTManager #jwt is for web tokens/authentication
 #from flask_jwt_extended import create_access_token
 import datetime
+import os
 
 app = Flask(__name__)
 
 CORS(app)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:lionlion@localhost/ogma'
+app.config.from_object(os.environ['APP_SETTINGS'])
 db = SQLAlchemy(app)
+marsh = Marshmallow(app)
 
-class Users(db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String(50), unique=True)
-    user_password  = db.Column(db.String(50), unique=True)
-    first_name = db.Column(db.String(50), unique=False) 
-    last_name  = db.Column(db.String(50), unique=False)
-    timecreated = db.Column(db.Date)
-    user_signature = db.Column(db.LargeBinary)
+from models import Users,Admins,Awards,UserSchema,AdminSchema,AwardSchema
 
-    def __init__(self,username,password,firstname,lastname,sig): 
-       self.user_name = username
-       self.user_password = password
-       self.first_name = firstname
-       self.last_name = lastname
-       self.timecreated = DateTime()
-       self.user_signature = sig
-
-    def __repr__(self): 
-        return '<id {}>'.format(self.id)
-
-class Admins(db.Model):
-    __tablename__ = 'admins'
-    id = db.Column(db.Integer, primary_key=True)
-    admin_name = db.Column(db.String(50), unique=True)
-    admin_password= db.Column(db.String(50), unique=True)
-
-    def __init__(self,adminName,adminPass): 
-        self.admin_name = adminName
-        self.admin_password=adminPass
-    def __repr__(self): 
-        return '<id {}>'.format(self.id)
-
-class Awards(db.Model):
-    __tablename__ = 'awards'
-    id = db.Column(db.Integer, primary_key = True)
-    award_type = db.Column(db.String(100))
-    recipient_first_name  = db.Column(db.String(100))  
-    recipient_last_name = db.Column(db.String(100))
-    time_granted = db.Column(db.Time)
-    date_granted = db.Column(db.Date)
-    created_by_user = db.Column(db.Integer, db.ForeignKey('users.id'))
-
-    def __init__(self,type,firstname,lastname,time,date,byuser): 
-       self.award_type = type
-       self.recipient_first_name = firstname
-       self.recipient_last_name = lastname
-       self.time_granted = time
-       self.date_granded = date
-       self.created_by_user = byuser
-
-    def __repr__(self): 
-        return '<id {}>'.format(self.id)
+adminSchema = AdminSchema()
 
 #this route can be deleted or changed
 @app.route('/')
 def index():
     return jsonify({'data': 'Hello Ogma'})
 
-@app.route('/add')
-def add():
-    admin = Admins('admin1','pass')
-    db.session.add(admin)
-    db.session.commit()
-    return "Data is added"
+# POST : Create new user 
+# PUT : Update user first and last name
+# DELETE : Delete user given id and username
+@app.route('/user', methods=['POST','PUT','DELETE'])
+def user():
+    if request.method == 'POST':
+
+      newUser = Users(request.json['username'],
+                      request.json['password'],
+                      request.json['first_name'],
+                      request.json['last_name'],
+                      request.json['sig'])
+      db.session.add(newUser)
+      db.session.commit()
+
+      return jsonify(newUser)
+
+    elif request.method == 'PUT':
+
+      user = Users.query.filter(id=request.json['id'], 
+                                user_name=request.json['username'])
+      user.first_name = request.json['first_name']
+      user.last_name = request.json['last_name']
+      db.session.commit()
+      return jsonify(user)
+
+    elif request.method == 'DELETE': 
+
+      query = Users.query.filter(id=request.json['id'], 
+                                user_name=request.json['username']).first()
+      query.delete()
+      db.commit()
+      return jsonify({"User is deleted"})
+
+
+# POST : Create new admin
+# PUT : Update admin username and password
+# DELETE : Delete admin given username and id
+@app.route('/admin', methods=['POST','PUT','DELETE'])
+def admin():
+    if request.method == 'POST':
+
+      newAdmin = Admins(request.json['username'],
+                      request.json['password'])
+      db.session.add(newAdmin)
+      db.session.commit()
+
+      return adminSchema.jsonify(newAdmin)
+
+    elif request.method == 'PUT':
+
+      admin = Admin.query.filter(id=request.json['id'], 
+                                user_name=request.json['username'])
+      admin.admin_name = request.json['admin_name']
+      admin.admin_password = request.json['password']
+      db.session.commit()
+      return jsonify(admin)
+
+    elif request.method == 'DELETE': 
+
+      query = Admin.query.filter(id=request.json['id'], 
+                                user_name=request.json['admin_name']).first()
+      query.delete()
+      db.commit()
+      return jsonify({"Admin is deleted"})
 
 
 if __name__ == '__main__':
-  db.create_all()
+  
   app.run(debug=True)

@@ -12,6 +12,11 @@ flask-sqlalchemy = "*"
 flask-bcrypt = "*"
 flask-jwt-extended = "*"
 psycopg2 = "*"
+flask-marshmallow = "*"
+flask-migrate = "*"
+psycopg2-binary = "*"
+flask-script = "*"
+marshmallow-sqlalchemy = "*"
 
 [requires]
 python_version = "2.7"
