@@ -5,6 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 class Header extends Component {
 
   render() {
+      var awardType = "Week";
     // NavItems on Navbar depends on current pathname
     const path = this.props.location.pathname;
     let item;
@@ -41,12 +42,7 @@ class Header extends Component {
         <Nav className="ml-auto" navbar>
             <NavItem>
                 <NavLink tag={Link} to="/designAward">
-                    <button>New Employee of the Week</button>
-                </NavLink>
-            </NavItem>
-            <NavItem>
-                <NavLink tag={Link} to="/designAward">
-                    <button>New Employee of the Week</button>
+                    <button>New Employee Award</button>
                 </NavLink>
             </NavItem>
           <NavItem>

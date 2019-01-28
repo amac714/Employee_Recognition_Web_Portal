@@ -20,7 +20,7 @@ class DesignAward extends UserHomePage {
                     </Col>
 
                     <Col xs="5" style={{border: "1px solid green"}}>
-                        <h1>Info Input</h1>
+                        <h1>Employee of the </h1>
                     </Col>
                 </Row>
             </div>
