@@ -7,7 +7,9 @@ import Stats from './sideViewComponents/stats'
 function SideSection(props){
     return (
       <div>
-          <Date/>
+          <Date
+            currentDate={props.currentDate}
+          />
 
           {props.userType === "user" && <UserAccountInfo/>}
 
