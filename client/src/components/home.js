@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Row, Col } from 'reactstrap';
 import './homePage.css'
+import { Link } from 'react-router-dom';
 
 class HomePage extends Component {
-  // Feel free to delete this state, this is just to use "hello ogma" route from api
-  // state = {
-  //   msg: '',
-  //
-  // };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -42,8 +39,8 @@ class HomePage extends Component {
                 <p>{this.state.textMessage}</p>
 
                 <div className="buttons">
-                  <button>Signup</button>
-                  <button>Login</button>
+                    <Link tag={Link} to="/"><button>Signup</button></Link>
+                    <Link tag={Link} to="/login"><button>Login</button></Link>
                 </div>
               </Col>
               <Col xs={{offset: 2 }}>
