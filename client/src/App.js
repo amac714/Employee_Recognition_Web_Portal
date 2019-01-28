@@ -32,7 +32,7 @@ class App extends Component {
             <Route path="/admin/menu" component={AdminDashboard} />
             <Route path="/admin/viewUsers" component={ViewUsers} />
             <Route path="/updateUserInfo" component={UpdateUserInfo} />
-            <Route path="/designAward" component={DesignAward} />
+            <Route path="/designAward" component={DesignAward}/>
             <Route component={ErrorPage} />
           </Switch>
         </div>
