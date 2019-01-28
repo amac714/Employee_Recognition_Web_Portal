@@ -1,0 +1,17 @@
+
+.content {
+    padding-top: 40px;
+}
+
+.headerText{
+    text-align: center;
+    margin-top: 10px;
+}
+
+.buttons {
+    text-align: center;
+}
+
+.buttons button{
+    margin: 40px;
+}
