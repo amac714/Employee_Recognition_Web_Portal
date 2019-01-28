@@ -1,11 +1,25 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Row, Col } from 'reactstrap';
+import './homePage.css'
 
 class HomePage extends Component {
   // Feel free to delete this state, this is just to use "hello ogma" route from api
-  state = {
-    msg: ''
+  // state = {
+  //   msg: '',
+  //
+  // };
+  constructor(props) {
+    super(props);
+    this.state = {
+      msg: '',
+      textTitle: 'Recognize Great Work',
+      textMessage: 'Cough hairball on conveniently placed pants pet my belly, you know you want to; seize the hand and shred it!,  sit and stare or your pillow is now my pet bed, so bite off human\'s toes ignore the human until she needs to get up, then climb on her lap and sprawl or lies down',
+    };
   }
+
+
+
 
   //feel free to change or delete
   componentDidMount() {
@@ -21,6 +35,28 @@ class HomePage extends Component {
     return (
       <div>
         <h1>{this.state.msg}</h1>
+
+          <Row className="content">
+              <Col xs={{size: 4, offset: 1}} style={{paddingTop: "200px"}}>
+                <h1 className="headerText">{this.state.textTitle}</h1>
+                <p>{this.state.textMessage}</p>
+
+                <div className="buttons">
+                  <button>Signup</button>
+                  <button>Login</button>
+                </div>
+              </Col>
+              <Col xs={{offset: 2 }}>
+                <a href="https://placeholder.com"><img src="https://via.placeholder.com/500x300"/></a>
+              </Col>
+          </Row>
+
+          <Row>
+            <Col xs={{offset: 7}} >
+              <a href="https://placeholder.com"><img src="https://via.placeholder.com/500x300"/></a>
+            </Col>
+          </Row>
+
       </div>
     );
   }
