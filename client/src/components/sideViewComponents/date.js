@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
+import './sideSection.css';
 
 class Date extends Component {
+
     render() {
+
         return (
-            <div>
-                <h1>Date Area</h1>
+            <div className="dateText">
+                <p>{this.props.currentDate}</p>
             </div>
         );
     }
