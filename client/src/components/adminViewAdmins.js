@@ -1,39 +1,23 @@
 import React, { Component } from 'react';
 import { Table, Container } from 'reactstrap';
 
-//delete this later
-let user = {
-  id: 1,
-  username: 'test@gmail.com',
-  first_name: 'alan',
-  last_name: 'macabuhay'
-}
-
-class ViewUsers extends Component {
+class ViewAdmins extends Component {
   constructor() {
     super();
     this.state = {
-      users: [],
-      user: {
+      admins: [],
+      admin: {
         id: 0,
         username: '',
-        first_name: '',
-        last_name: ''
       }
     }
   }
 
-  componentDidMount(){
-    this.setState({ users: user })
-  }
-
-  renderUsers = ({ id, username, first_name, last_name }) => {
+  renderUsers = ({ id, username }) => {
     return (
       <tr key={id}>
         <th scope="row">{id}</th>
         <th>{username}</th>
-        <th>{first_name}</th>
-        <th>{last_name}</th>
         <th>Update</th>
         <th>Delete</th>
       </tr>
@@ -41,24 +25,21 @@ class ViewUsers extends Component {
   };
 
   render() {
-    const { users } = this.state;
     return (
       <div>
         <Container>
-          <h1>Users</h1>
+          <h1>Admins</h1>
           <Table>
             <thead>
               <tr>
                 <th>Id</th>
                 <th>Username</th>
-                <th>First Name</th>
-                <th>Last Name</th>
                 <th></th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-   
+
             </tbody>
           </Table>
         </Container>
@@ -67,4 +48,4 @@ class ViewUsers extends Component {
   }
 }
 
-export default ViewUsers;
+export default ViewAdmins;
