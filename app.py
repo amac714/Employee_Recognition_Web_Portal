@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, json
+from flask import Flask, jsonify, request, json, render_template
 # from datetime import datetime
 from flask_cors import CORS
 #from flask_bcrypt import Bcrypt #bcrypt is for hashing passwords
@@ -9,7 +9,7 @@ from flask_marshmallow import Marshmallow
 import datetime
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="client/build", static_folder="client/build/static")
 
 CORS(app)
 app.config.from_object(os.environ['APP_SETTINGS'])
@@ -18,12 +18,10 @@ marsh = Marshmallow(app)
 
 from models import Users,Admins,Awards,UserSchema,AdminSchema,AwardSchema
 
-adminSchema = AdminSchema()
-
-#this route can be deleted or changed
+# Main Portal
 @app.route('/')
 def index():
-    return jsonify({'data': 'Hello Ogma'})
+    return render_template('index.html')
 
 # POST : Create new user 
 # PUT : Update user first and last name
@@ -65,6 +63,7 @@ def user():
 # DELETE : Delete admin given username and id
 @app.route('/admin', methods=['POST','PUT','DELETE'])
 def admin():
+    adminSchema = AdminSchema()
     if request.method == 'POST':
 
       newAdmin = Admins(request.json['username'],
@@ -76,20 +75,20 @@ def admin():
 
     elif request.method == 'PUT':
 
-      admin = Admin.query.filter(id=request.json['id'], 
+      admin = Admins.query.filter(id=request.json['id'], 
                                 user_name=request.json['username'])
       admin.admin_name = request.json['admin_name']
       admin.admin_password = request.json['password']
       db.session.commit()
-      return jsonify(admin)
+      return adminSchema.jsonify(admin)
 
     elif request.method == 'DELETE': 
 
-      query = Admin.query.filter(id=request.json['id'], 
+      query = Admins.query.filter(id=request.json['id'], 
                                 user_name=request.json['admin_name']).first()
       query.delete()
       db.commit()
-      return jsonify({"Admin is deleted"})
+      return adminSchema.jsonify({"Admin is deleted"})
 
 
 if __name__ == '__main__':
