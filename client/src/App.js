@@ -12,6 +12,7 @@ import UserHomePage from './components/userHomePage';
 import Login from './components/login';
 import UpdateUserInfo from './components/updateUserInfo';
 import AdminDashboard from './components/adminDashboard';
+import DesignAward from "./components/designAward";
 
 
 export const history = createHistory();
@@ -31,6 +32,7 @@ class App extends Component {
             <Route path="/admin/menu" component={AdminDashboard} />
             <Route path="/admin/viewUsers" component={ViewUsers} />
             <Route path="/updateUserInfo" component={UpdateUserInfo} />
+            <Route path="/designAward" component={DesignAward}/>
             <Route component={ErrorPage} />
           </Switch>
         </div>

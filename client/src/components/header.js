@@ -5,6 +5,7 @@ import { Link, withRouter } from 'react-router-dom';
 class Header extends Component {
 
   render() {
+      var awardType = "Week";
     // NavItems on Navbar depends on current pathname
     const path = this.props.location.pathname;
     let item;
@@ -24,7 +25,7 @@ class Header extends Component {
           <NavItem>
             <NavLink tag={Link} to="/admin"><h5>Admin</h5></NavLink>
           </NavItem>
-        </Nav>)
+        </Nav>);
     else if(path === "/admin" || path === "/admin/menu" || path === "/admin/viewUsers")
       item = (
         <Nav className="ml-auto" navbar>
@@ -35,19 +36,24 @@ class Header extends Component {
             <NavLink tag={Link} to="/"><h5>Logout</h5></NavLink>
           </NavItem>
         </Nav>
-      )
-    else if(path === "/userHomePage" || path === "/updateUserInfo")
+      );
+    else if(path === "/userHomePage" || path === "/updateUserInfo" || path === "/designAward")
       item = (
         <Nav className="ml-auto" navbar>
+            <NavItem>
+                <NavLink tag={Link} to="/designAward">
+                    <button>New Employee Award</button>
+                </NavLink>
+            </NavItem>
           <NavItem>
           {/* TODO: update so profile links to correct page */}
-            <NavLink tag={Link} to="/"><h5>Profile</h5></NavLink>
+            <NavLink tag={Link} to="/userHomePage"><h5>Profile</h5></NavLink>
           </NavItem>
           <NavItem>
             <NavLink tag={Link} to="/"><h5>Logout</h5></NavLink>
           </NavItem>
         </Nav>
-      )
+      );
 
     return (
       <div>
