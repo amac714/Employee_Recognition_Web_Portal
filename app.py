@@ -205,6 +205,5 @@ def bad_request(error):
   else: 
     return jsonify({"Error": "500 - Internal Server"}),500
 
-
 if __name__ == '__main__':
   app.run(debug=True)

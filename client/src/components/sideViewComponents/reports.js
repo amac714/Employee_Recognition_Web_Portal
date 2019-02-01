@@ -5,13 +5,14 @@ class Reports extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false
+      modal1: false,
+      modal2: false
     };
   }
 
-  toggle = () => {
+  toggle = (e) => {
     this.setState({
-      modal: !this.state.modal
+      [e.target.name]: this.state.modal1 ? !this.state.modal1 : !this.state.modal2
     });
   }
 
@@ -21,35 +22,28 @@ class Reports extends Component {
         <Row>
           <h3>View Reports</h3>
           <Col>
-            <Button color="danger" onClick={this.toggle}>Report 1</Button>
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-              <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+            <Button name="modal1" color="danger" onClick={this.toggle}>Report 1</Button>
+            <Modal isOpen={this.state.modal1} toggle={this.toggle} className={this.props.className}>
+              <ModalHeader name="modal1">Modal title</ModalHeader>
               <ModalBody>
                 Report 1 goes here
               </ModalBody>
               <ModalFooter>
-                <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                <Button name="modal1" color="secondary" onClick={this.toggle}>Close</Button>
               </ModalFooter>
             </Modal>
-            <Button color="danger" onClick={this.toggle}>Report 2</Button>
-            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-              <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+            <Button name="modal2" color="danger" onClick={this.toggle}>Report 2</Button>
+            <Modal isOpen={this.state.modal2} toggle={this.toggle} className={this.props.className}>
+              <ModalHeader name="modal2">Modal title</ModalHeader>
               <ModalBody>
                 Report 2 goes here
               </ModalBody>
               <ModalFooter>
-                <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                <Button name="modal2" color="secondary" onClick={this.toggle}>Close</Button>
               </ModalFooter>
             </Modal>
           </Col>
         </Row>
-        {/* <Row>
-          <h3>View Reports</h3>
-          <Col>
-            <Button>Report 1</Button>
-            <Button>Report 2</Button>
-          </Col>
-        </Row> */}
       </div>
     );
   }
