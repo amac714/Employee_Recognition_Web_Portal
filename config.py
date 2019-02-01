@@ -6,8 +6,6 @@ class Config(object):
     CSRF_ENABLED = True
     SECRET_KEY = 'ogmasecret'
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-
 
 class ProductionConfig(Config):
     DEBUG = False
@@ -15,7 +13,6 @@ class ProductionConfig(Config):
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
-
 
 class TestingConfig(Config):
     TESTING = True
