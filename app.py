@@ -75,6 +75,7 @@ def admin():
 
     elif request.method == 'PUT':
 
+      # admin = Admins.query.get(id)
       admin = Admins.query.filter(id=request.json['id'], 
                                 user_name=request.json['username'])
       admin.admin_name = request.json['admin_name']
@@ -89,7 +90,6 @@ def admin():
       query.delete()
       db.commit()
       return adminSchema.jsonify({"Admin is deleted"})
-
 
 if __name__ == '__main__':
   

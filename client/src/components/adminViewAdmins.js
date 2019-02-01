@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Table, Container } from 'reactstrap';
+import { Button, Table, Container } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 class ViewAdmins extends Component {
   constructor() {
@@ -13,11 +15,21 @@ class ViewAdmins extends Component {
     }
   }
 
-  renderUsers = ({ id, username }) => {
+  componentDidMount() {
+    this.getAdmins();
+  }
+
+  getAdmins = () => {
+    axios.get('http://localhost:5000/getAdmin')
+    .then(res => this.setState({ admins: res.data }))
+    .catch(err => console.log(err));
+  }
+
+  renderUsers = ({ id, admin_name }) => {
     return (
       <tr key={id}>
         <th scope="row">{id}</th>
-        <th>{username}</th>
+        <th>{admin_name}</th>
         <th>Update</th>
         <th>Delete</th>
       </tr>
@@ -25,10 +37,12 @@ class ViewAdmins extends Component {
   };
 
   render() {
+    const { admins } = this.state;
     return (
       <div>
         <Container>
           <h1>Admins</h1>
+          <Link to='/addAdmin'>Add New Admin</Link>
           <Table>
             <thead>
               <tr>
@@ -39,7 +53,7 @@ class ViewAdmins extends Component {
               </tr>
             </thead>
             <tbody>
-
+              {admins.map(this.renderUsers)}
             </tbody>
           </Table>
         </Container>
