@@ -43,14 +43,6 @@ class AdminDashboard extends Component {
           </Row>
         </Container>
         {this.renderComponent()}
-        {/* <Row>
-          <Col xs="5" style={{ border: "1px solid black" }}>
-            <ViewUsers />
-          </Col>
-          <Col xs="5" style={{ border: "1px solid black" }}>
-            <ViewAdmins />
-          </Col>
-        </Row>   */}
       </div>
     );
   }
