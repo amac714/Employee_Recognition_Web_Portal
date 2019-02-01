@@ -20,7 +20,7 @@ class ViewAdmins extends Component {
   }
 
   getAdmins = () => {
-    axios.get('http://localhost:5000/getAdmin')
+    axios.get('http://localhost:5000/admin')
     .then(res => this.setState({ admins: res.data }))
     .catch(err => console.log(err));
   }
