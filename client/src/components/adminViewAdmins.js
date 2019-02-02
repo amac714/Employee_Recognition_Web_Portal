@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Table, Container } from 'reactstrap';
+import { Table, Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -7,11 +7,7 @@ class ViewAdmins extends Component {
   constructor() {
     super();
     this.state = {
-      admins: [],
-      admin: {
-        id: 0,
-        username: '',
-      }
+      admins: []
     }
   }
 
@@ -25,13 +21,19 @@ class ViewAdmins extends Component {
     .catch(err => console.log(err));
   }
 
-  renderUsers = ({ id, admin_name }) => {
+  deleteAdmin = (id) => {
+    axios.delete(`http://localhost:5000/admin/${id}`)
+    .then(this.getAdmins)
+    .catch(err => console.log(err));
+  }
+
+  renderAdmins = ({ id, admin_name }) => {
     return (
       <tr key={id}>
         <th scope="row">{id}</th>
         <th>{admin_name}</th>
         <th>Update</th>
-        <th>Delete</th>
+        <th><button onClick={() => this.deleteAdmin(`${id}`)}>Delete</button></th>
       </tr>
     );
   };
@@ -47,13 +49,13 @@ class ViewAdmins extends Component {
             <thead>
               <tr>
                 <th>Id</th>
-                <th>Username</th>
+                <th>Admin Name</th>
                 <th></th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {admins.map(this.renderUsers)}
+              {admins.map(this.renderAdmins)}
             </tbody>
           </Table>
         </Container>

@@ -7,7 +7,7 @@ class CreateAdmin extends Component {
   constructor(){
     super();
     this.state = {
-      username: '',
+      admin_name: '',
       password: '',
       confirmPW: '',
       validate: null
@@ -20,16 +20,12 @@ class CreateAdmin extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-
     const { password, confirmPW } = this.state;
-
     if(password !== confirmPW) {
-      this.setState({
-        validate: true
-      })
+      this.setState({ validate: true })
     }else {
       axios.post('http://localhost:5000/admin', {
-        username: this.state.username,
+        admin_name: this.state.admin_name,
         password: this.state.password
       })
       .then((res) => {
@@ -37,9 +33,7 @@ class CreateAdmin extends Component {
         console.log(res);
         this.props.history.push('/adminDash');
       })
-      .catch((err) => {
-        console.log(err);
-      })
+      .catch(err => console.log(err))
     }
   }
 
@@ -56,9 +50,9 @@ class CreateAdmin extends Component {
                 <Label>Username</Label>
                 <Input
                   type="text"
-                  name="username"
+                  name="admin_name"
                   id="admin_id"
-                  value={this.state.username}
+                  value={this.state.admin_name}
                   onChange={this.onChange}
                 />
               </FormGroup>

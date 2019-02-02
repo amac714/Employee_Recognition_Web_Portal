@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Button, Container, Col, Row } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import ViewUsers from './adminViewUsers';
 import ViewAdmins from './adminViewAdmins';
 import Reports from './sideViewComponents/reports';
@@ -26,7 +25,7 @@ class AdminDashboard extends Component {
 
   render() {
     return ( 
-      <div className="container-div">
+      <div>
         <Container>
           <Row>
             <Col style={{ border: "1px solid black" }}>
