@@ -13,6 +13,7 @@ app = Flask(__name__, template_folder="client/build", static_folder="client/buil
 
 CORS(app)
 app.config.from_object(os.environ['APP_SETTINGS'])
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 marsh = Marshmallow(app)
 
@@ -50,11 +51,12 @@ def getIndUser(u_id):
 @app.route('/user', methods=['POST'])
 def postUser():
     user = UserSchema()
-    newUser = Users(request.form['username'],
-                      request.form['password'],
-                      request.form['first_name'],
-                      request.form['last_name'],
+    newUser = Users(request.json['username'],
+                      request.json['password'],
+                      request.json['first_name'],
+                      request.json['last_name'],
                       request.files['sig'].read())
+
     db.session.add(newUser)
     db.session.commit()
     return user.jsonify(newUser)
@@ -114,8 +116,8 @@ def getIndAdmin(a_id):
 @app.route('/admin', methods=['POST'])
 def postAdmin():
     adminSchema = AdminSchema()
-    newAdmin = Admins(request.form['admin_name'],
-                      request.form['password'])
+    newAdmin = Admins(request.json['admin_name'],
+                      request.json['password'])
     db.session.add(newAdmin)
     db.session.commit()
     return adminSchema.jsonify(newAdmin)
@@ -128,8 +130,8 @@ def patchAdmin(a_id):
     admin = Admins.query.get(a_id)
     if admin:
       adminSchema = AdminSchema()
-      admin.admin_name = request.form['admin_name']
-      admin.admin_password = request.form['password']
+      admin.admin_name = request.json['admin_name']
+      admin.admin_password = request.json['password']
       db.session.commit()
       return adminSchema.jsonify(admin)
     else: 
@@ -170,11 +172,11 @@ def postAward(u_id):
     user = Users.query.get(u_id)
     if user:
       awardSchema = AwardSchema()
-      newAward = Awards(request.form['award_type'],
-                        request.form['first_name'],
-                        request.form['last_name'], 
-                        request.form['time_granted'],  # 00:00:00
-                        request.form['date_granted'],  # yyyy-mm-dd
+      newAward = Awards(request.json['award_type'],
+                        request.json['first_name'],
+                        request.json['last_name'], 
+                        request.json['time_granted'],  # 00:00:00
+                        request.json['date_granted'],  # yyyy-mm-dd
                         u_id)
       db.session.add(newAward)
       db.session.commit()

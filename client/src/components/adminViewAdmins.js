@@ -21,20 +21,20 @@ class ViewAdmins extends Component {
     .catch(err => console.log(err));
   }
 
-  deleteAdmin = (id) => {
-    axios.delete(`http://localhost:5000/admin/${id}`)
-    .then(this.getAdmins)
-    .catch(err => console.log(err));
-  }
-
   renderAdmins = ({ id, admin_name }) => {
+    const edit = {
+      pathname: '/editAdmin',
+      state: {
+        id: `${id}`,
+        admin_name: `${admin_name}`
+      }
+    }
     return (
-      <tr key={id}>
-        <th scope="row">{id}</th>
-        <th>{admin_name}</th>
-        <th>Update</th>
-        <th><button onClick={() => this.deleteAdmin(`${id}`)}>Delete</button></th>
-      </tr>
+        <tr key={id}>
+          <th scope="row">{id}</th>
+          <th>{admin_name}</th>
+          <th><Link to={edit}>Update</Link></th>
+        </tr>
     );
   };
 
@@ -50,7 +50,6 @@ class ViewAdmins extends Component {
               <tr>
                 <th>Id</th>
                 <th>Admin Name</th>
-                <th></th>
                 <th></th>
               </tr>
             </thead>
