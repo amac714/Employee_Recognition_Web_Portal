@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Container } from 'reactstrap';
 
-//delete this later
-let user = {
-  id: 1,
-  username: 'test@gmail.com',
-  first_name: 'alan',
-  last_name: 'macabuhay'
-}
-
 class ViewUsers extends Component {
   constructor() {
     super();
@@ -21,10 +13,6 @@ class ViewUsers extends Component {
         last_name: ''
       }
     }
-  }
-
-  componentDidMount(){
-    this.setState({ users: user })
   }
 
   renderUsers = ({ id, username, first_name, last_name }) => {
