@@ -8,14 +8,23 @@ from datetime import datetime
 #from flask_jwt_extended import create_access_token
 from werkzeug.exceptions import HTTPException
 import os
+from flask_mail import Mail, Message
 
 app = Flask(__name__, template_folder="client/build", static_folder="client/build/static")
 
 CORS(app)
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'ogmaemployeeawards@gmail.com'
+app.config['MAIL_PASSWORD'] = 'ntid96zitg'
+
 db = SQLAlchemy(app)
 marsh = Marshmallow(app)
+mail = Mail(app)
 
 from models import Users,Admins,Awards,UserSchema,AdminSchema,AwardSchema
 
@@ -197,6 +206,30 @@ def deleteAward(u_id,aw_id):
     else: 
       return jsonify({"Error": "User or award does not exist."})
 
+
+
+
+''' ######################## SEND MAIL ######################## '''
+
+@app.route('/send-mail/')
+def send_mail():
+    try:
+        msg = Message("Hey!!!",
+                      sender='ogmaemployeeawards@gmail.com',
+                      recipients=['bsphair@gmail.com'])
+        msg.body = "Congrats on the award!"
+        mail.send(msg)
+        return 'Mail sent!!!'
+
+
+    except Exception as e:
+        return str(e)
+
+
+
+
+
+''' ######################## ERROR HANDLING ######################## '''
 
 
 # Error handlers for exceptions
