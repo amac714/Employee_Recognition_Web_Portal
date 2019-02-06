@@ -4,11 +4,11 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from datetime import datetime
-#from flask_jwt_extended import JWTManager #jwt is for web tokens/authentication
-#from flask_jwt_extended import create_access_token
+from flask_jwt_extended import (JWTManager,jwt_required,verify_jwt_in_request,get_jwt_claims,create_access_token,get_jwt_identity)
 from werkzeug.exceptions import HTTPException
 import os
 from flask_mail import Mail, Message
+
 
 app = Flask(__name__, template_folder="client/build", static_folder="client/build/static")
 
@@ -16,17 +16,14 @@ CORS(app)
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app.config['MAIL_SERVER']='smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'ogmaemployeeawards@gmail.com'
-app.config['MAIL_PASSWORD'] = 'ntid96zitg'
-
 db = SQLAlchemy(app)
 marsh = Marshmallow(app)
 mail = Mail(app)
+jwt = JWTManager(app)
 
 from models import Users,Admins,Awards,UserSchema,AdminSchema,AwardSchema
+from auth import admin_only,user_only
+
 
 # Main Portal
 @app.route('/')
@@ -34,11 +31,12 @@ def index():
     return render_template('index.html')
 
 
-''' ######################## USERS ######################## '''      
+''' ################################################ USERS ################################################ '''      
 
 
 # GET : Get all user
 @app.route('/user',methods=['GET'])
+@admin_only
 def getAllUser(): 
     users = Users.query.all()
     schema = UserSchema(many=True)    
@@ -47,6 +45,7 @@ def getAllUser():
 
 # GET : Get individual user
 @app.route('/user/<int:u_id>',methods=['GET'])
+@admin_only
 def getIndUser(u_id): 
     user = Users.query.get(u_id)
     if user:
@@ -73,6 +72,7 @@ def postUser():
 
 # PATCH : Update user first and last name
 @app.route('/user/<int:u_id>', methods=['PATCH'])
+@jwt_required
 def patchUser(u_id):
 
     user = Users.query.get(u_id)
@@ -88,6 +88,7 @@ def patchUser(u_id):
 
 # DELETE : Delete user given id 
 @app.route('/user/<int:u_id>', methods=['DELETE'])
+@admin_only
 def deleteUser(u_id):
 
     user = Users.query.get(u_id)
@@ -99,11 +100,12 @@ def deleteUser(u_id):
       return jsonify({"User": "User not found."})
 
 
-''' ######################## ADMINS ######################## ''' 
+''' ################################################ ADMINS ################################################ ''' 
 
 
 # GET : Get all admin
 @app.route('/admin',methods=['GET'])
+@admin_only
 def getAllAdmin(): 
     admins = Admins.query.all()
     schema = AdminSchema(many=True)    
@@ -112,6 +114,7 @@ def getAllAdmin():
 
 # GET : Get individual admin
 @app.route('/admin/<int:a_id>',methods=['GET'])
+@admin_only
 def getIndAdmin(a_id): 
     admins = Admins.query.filter_by(id=a_id).first()
     if admins:
@@ -123,6 +126,7 @@ def getIndAdmin(a_id):
 
 # POST : Create new admin
 @app.route('/admin', methods=['POST'])
+@admin_only
 def postAdmin():
     adminSchema = AdminSchema()
     newAdmin = Admins(request.json['admin_name'],
@@ -134,6 +138,7 @@ def postAdmin():
 
 # PATCH : Update admin username and password
 @app.route('/admin/<int:a_id>', methods=['PATCH'])
+@admin_only
 def patchAdmin(a_id):
 
     admin = Admins.query.get(a_id)
@@ -149,6 +154,7 @@ def patchAdmin(a_id):
 
 # DELETE : Delete admin given username and id
 @app.route('/admin/<int:a_id>', methods=['DELETE'])
+@admin_only
 def deleteAdmin(a_id):
 
     admin = Admins.query.get(a_id)
@@ -160,11 +166,12 @@ def deleteAdmin(a_id):
       return jsonify({"Admin": "Admin not found."})
 
 
-''' ######################## AWARDS ######################## ''' 
+''' ################################################ AWARDS ################################################ ''' 
 
 
 # GET : Get all awards careated by user id
 @app.route('/user/<int:u_id>/award', methods=['GET'])
+@jwt_required
 def getAwardByUser(u_id):
     user = Users.query.get(u_id)
     if user:
@@ -177,6 +184,7 @@ def getAwardByUser(u_id):
 
 # POST : Create new award
 @app.route('/user/<int:u_id>/award', methods=['POST'])
+@user_only
 def postAward(u_id):
     user = Users.query.get(u_id)
     if user:
@@ -196,8 +204,8 @@ def postAward(u_id):
 
 # DELETE : Delete award created by user
 @app.route('/user/<int:u_id>/award/<int:aw_id>', methods=['DELETE'])
+@jwt_required
 def deleteAward(u_id,aw_id):
-    
     award = Awards.query.filter_by(id=aw_id, created_by_user=u_id).first()
     if award:
       db.session.delete(award)
@@ -209,7 +217,7 @@ def deleteAward(u_id,aw_id):
 
 
 
-''' ######################## SEND MAIL ######################## '''
+''' ################################################ SEND MAIL ################################################ '''
 
 @app.route('/send-mail/')
 def send_mail():
@@ -227,18 +235,46 @@ def send_mail():
 
 
 
+''' ################################################ ADMIN AUTHENTICATION ################################################ '''
+
+@app.route('/admin/login', methods=['POST'])
+def adminLogin():
+
+  admin = Admins.query.filter_by(admin_name=request.json['username']).first()
+  # Authenticate
+  if admin and admin.admin_password==request.json['password']: 
+    access_token = create_access_token(identity=admin.admin_name)
+    return jsonify(access_token=access_token), 200
+  else: 
+    return jsonify({"Credentials": "Wrong Credentials."}), 400
+
+
+@app.route('/user/login', methods=['POST'])
+def userLogin():
+
+  user = Users.query.filter_by(user_name=request.json['username']).first()
+  # Authenticate
+  if user and user.user_password==request.json['password']: 
+    access_token = create_access_token(user.user_name)
+    return jsonify(access_token=access_token), 200
+  else: 
+    return jsonify({"Credentials": "Wrong Credentials."}), 400
 
 
 ''' ######################## ERROR HANDLING ######################## '''
 
 
 # Error handlers for exceptions
+
 @app.errorhandler(Exception)
 def bad_request(error): 
   if isinstance(error,HTTPException): 
     return jsonify(str(error)),error.code
   else: 
     return jsonify({"Error": "500 - Internal Server"}),500
+
+
+
 
 if __name__ == '__main__':
   app.run(debug=True)

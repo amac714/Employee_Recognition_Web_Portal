@@ -17,6 +17,7 @@ flask-migrate = "*"
 psycopg2-binary = "*"
 flask-script = "*"
 marshmallow-sqlalchemy = "*"
+flask-mail = "*"
 
 [requires]
 python_version = "2.7"
