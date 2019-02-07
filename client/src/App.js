@@ -9,7 +9,6 @@ import ErrorPage from './components/error';
 import HomePage from './components/home';
 import ViewUsers from './components/adminViewUsers';
 import UserHomePage from './components/userHomePage';
-import Login from './components/login';
 import UpdateUserInfo from './components/updateUserInfo';
 import AdminDashboard from './components/adminDashboard';
 import DesignAward from "./components/designAward";

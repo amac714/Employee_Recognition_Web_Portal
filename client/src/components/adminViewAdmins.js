@@ -16,7 +16,11 @@ class ViewAdmins extends Component {
   }
 
   getAdmins = () => {
-    axios.get('http://localhost:5000/admin')
+    let token = localStorage.getItem('access_token');
+    let config = {
+      headers: {'Authorization': `Bearer ${token}`}
+    }
+    axios.get('/admin', config)
     .then(res => this.setState({ admins: res.data }))
     .catch(err => console.log(err));
   }

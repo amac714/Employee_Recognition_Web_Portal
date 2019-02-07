@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Button, Form, FormGroup, 
         Input, Col, Label } from 'reactstrap';
+import axios from 'axios';
 
 class AdminLogin extends Component {
   constructor() {
@@ -15,10 +16,17 @@ class AdminLogin extends Component {
   }
 
   // ToDO: connect to API
-  handleSubmit = (e) => {
+  login = (e) => {
     e.preventDefault();
-
-    console.log(this.state.username, this.state.password);
+    axios.post('/admin/login', {
+      username: this.state.username,
+      password: this.state.password
+    })
+    .then(res => {
+      localStorage.setItem('access_token', res.data.access_token);
+      this.props.history.push('/adminDash');
+    })
+    .catch(err => console.log(err))
   }
 
   onChange = (e) => {
@@ -31,7 +39,7 @@ class AdminLogin extends Component {
         <Col sm="12" md={{ size: 6, offset: 3 }}>
           <h2>Admin Sign In</h2>
         </Col>
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.login}>
           <Col sm="12" md={{ size: 6, offset: 3 }}>
             <FormGroup>
               <Label>Username</Label>

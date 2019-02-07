@@ -59,10 +59,10 @@ def getIndUser(u_id):
 @app.route('/user', methods=['POST'])
 def postUser():
     user = UserSchema()
-    newUser = Users(request.json['username'],
-                      request.json['password'],
-                      request.json['first_name'],
-                      request.json['last_name'],
+    newUser = Users(request.form['username'],
+                      request.form['password'],
+                      request.form['first_name'],
+                      request.form['last_name'],
                       request.files['sig'].read())
 
     db.session.add(newUser)

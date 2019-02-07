@@ -35,7 +35,7 @@ class CreateUser extends Component {
     formData.append('last_name', this.state.last_name);
     formData.append('sig', this.state.sig);
     console.log(formData);
-    axios.post('http://localhost:5000/user', formData)
+    axios.post('/user', formData)
     .then((res) => {
       console.log(res);
       //this.props.history.push('/adminDash');

@@ -21,14 +21,18 @@ class CreateAdmin extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    let token = localStorage.getItem('access_token');
+    let config = {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }
     const { password, confirmPW } = this.state;
     if(password !== confirmPW) {
       this.setState({ validate: true })
     }else {
-      axios.post('http://localhost:5000/admin', {
+      axios.post('/admin', {
         admin_name: this.state.admin_name,
         password: this.state.password
-      })
+      }, config)
       .then((res) => {
         this.setState({ 
           visible: true
