@@ -16,6 +16,10 @@ import CreateAdmin from './components/createAdmin';
 import EditAdmin from './components/editAdmin';
 import CreateUser from './components/createUser';
 
+// import { Provider } from "react-redux"
+
+
+// const userDataStore = createStore(allReducers);
 
 export const history = createHistory();
 

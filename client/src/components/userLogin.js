@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Container, Button, Form, FormGroup, Input, Col, Label} from 'reactstrap';
 import axios from "axios"
-import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 
 
@@ -26,6 +25,7 @@ class UserLogin extends Component {
         })
             .then(res => {
                     this.setState({userToken: res});
+                    localStorage.setItem('username', this.state.username);
                 }
             )
             .catch(function (error) {

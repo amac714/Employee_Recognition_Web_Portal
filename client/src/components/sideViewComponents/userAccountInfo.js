@@ -6,9 +6,8 @@ class UserAccountInfo extends Component {
     render() {
         return (
             <div>
-                <p>Username: testName</p>
-                <p>Password: ******</p>
-                <p>Signiture Image</p>
+                <p>Username: {localStorage.getItem('username')}</p>
+                <p>Signature Image</p>
                 <Link to="/updateUserInfo">
                     <button>Update</button>
                 </Link>

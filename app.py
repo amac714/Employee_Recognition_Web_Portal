@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request, json, render_template
 from flask_cors import CORS
-#from flask_bcrypt import Bcrypt #bcrypt is for hashing passwords
+from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from datetime import datetime
@@ -18,8 +18,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 marsh = Marshmallow(app)
+bcrypt = Bcrypt(app)
 mail = Mail(app)
 jwt = JWTManager(app)
+
 
 from models import Users,Admins,Awards,UserSchema,AdminSchema,AwardSchema
 from auth import admin_only,user_only
@@ -59,8 +61,10 @@ def getIndUser(u_id):
 @app.route('/user', methods=['POST'])
 def postUser():
     user = UserSchema()
+    # Hash password 
+    passHash = bcrypt.generate_password_hash(request.form['password'])
     newUser = Users(request.form['username'],
-                      request.form['password'],
+                      passHash,
                       request.form['first_name'],
                       request.form['last_name'],
                       request.files['sig'].read())
@@ -90,7 +94,6 @@ def patchUser(u_id):
 @app.route('/user/<int:u_id>', methods=['DELETE'])
 @admin_only
 def deleteUser(u_id):
-
     user = Users.query.get(u_id)
     if user:
       db.session.delete(user)
@@ -127,11 +130,11 @@ def getIndAdmin(a_id):
 
 # POST : Create new admin
 @app.route('/admin', methods=['POST'])
-@admin_only
 def postAdmin():
     adminSchema = AdminSchema()
+    passHash = bcrypt.generate_password_hash(request.json['password'])
     newAdmin = Admins(request.json['admin_name'],
-                      request.json['password'])
+                      passHash)
     db.session.add(newAdmin)
     db.session.commit()
     return adminSchema.jsonify(newAdmin)
@@ -141,12 +144,12 @@ def postAdmin():
 @app.route('/admin/<int:a_id>', methods=['PATCH'])
 @admin_only
 def patchAdmin(a_id):
-
     admin = Admins.query.get(a_id)
     if admin:
       adminSchema = AdminSchema()
+      passHash = bcrypt.generate_password_hash(request.json['password'])
       admin.admin_name = request.json['admin_name']
-      admin.admin_password = request.json['password']
+      admin.admin_password = passHash
       db.session.commit()
       return adminSchema.jsonify(admin)
     else: 
@@ -157,7 +160,6 @@ def patchAdmin(a_id):
 @app.route('/admin/<int:a_id>', methods=['DELETE'])
 @admin_only
 def deleteAdmin(a_id):
-
     admin = Admins.query.get(a_id)
     if admin:
       db.session.delete(admin)
@@ -243,7 +245,7 @@ def adminLogin():
 
   admin = Admins.query.filter_by(admin_name=request.json['username']).first()
   # Authenticate
-  if admin and admin.admin_password==request.json['password']: 
+  if admin and bcrypt.check_password_hash(admin.admin_password,request.json['password']):
     access_token = create_access_token(identity=admin.admin_name)
     return jsonify(access_token=access_token), 200
   else: 
@@ -255,29 +257,22 @@ def userLogin():
 
   user = Users.query.filter_by(user_name=request.json['username']).first()
   # Authenticate
-  if user and user.user_password==request.json['password']: 
+  if user and bcrypt.check_password_hash(user.user_password,request.json['password']):
     access_token = create_access_token(user.user_name)
     return jsonify(access_token=access_token), 200
   else: 
     return jsonify({"Credentials": "Wrong Credentials."}), 400
 
-
-''' ################################################ REGISTER ################################################ '''
-
-
-
 ''' ################################################ ERROR HANDLING ################################################ '''
 
 
 # Error handlers for exceptions
-
 @app.errorhandler(Exception)
 def bad_request(error): 
   if isinstance(error,HTTPException): 
     return jsonify(str(error)),error.code
   else: 
     return jsonify({"Error": "500 - Internal Server"}),500
-
 
 
 
