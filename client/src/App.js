@@ -15,6 +15,7 @@ import AdminDashboard from './components/adminDashboard';
 import DesignAward from "./components/designAward";
 import CreateAdmin from './components/createAdmin';
 import EditAdmin from './components/editAdmin';
+import CreateUser from './components/createUser';
 
 
 export const history = createHistory();
@@ -34,6 +35,7 @@ class App extends Component {
             <Route path="/adminDash" component={AdminDashboard} />
             <Route path="/addAdmin" component={CreateAdmin} />
             <Route path="/editAdmin" component={EditAdmin} />
+            <Route path="/createUser" component={CreateUser} />
             <Route path="/adminViewUsers" component={ViewUsers} />
             <Route path="/updateUserInfo" component={UpdateUserInfo} />
             <Route path="/designAward" component={DesignAward}/>
