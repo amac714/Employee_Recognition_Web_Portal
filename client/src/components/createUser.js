@@ -7,7 +7,7 @@ class CreateUser extends Component {
   constructor(){
     super();
     this.state = {
-      username: '',
+      user_name: '',
       first_name: '',
       last_name: '',
       password: '',
@@ -29,12 +29,15 @@ class CreateUser extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('username', this.state.username);
+    formData.append('username', this.state.user_name);
     formData.append('password', this.state.password);
     formData.append('first_name', this.state.first_name);
     formData.append('last_name', this.state.last_name);
     formData.append('sig', this.state.sig);
-    console.log(formData);
+    // let token = localStorage.getItem('access_token');
+    // let config = {
+    //   headers: { 'Authorization': `Bearer ${token}` }
+    // }
     axios.post('/user', formData)
     .then((res) => {
       console.log(res);
@@ -58,26 +61,30 @@ class CreateUser extends Component {
          <Form onSubmit={this.handleSubmit}>
             <Input
               type="text"
-              name="username"
-              value={this.state.username}
+              name="user_name"
+              value={this.state.user_name}
+              placeholder="Enter email"
               onChange={this.onChange}
             />
             <Input
               type="text"
               name="first_name"
               value={this.state.first_name}
+              placeholder="Enter first name"
               onChange={this.onChange}
             />
             <Input
               type="text"
               name="last_name"
               value={this.state.last_name}
+              placeholder="Enter last name"
               onChange={this.onChange}
             />
             <Input
               type="password"
               name="password"
               value={this.state.password}
+              placeholder="Enter password"
               onChange={this.onChange}
             />
             <Input

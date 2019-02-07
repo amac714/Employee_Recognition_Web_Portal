@@ -15,7 +15,6 @@ class AdminLogin extends Component {
     };
   }
 
-  // ToDO: connect to API
   login = (e) => {
     e.preventDefault();
     axios.post('/admin/login', {

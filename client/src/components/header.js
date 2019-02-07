@@ -26,7 +26,7 @@ class Header extends Component {
             <NavLink tag={Link} to="/admin"><h5>Admin</h5></NavLink>
           </NavItem>
         </Nav>);
-    else if(path === "/admin" || path === "/adminDash" || path === "/addAdmin")
+    else if(path === "/admin" || path === "/adminDash" || path === "/addAdmin" || path === "/createUser")
       item = (
         <Nav className="ml-auto" navbar>
           <NavItem>
