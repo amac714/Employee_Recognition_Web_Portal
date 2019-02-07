@@ -53,7 +53,6 @@ class HomePage extends Component {
               <a href="https://placeholder.com"><img src="https://via.placeholder.com/500x300"/></a>
             </Col>
           </Row>
-
       </div>
     );
   }
