@@ -6,7 +6,7 @@ class Users(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(50), nullable=False, unique=True)
-    user_password  = db.Column(db.String(50), nullable=False)
+    user_password  = db.Column(db.String(250), nullable=False)
     first_name = db.Column(db.String(50), unique=False) 
     last_name  = db.Column(db.String(50), unique=False)
     timecreated = db.Column(db.DateTime, default=datetime.utcnow)
@@ -28,7 +28,7 @@ class Admins(db.Model):
     __tablename__ = 'admins'
     id = db.Column(db.Integer, primary_key=True)
     admin_name = db.Column(db.String(50), nullable=False, unique=True)
-    admin_password= db.Column(db.String(50), nullable=False)
+    admin_password= db.Column(db.String(250), nullable=False)
 
     def __init__(self,adminName,adminPass): 
         self.admin_name = adminName
