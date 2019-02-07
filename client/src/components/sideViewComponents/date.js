@@ -7,6 +7,7 @@ class Date extends Component {
 
         return (
             <div className="dateText">
+                <p>{this.props.currentDay}</p>
                 <p>{this.props.currentDate}</p>
             </div>
         );

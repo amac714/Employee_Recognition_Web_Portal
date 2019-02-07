@@ -9,6 +9,7 @@ function SideSection(props){
       <div>
           <Date
             currentDate={props.currentDate}
+            currentDay={props.currentDay}
           />
 
           {props.userType === "user" && <UserAccountInfo/>}
