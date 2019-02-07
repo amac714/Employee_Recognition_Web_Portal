@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: c53643087b1e
+Revision ID: 1fc0045b53d6
 Revises: 
-Create Date: 2019-01-31 10:02:23.520000
+Create Date: 2019-02-07 09:05:18.661000
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c53643087b1e'
+revision = '1fc0045b53d6'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -21,22 +21,20 @@ def upgrade():
     op.create_table('admins',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('admin_name', sa.String(length=50), nullable=False),
-    sa.Column('admin_password', sa.String(length=50), nullable=False),
+    sa.Column('admin_password', sa.String(length=250), nullable=False),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('admin_name'),
-    sa.UniqueConstraint('admin_password')
+    sa.UniqueConstraint('admin_name')
     )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_name', sa.String(length=50), nullable=False),
-    sa.Column('user_password', sa.String(length=50), nullable=False),
+    sa.Column('user_password', sa.String(length=250), nullable=False),
     sa.Column('first_name', sa.String(length=50), nullable=True),
     sa.Column('last_name', sa.String(length=50), nullable=True),
     sa.Column('timecreated', sa.DateTime(), nullable=True),
     sa.Column('user_signature', sa.LargeBinary(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('user_name'),
-    sa.UniqueConstraint('user_password')
+    sa.UniqueConstraint('user_name')
     )
     op.create_table('awards',
     sa.Column('id', sa.Integer(), nullable=False),
