@@ -12,6 +12,11 @@ class EditAdmin extends Component {
       password: '',
       confirmPW: '',
       validate: false,
+      config: {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+        }
+      }
     };
   }
 
@@ -31,12 +36,12 @@ class EditAdmin extends Component {
   }
 
   deleteAdmin = (id) => {
-    axios.delete(`http://localhost:5000/admin/${id}`)
+    axios.delete(`/admin/${id}`, this.state.config)
       .then(this.props.history.push('/adminDash'))
       .catch(err => console.log(err));
   }
 
-  handleSubmit = (e) => {
+  saveEdit = (e) => {
     e.preventDefault();
     const { password, confirmPW, id } = this.state;
     if (password !== confirmPW) {
@@ -45,7 +50,7 @@ class EditAdmin extends Component {
       axios.patch(`http://localhost:5000/admin/${id}`, {
         admin_name: this.state.admin_name,
         password: this.state.password
-      })
+      }, this.state.config)
       .then((res) => {
         console.log(res);
         this.props.history.push('/adminDash');
@@ -61,7 +66,7 @@ class EditAdmin extends Component {
           <Col sm="12" md={{ size: 6, offset: 3 }}>
             <h2>Edit Admin</h2>
           </Col>
-          <Form onSubmit={this.handleSubmit} method="POST">
+          <Form onSubmit={this.saveEdit} method="POST">
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <FormGroup>
                 <Input

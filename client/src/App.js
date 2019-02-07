@@ -9,12 +9,12 @@ import ErrorPage from './components/error';
 import HomePage from './components/home';
 import ViewUsers from './components/adminViewUsers';
 import UserHomePage from './components/userHomePage';
-import Login from './components/login';
 import UpdateUserInfo from './components/updateUserInfo';
 import AdminDashboard from './components/adminDashboard';
 import DesignAward from "./components/designAward";
 import CreateAdmin from './components/createAdmin';
 import EditAdmin from './components/editAdmin';
+import CreateUser from './components/createUser';
 
 // import { Provider } from "react-redux"
 
@@ -26,25 +26,26 @@ export const history = createHistory();
 class App extends Component {
   render() {
     return (
-          <Router history={history}>
-            <div className="App">
-              <Header />
-              <Switch>
-                {/* Add routes here */}
-                <Route exact path="/" component={HomePage} />
-                <Route path="/userLogin" component={UserLogin} />
-                <Route path="/userHomePage" component={UserHomePage}/>
-                <Route exact path="/admin" component={AdminLogin}/>
-                <Route path="/adminDash" component={AdminDashboard} />
-                <Route path="/addAdmin" component={CreateAdmin} />
-                <Route path="/editAdmin" component={EditAdmin} />
-                <Route path="/adminViewUsers" component={ViewUsers} />
-                <Route path="/updateUserInfo" component={UpdateUserInfo} />
-                <Route path="/designAward" component={DesignAward}/>
-                <Route component={ErrorPage} />
-              </Switch>
-            </div>
-          </Router>
+      <Router history={history}>
+        <div className="App">
+          <Header />
+          <Switch>
+            {/* Add routes here */}
+            <Route exact path="/" component={HomePage} />
+            <Route path="/userLogin" component={UserLogin} />
+            <Route path="/userHomePage" component={UserHomePage}/>
+            <Route exact path="/admin" component={AdminLogin}/>
+            <Route path="/adminDash" component={AdminDashboard} />
+            <Route path="/addAdmin" component={CreateAdmin} />
+            <Route path="/editAdmin" component={EditAdmin} />
+            <Route path="/createUser" component={CreateUser} />
+            <Route path="/adminViewUsers" component={ViewUsers} />
+            <Route path="/updateUserInfo" component={UpdateUserInfo} />
+            <Route path="/designAward" component={DesignAward}/>
+            <Route component={ErrorPage} />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
