@@ -7,16 +7,20 @@ class UserHomePage extends Component {
     constructor(props) {
         super(props);
 
-        var monthName = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        var dayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const monthName = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const dayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-        var today = new Date(),
-            currentDate = dayName[today.getDay()] + " " + monthName[(today.getMonth())] + ' ' + today.getDate() + "," + today.getFullYear();
+        const day = new Date(),
+            currentDay = dayName[day.getDay()];
+
+        const today = new Date(),
+            currentDate = monthName[(today.getMonth())] + ' ' + today.getDate() + ", " + today.getFullYear();
 
 
         this.state = {
             userType: "user",
             currentDate: currentDate,
+            currentDay: currentDay,
         }
     }
 
@@ -30,6 +34,7 @@ class UserHomePage extends Component {
                         <SideSection
                             userType={this.state.userType}
                             currentDate={this.state.currentDate}
+                            currentDay={this.state.currentDay}
                         />
                     </Col>
 
