@@ -40,7 +40,7 @@ class HomePage extends Component {
 
                 <div className="buttons">
                     <Link tag={Link} to="/"><button>Signup</button></Link>
-                    <Link tag={Link} to="/login"><button>Login</button></Link>
+                    <Link tag={Link} to="/userLogin"><button>Login</button></Link>
                 </div>
               </Col>
               <Col xs={{offset: 2 }}>

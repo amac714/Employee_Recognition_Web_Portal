@@ -29,7 +29,7 @@ class App extends Component {
           <Switch>
             {/* Add routes here */}
             <Route exact path="/" component={HomePage} />
-            <Route path="/login" component={Login} />
+            <Route path="/userLogin" component={UserLogin} />
             <Route path="/userHomePage" component={UserHomePage}/>
             <Route exact path="/admin" component={AdminLogin}/>
             <Route path="/adminDash" component={AdminDashboard} />
