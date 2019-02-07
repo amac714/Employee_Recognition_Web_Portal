@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Container, Button, Form, FormGroup, Input, Col, Label } from 'reactstrap';
+import axios from "axios";
 
 class UserLogin extends Component {
+
   constructor() {
     super();
     this.state = {
@@ -14,12 +16,27 @@ class UserLogin extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
+    axios.post('/user/login', {
+       username: this.state.username,
+       password: this.state.password
+    })
+        .then(function (response){
+            console.log(response)
+        })
+        .catch(function(error){
+            console.log(error)
+        });
+
+
     console.log(this.state.username, this.state.password);
   };
 
+
+  
   onChange = (e) => {
     this.setState({[e.target.name]: e.target.value})
   };
+
 
   render(){
     return (
@@ -35,7 +52,7 @@ class UserLogin extends Component {
                 type="text"
                 name="username"
                 id="user_id"
-                placeholder="Admin"
+                placeholder="username"
                 value={this.state.username}
                 onChange={this.onChange}
               />
