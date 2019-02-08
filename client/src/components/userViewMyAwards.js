@@ -11,16 +11,16 @@ class UserViewMyAwards extends Component {
         }
     }
 
-    componentDidMount() {
-        this.getAdmins();
-    }
-
-    getAdmins = () => {
-        var url = 'http://localhost:5000' + '/award';
-        axios.get('http://localhost:5000/admin')
-        .then(res => this.setState({ admins: res.data }))
-        .catch(err => console.log(err));
-    };
+    // componentDidMount() {
+    //     this.getAdmins();
+    // }
+    //
+    // getAdmins = () => {
+    //     var url = 'http://localhost:5000' + '/award';
+    //     axios.get('http://localhost:5000/admin')
+    //     .then(res => this.setState({ admins: res.data }))
+    //     .catch(err => console.log(err));
+    // };
 
 
 

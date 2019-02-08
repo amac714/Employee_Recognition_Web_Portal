@@ -7,20 +7,38 @@ class UserViewMyAwards extends Component {
         super();
 
         this.state = {
-          admins: []
+          awards: []
         }
     }
 
     componentDidMount() {
-        this.getAdmins();
+        this.getAwards();
     }
-    //
-    // getAdmins = () => {
-    //     var url = 'http://localhost:5000' + '/award';
-    //     axios.get('http://localhost:5000/admin')
-    //     .then(res => this.setState({ admins: res.data }))
-    //     .catch(err => console.log(err));
-    // };
+
+    getAwards = () => {
+        const userId = 6;
+        const token = localStorage.getItem('token');
+        let config = {
+            headers: {'Authorization': `Bearer ${token}`}
+        };
+
+        var url = 'http://localhost:5000/user/' + userId + '/award';
+        axios.get(url, config)
+        .then(res => this.setState({ awards: res.data }))
+        .catch(err => console.log(err));
+
+        console.log(this.state.awards);
+    };
+
+      // getAdmins = () => {
+      //   let token = localStorage.getItem('access_token');
+      //   let config = {
+      //     headers: {'Authorization': `Bearer ${token}`}
+      //   }
+      //   axios.get('/admin', config)
+      //   .then(res => this.setState({ admins: res.data }))
+      //   .catch(err => console.log(err));
+      // }
 
 
 
@@ -28,6 +46,7 @@ class UserViewMyAwards extends Component {
         return (
             <div>
                 <h1>Given Awards</h1>
+                <p>{this.state.awards}</p>
             </div>
         );
     }

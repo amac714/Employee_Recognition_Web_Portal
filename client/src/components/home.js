@@ -44,7 +44,7 @@ class HomePage extends Component {
                 </div>
               </Col>
               <Col xs={{offset: 2 }}>
-                <a href="https://placeholder.com"><img src="https://via.placeholder.com/500x300"/></a>
+                <a href="https://placeholder.com"><img src="https://via.placeholder.com/500x300" alt="firstImg"/></a>
               </Col>
           </Row>
 
