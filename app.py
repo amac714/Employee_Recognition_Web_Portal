@@ -8,6 +8,7 @@ from flask_jwt_extended import (JWTManager,jwt_required,verify_jwt_in_request,ge
 from werkzeug.exceptions import HTTPException
 import os
 from flask_mail import Mail, Message
+import jinja2
 
 
 app = Flask(__name__, template_folder="client/build", static_folder="client/build/static")
@@ -195,40 +196,40 @@ def getAwardByUser(u_id):
 
 # POST : Create new award
 @app.route('/user/<int:u_id>/award', methods=['POST'])
-@user_only
+# @user_only
 def postAward(u_id):
     user = Users.query.get(u_id)
     if user:
       awardSchema = AwardSchema()
-      newAward = Awards(request.json['award_type'],
-                        request.json['first_name'],
-                        request.json['last_name'], 
-                        request.json['time_granted'],  # 00:00:00
-                        request.json['date_granted'],  # yyyy-mm-dd
+      newAward = Awards(request.form['award_type'],
+                        request.form['first_name'],
+                        request.form['last_name'],
+                        request.form['time_granted'],  # 00:00:00
+                        request.form['date_granted'],  # yyyy-mm-dd
                         u_id)
       db.session.add(newAward)
       db.session.commit()
 
-      # latex_jinja_env = jinja2.Environment(
-      #     block_start_string='\BLOCK{',
-      #     block_end_string='}',
-      #     variable_start_string='\VAR{',
-      #     variable_end_string='}',
-      #     comment_start_string='\#{',
-      #     comment_end_string='}',
-      #     line_statement_prefix='%%',
-      #     line_comment_prefix='%#',
-      #     trim_blocks=True,
-      #     autoescape=False,
-      #     loader=jinja2.FileSystemLoader(os.path.abspath('.'))
-      # )
-      #
-      # template = latex_jinja_env.get_template('template.tex')
-      # print(template.render(awardType=newAward.award_type,
-      #                       date=newAward.date_granted,
-      #                       givenBy=user.first_name,
-      #                       firstName=newAward.recipient_first_name,
-      #                       lastName=newAward.recipient_last_name))
+      latex_jinja_env = jinja2.Environment(
+          block_start_string='\BLOCK{',
+          block_end_string='}',
+          variable_start_string='\VAR{',
+          variable_end_string='}',
+          comment_start_string='\#{',
+          comment_end_string='}',
+          line_statement_prefix='%%',
+          line_comment_prefix='%#',
+          trim_blocks=True,
+          autoescape=False,
+          loader=jinja2.FileSystemLoader(os.path.abspath('.'))
+      )
+
+      template = latex_jinja_env.get_template('template.tex')
+      print(template.render(awardType=newAward.award_type,
+                            date=newAward.date_granted,
+                            givenBy=user.first_name,
+                            firstName=newAward.recipient_first_name,
+                            lastName=newAward.recipient_last_name))
       #
       # pdf = Document()
       # pdf.append(template)
@@ -302,10 +303,10 @@ def userLogin():
 
 # Error handlers for exceptions
 @app.errorhandler(Exception)
-def bad_request(error): 
-  if isinstance(error,HTTPException): 
+def bad_request(error):
+  if isinstance(error,HTTPException):
     return jsonify(str(error)),error.code
-  else: 
+  else:
     return jsonify({"Error": "500 - Internal Server"}),500
 
 
