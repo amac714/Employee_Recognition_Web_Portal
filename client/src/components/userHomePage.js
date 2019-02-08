@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import SideSection from './sideSection';
 import { Row, Col } from 'reactstrap';
-import UserViewMyAwards from './userViewMyAwards';
+import UserCreateAward from './userCreateAward';
 import UserViewGivenAwards from './userViewGivenAwards';
 
 class UserHomePage extends Component {
@@ -40,7 +40,7 @@ class UserHomePage extends Component {
                     </Col>
 
                     <Col xs="5" style={{border: "1px solid red"}}>
-                        <UserViewMyAwards />
+                        <UserCreateAward />
                     </Col>
 
                     <Col xs="5" style={{border: "1px solid green"}}>
