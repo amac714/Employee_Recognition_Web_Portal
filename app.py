@@ -66,6 +66,7 @@ def getIndUser(u_id):
 
 # POST : Create new user 
 @app.route('/user', methods=['POST'])
+@admin_only
 def postUser():
     user = UserSchema()
     # Hash password 
@@ -277,24 +278,22 @@ def send_mail():
 
 @app.route('/admin/login', methods=['POST'])
 def adminLogin():
-
   admin = Admins.query.filter_by(admin_name=request.json['username']).first()
   # Authenticate
   if admin and bcrypt.check_password_hash(admin.admin_password,request.json['password']):
     access_token = create_access_token(identity=admin.admin_name)
-    return jsonify(access_token=access_token), 200
+    return jsonify(access_token=access_token, id=admin.id), 200
   else: 
     return jsonify({"Credentials": "Wrong Credentials."}), 400
 
 
 @app.route('/user/login', methods=['POST'])
 def userLogin():
-
   user = Users.query.filter_by(user_name=request.json['username']).first()
   # Authenticate
   if user and bcrypt.check_password_hash(user.user_password,request.json['password']):
     access_token = create_access_token(user.user_name)
-    return jsonify(access_token=access_token), 200
+    return jsonify(access_token=access_token,id=user.id), 200
   else: 
     return jsonify({"Credentials": "Wrong Credentials."}), 400
 
