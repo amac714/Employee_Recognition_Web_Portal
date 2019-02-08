@@ -32,13 +32,7 @@ class UserViewMyAwards extends Component {
     };
 
     getAwardData = ({id, award_type, recipient_first_name, recipient_last_name, date_granted, time_granted}) => {
-        // const edit = {
-        //     pathname: '/editAdmin',
-        //     state: {
-        //         id: `${id}`,
-        //         first_name: `${first_name}`,
-        //     }
-        // }
+
         console.log();
         return (
             <tr key={id}>
@@ -47,7 +41,6 @@ class UserViewMyAwards extends Component {
                 <th>{recipient_last_name}</th>
                 <th>{date_granted}</th>
                 <th>{time_granted}</th>
-                {/*<th><Link to={edit}>Update</Link></th>*/}
             </tr>
         );
     };
