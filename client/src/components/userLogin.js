@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Container, Button, Form, FormGroup, Input, Col, Label} from 'reactstrap';
 import axios from "axios"
-import { Redirect } from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 
 
 class UserLogin extends Component {
@@ -12,20 +12,25 @@ class UserLogin extends Component {
             username: '',
             password: '',
             userToken: '',
+            id: null,
         };
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        const { history } = this.props;
+        const {history} = this.props;
 
-        axios.post('/user/login', {
+
+        axios.post('http://localhost:5000/user/login', {
             username: this.state.username,
             password: this.state.password
         })
             .then(res => {
-                    this.setState({userToken: res});
-                    localStorage.setItem('username', this.state.username);
+                    this.setState({userToken: res.data.access_token});
+                    localStorage.setItem('username', this.state.username);  //store username
+                    localStorage.setItem('access_token', this.state.userToken);    //store user's generated token
+                    localStorage.setItem('id', 6);
+                    this.props.history.push('/userHomePage');               //route to user homepage
                 }
             )
             .catch(function (error) {
@@ -41,9 +46,9 @@ class UserLogin extends Component {
 
 
     render() {
-        if (this.state.userToken !== '') {
-          return <Redirect to='/userHomePage' />
-        }
+        // if (this.state.userToken !== '') {
+        //   return <Redirect to='/userHomePage' />
+        // }
         return (
             <Container>
                 <Col sm="12" md={{size: 6, offset: 3}}>
