@@ -24,9 +24,6 @@ class UserCreateAward extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        // console.log(this.state)
-        // const {history} = this.props;
-
 
         axios.post('http://localhost:5000/user/6/award', {
             award_type: this.state.award_type,
