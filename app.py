@@ -16,10 +16,17 @@ CORS(app)
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'ogmaemployeeawards@gmail.com'
+app.config['MAIL_PASSWORD'] = 'ntid96zitg'
+
+
+mail = Mail(app)
 db = SQLAlchemy(app)
 marsh = Marshmallow(app)
 bcrypt = Bcrypt(app)
-mail = Mail(app)
 jwt = JWTManager(app)
 
 
@@ -200,6 +207,34 @@ def postAward(u_id):
                         u_id)
       db.session.add(newAward)
       db.session.commit()
+
+      # latex_jinja_env = jinja2.Environment(
+      #     block_start_string='\BLOCK{',
+      #     block_end_string='}',
+      #     variable_start_string='\VAR{',
+      #     variable_end_string='}',
+      #     comment_start_string='\#{',
+      #     comment_end_string='}',
+      #     line_statement_prefix='%%',
+      #     line_comment_prefix='%#',
+      #     trim_blocks=True,
+      #     autoescape=False,
+      #     loader=jinja2.FileSystemLoader(os.path.abspath('.'))
+      # )
+      #
+      # template = latex_jinja_env.get_template('template.tex')
+      # print(template.render(awardType=newAward.award_type,
+      #                       date=newAward.date_granted,
+      #                       givenBy=user.first_name,
+      #                       firstName=newAward.recipient_first_name,
+      #                       lastName=newAward.recipient_last_name))
+      #
+      # pdf = Document()
+      # pdf.append(template)
+      # pdf.generate_pdf('userPDF', clean_tex=False)
+      # print(pdf)
+      # doc.generate_pdf('basic_maketitle', clean_tex=False)
+
       return awardSchema.jsonify(newAward)
     else: 
       return jsonify({"User": "User does not exist. Cannot create award."})
