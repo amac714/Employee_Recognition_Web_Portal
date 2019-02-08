@@ -28,7 +28,7 @@ class UserLogin extends Component {
             .then(res => {
                     this.setState({userToken: res.data.access_token});
                     localStorage.setItem('username', this.state.username);  //store username
-                    localStorage.setItem('token', this.state.userToken);    //store user's generated token
+                    localStorage.setItem('access_token', this.state.userToken);    //store user's generated token
                     localStorage.setItem('id', 6);
                     this.props.history.push('/userHomePage');               //route to user homepage
                 }

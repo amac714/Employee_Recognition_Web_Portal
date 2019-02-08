@@ -17,7 +17,7 @@ class UpdateUserInfo extends Component {
             last_name: '',
             config: {
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                 }
             }
         }
@@ -27,24 +27,21 @@ class UpdateUserInfo extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
 
-        const { id } = this.state;
+        // const {id} = this.state;
 
-        // console.log(id)
 
-        axios.patch(`http://localhost:5000/user/` + '6', {
+        axios.patch(`http://localhost:5000/user/6`, {
             first_name: this.state.first_name,
             last_name: this.state.last_name
         }, this.state.config)
 
             .then((res) => {
-                // console.log(res);
+                console.log(res);
                 this.props.history.push('/userHomePage');
             })
             .catch(err => console.log(err))
     };
 
-
-    // /user/<int:u_id>
 
     onChange = (e) => {
         this.setState({[e.target.name]: e.target.value})
@@ -74,6 +71,8 @@ class UpdateUserInfo extends Component {
                                         value={this.state.first_name}
                                         onChange={this.onChange}
                                     />
+                                </FormGroup>
+                                <FormGroup>
                                     <Input
                                         type="text"
                                         name="last_name"

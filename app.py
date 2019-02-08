@@ -89,8 +89,8 @@ def patchUser(u_id):
     user = Users.query.get(u_id)
     if user:
       schema = UserSchema()
-      user.first_name = request.form['first_name']
-      user.last_name = request.form['last_name']
+      user.first_name = request.json['first_name']
+      user.last_name = request.json['last_name']
       db.session.commit()
       return schema.jsonify(user)
     else: 
