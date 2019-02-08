@@ -14,20 +14,20 @@ class UserViewMyAwards extends Component {
     componentDidMount() {
         this.getAdmins();
     }
-
-    getAdmins = () => {
-        var url = 'http://localhost:5000' + '/award';
-        axios.get('http://localhost:5000/admin')
-        .then(res => this.setState({ admins: res.data }))
-        .catch(err => console.log(err));
-    };
+    //
+    // getAdmins = () => {
+    //     var url = 'http://localhost:5000' + '/award';
+    //     axios.get('http://localhost:5000/admin')
+    //     .then(res => this.setState({ admins: res.data }))
+    //     .catch(err => console.log(err));
+    // };
 
 
 
     render() {
         return (
             <div>
-                <h1>My Awards</h1>
+                <h1>Given Awards</h1>
             </div>
         );
     }

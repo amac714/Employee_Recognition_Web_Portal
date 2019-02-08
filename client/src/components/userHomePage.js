@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import SideSection from './sideSection';
 import { Row, Col } from 'reactstrap';
-import UserViewMyAwards from './userViewMyAwards'
-
+import UserViewMyAwards from './userViewMyAwards';
+import UserViewGivenAwards from './userViewGivenAwards';
 
 class UserHomePage extends Component {
     constructor(props) {
@@ -44,7 +44,7 @@ class UserHomePage extends Component {
                     </Col>
 
                     <Col xs="5" style={{border: "1px solid green"}}>
-                        <h1>Submitted Awards</h1>
+                        <UserViewGivenAwards />
                     </Col>
                 </Row>
             </div>
