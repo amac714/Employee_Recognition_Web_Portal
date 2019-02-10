@@ -2,12 +2,14 @@ from flask import Flask, jsonify, request, json, render_template
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from flask_marshmallow import Marshmallow
 from datetime import datetime
 from flask_jwt_extended import (JWTManager,jwt_required,verify_jwt_in_request,get_jwt_claims,create_access_token,get_jwt_identity)
 from werkzeug.exceptions import HTTPException
 import os
 from flask_mail import Mail, Message
+import jinja2
 
 
 app = Flask(__name__, template_folder="client/build", static_folder="client/build/static")
@@ -16,10 +18,17 @@ CORS(app)
 app.config.from_object(os.environ['APP_SETTINGS'])
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'ogmaemployeeawards@gmail.com'
+app.config['MAIL_PASSWORD'] = 'ntid96zitg'
+
+
+mail = Mail(app)
 db = SQLAlchemy(app)
 marsh = Marshmallow(app)
 bcrypt = Bcrypt(app)
-mail = Mail(app)
 jwt = JWTManager(app)
 
 
@@ -59,6 +68,7 @@ def getIndUser(u_id):
 
 # POST : Create new user 
 @app.route('/user', methods=['POST'])
+@admin_only
 def postUser():
     user = UserSchema()
     # Hash password 
@@ -82,8 +92,8 @@ def patchUser(u_id):
     user = Users.query.get(u_id)
     if user:
       schema = UserSchema()
-      user.first_name = request.form['first_name']
-      user.last_name = request.form['last_name']
+      user.first_name = request.json['first_name']
+      user.last_name = request.json['last_name']
       db.session.commit()
       return schema.jsonify(user)
     else: 
@@ -186,20 +196,49 @@ def getAwardByUser(u_id):
 
 
 # POST : Create new award
+# NEED TO CHECK IF RECIPENT IS IN THE DB
 @app.route('/user/<int:u_id>/award', methods=['POST'])
-@user_only
+# @user_only
 def postAward(u_id):
     user = Users.query.get(u_id)
     if user:
       awardSchema = AwardSchema()
-      newAward = Awards(request.json['award_type'],
-                        request.json['first_name'],
-                        request.json['last_name'], 
-                        request.json['time_granted'],  # 00:00:00
-                        request.json['date_granted'],  # yyyy-mm-dd
+      newAward = Awards(request.form['award_type'],
+                        request.form['first_name'],
+                        request.form['last_name'],
+                        request.form['time_granted'],  # 00:00:00
+                        request.form['date_granted'],  # yyyy-mm-dd
                         u_id)
       db.session.add(newAward)
       db.session.commit()
+
+      latex_jinja_env = jinja2.Environment(
+          block_start_string='\BLOCK{',
+          block_end_string='}',
+          variable_start_string='\VAR{',
+          variable_end_string='}',
+          comment_start_string='\#{',
+          comment_end_string='}',
+          line_statement_prefix='%%',
+          line_comment_prefix='%#',
+          trim_blocks=True,
+          autoescape=False,
+          loader=jinja2.FileSystemLoader(os.path.abspath('.'))
+      )
+
+      template = latex_jinja_env.get_template('template.tex')
+      print(template.render(awardType=newAward.award_type,
+                            date=newAward.date_granted,
+                            givenBy=user.first_name,
+                            firstName=newAward.recipient_first_name,
+                            lastName=newAward.recipient_last_name))
+      #
+      # pdf = Document()
+      # pdf.append(template)
+      # pdf.generate_pdf('userPDF', clean_tex=False)
+      # print(pdf)
+      # doc.generate_pdf('basic_maketitle', clean_tex=False)
+
       return awardSchema.jsonify(newAward)
     else: 
       return jsonify({"User": "User does not exist. Cannot create award."})
@@ -242,36 +281,76 @@ def send_mail():
 
 @app.route('/admin/login', methods=['POST'])
 def adminLogin():
-
   admin = Admins.query.filter_by(admin_name=request.json['username']).first()
   # Authenticate
   if admin and bcrypt.check_password_hash(admin.admin_password,request.json['password']):
     access_token = create_access_token(identity=admin.admin_name)
-    return jsonify(access_token=access_token), 200
+    return jsonify(access_token=access_token, id=admin.id), 200
   else: 
     return jsonify({"Credentials": "Wrong Credentials."}), 400
 
 
 @app.route('/user/login', methods=['POST'])
 def userLogin():
-
   user = Users.query.filter_by(user_name=request.json['username']).first()
   # Authenticate
   if user and bcrypt.check_password_hash(user.user_password,request.json['password']):
     access_token = create_access_token(user.user_name)
-    return jsonify(access_token=access_token), 200
+    return jsonify(access_token=access_token,id=user.id), 200
   else: 
     return jsonify({"Credentials": "Wrong Credentials."}), 400
+
+
+''' ################################################ BI REPORT ################################################ '''
+
+
+# GET : Retrieve BI report and return in json format
+@app.route('/bi/report', methods=['GET'])
+#@admin_only
+def getBIReport(): 
+
+  totalAdmin = Admins.query.count()
+  totalUser = Users.query.count()
+  totalAward = Awards.query.count()
+  totalEmpMonth = Awards.query.filter_by(award_type='Employee of the Month').count()
+  totalEmpWeek = Awards.query.filter_by(award_type='Employee of the Week').count()
+
+  # Users that has the most awards - descending 
+  userWithMostAwards = db.session.query(Users.first_name,Users.last_name, func.count(Awards.award_type)) \
+                                 .join(Awards,Users.first_name==Awards.recipient_first_name) \
+                                 .group_by(Users.first_name,Users.last_name) \
+                                 .order_by(func.count(Awards.award_type) \
+                                 .desc()).all()
+
+  # User that granted the most awards - descending 
+  userGrantedMostAwards = db.session.query(Users.first_name,Users.last_name, func.count(Awards.created_by_user)) \
+                                 .join(Awards,Users.id==Awards.created_by_user) \
+                                 .group_by(Users.first_name,Users.last_name) \
+                                 .order_by(func.count(Awards.created_by_user) \
+                                 .desc()).all()
+                                 
+
+  
+  return jsonify({"totalAdmin": totalAdmin, 
+                  'totalUser': totalUser, 
+                  'totalAward': totalAward, 
+                  'totalEmpMonth': totalEmpMonth, 
+                  'totalEmpWeek': totalEmpWeek, 
+                  'userWithMostAwards': userWithMostAwards, 
+                  'userGrantedMostAwards': userGrantedMostAwards
+                  })
+
+
 
 ''' ################################################ ERROR HANDLING ################################################ '''
 
 
 # Error handlers for exceptions
 @app.errorhandler(Exception)
-def bad_request(error): 
-  if isinstance(error,HTTPException): 
+def bad_request(error):
+  if isinstance(error,HTTPException):
     return jsonify(str(error)),error.code
-  else: 
+  else:
     return jsonify({"Error": "500 - Internal Server"}),500
 
 

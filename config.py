@@ -7,6 +7,7 @@ class Config(object):
     SECRET_KEY = 'ogmasecret'
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     JWT_SECRET_KEY = 'jwtsecret'
+    JWT_ACCESS_TOKEN_EXPIRES = 3600
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465
     MAIL_USE_SSL = True

@@ -10,7 +10,7 @@ def admin_only(f):
         verify_jwt_in_request()
         claim = get_jwt_claims()
         if claim['role'] != 'admin':
-            return jsonify(msg='Forbidden : Admins only.'), 403
+            return jsonify({'Forbidden' : 'Admins only.'}), 403
         else:
             return f(*args, **kwargs)
     return checkRole
@@ -21,7 +21,7 @@ def user_only(f):
         verify_jwt_in_request()
         claim = get_jwt_claims()
         if claim['role'] != 'user':
-            return jsonify(msg='Forbidden : Users only.'), 403
+            return jsonify({'Forbidden' : 'Users only.'}), 403
         else:
             return f(*args, **kwargs)
     return checkRole
@@ -29,6 +29,10 @@ def user_only(f):
 @jwt.unauthorized_loader
 def no_token_callback(s): 
   return jsonify({"Fobidden" : "Please login as admin or user."}), 401
+
+@jwt.expired_token_loader
+def session_ended(s): 
+  return jsonify({"Session" : "Your session has ended. Please log back in."}), 401
 
 @jwt.user_claims_loader
 def add_claims_to_access_token(identity):
