@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, json, render_template
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from flask_marshmallow import Marshmallow
 from datetime import datetime
 from flask_jwt_extended import (JWTManager,jwt_required,verify_jwt_in_request,get_jwt_claims,create_access_token,get_jwt_identity)
@@ -195,6 +196,7 @@ def getAwardByUser(u_id):
 
 
 # POST : Create new award
+# NEED TO CHECK IF RECIPENT IS IN THE DB
 @app.route('/user/<int:u_id>/award', methods=['POST'])
 # @user_only
 def postAward(u_id):
@@ -297,6 +299,48 @@ def userLogin():
     return jsonify(access_token=access_token,id=user.id), 200
   else: 
     return jsonify({"Credentials": "Wrong Credentials."}), 400
+
+
+'' ################################################ BI REPORT ################################################ '''
+
+
+# GET : Retrieve BI report and return in json format
+@app.route('/bi/report', methods=['GET'])
+#@admin_only
+def getBIReport(): 
+
+  totalAdmin = Admins.query.count()
+  totalUser = Users.query.count()
+  totalAward = Awards.query.count()
+  totalEmpMonth = Awards.query.filter_by(award_type='Employee of the Month').count()
+  totalEmpWeek = Awards.query.filter_by(award_type='Employee of the Week').count()
+
+  # Users that has the most awards - descending 
+  userWithMostAwards = db.session.query(Users.first_name,Users.last_name, func.count(Awards.award_type)) \
+                                 .join(Awards,Users.first_name==Awards.recipient_first_name) \
+                                 .group_by(Users.first_name,Users.last_name) \
+                                 .order_by(func.count(Awards.award_type) \
+                                 .desc()).all()
+
+  # User that granted the most awards - descending 
+  userGrantedMostAwards = db.session.query(Users.first_name,Users.last_name, func.count(Awards.created_by_user)) \
+                                 .join(Awards,Users.id==Awards.created_by_user) \
+                                 .group_by(Users.first_name,Users.last_name) \
+                                 .order_by(func.count(Awards.created_by_user) \
+                                 .desc()).all()
+                                 
+
+  
+  return jsonify({"totalAdmin": totalAdmin, 
+                  'totalUser': totalUser, 
+                  'totalAward': totalAward, 
+                  'totalEmpMonth': totalEmpMonth, 
+                  'totalEmpWeek': totalEmpWeek, 
+                  'userWithMostAwards': userWithMostAwards, 
+                  'userGrantedMostAwards': userGrantedMostAwards
+                  })
+
+
 
 ''' ################################################ ERROR HANDLING ################################################ '''
 
