@@ -47,7 +47,7 @@ class EditAdmin extends Component {
     if (password !== confirmPW) {
       this.setState({ validate: true })
     } else {
-      axios.patch(`http://localhost:5000/admin/${id}`, {
+      axios.patch(`/admin/${id}`, {
         admin_name: this.state.admin_name,
         password: this.state.password
       }, this.state.config)
