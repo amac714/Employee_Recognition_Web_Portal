@@ -13,7 +13,6 @@ class CreateUser extends Component {
       password: '',
       confirmPW: '',
       sig: '',
-      prevImg: ''
     }
   }
 
@@ -34,11 +33,11 @@ class CreateUser extends Component {
     formData.append('first_name', this.state.first_name);
     formData.append('last_name', this.state.last_name);
     formData.append('sig', this.state.sig);
-    // let token = localStorage.getItem('access_token');
-    // let config = {
-    //   headers: { 'Authorization': `Bearer ${token}` }
-    // }
-    axios.post('/user', formData)
+    let token = localStorage.getItem('access_token');
+    let config = {
+      headers: { 'Authorization': `Bearer ${token}` }
+    }
+    axios.post('/user', formData, config)
     .then((res) => {
       console.log(res);
       //this.props.history.push('/adminDash');
@@ -48,53 +47,79 @@ class CreateUser extends Component {
   }
 
   render() {
-    let { prevImg } = this.state;
-    let $prevImg = null;
-    if(prevImg) {
-      $prevImg = (<img alt="prev" src={prevImg}/>)
-    } else {
-      $prevImg = (<div>Preview Image</div>)
-    }
+
     return (
       <div>
         <Container>
-         <Form onSubmit={this.handleSubmit}>
-            <Input
-              type="text"
-              name="user_name"
-              value={this.state.user_name}
-              placeholder="Enter email"
-              onChange={this.onChange}
-            />
-            <Input
-              type="text"
-              name="first_name"
-              value={this.state.first_name}
-              placeholder="Enter first name"
-              onChange={this.onChange}
-            />
-            <Input
-              type="text"
-              name="last_name"
-              value={this.state.last_name}
-              placeholder="Enter last name"
-              onChange={this.onChange}
-            />
-            <Input
-              type="password"
-              name="password"
-              value={this.state.password}
-              placeholder="Enter password"
-              onChange={this.onChange}
-            />
-            <Input
-              type="file"
-              name="sig"
-              onChange={this.onImageChange}
-            />
-            <Button type="submit">Submit</Button>
-         </Form>
-          {$prevImg}
+          <Col sm="12" md={{ size: 6, offset: 3 }}>
+            <h2>Create New User</h2>
+          </Col>
+          <Form onSubmit={this.handleSubmit} method="POST">
+            <Col sm="12" md={{ size: 6, offset: 3 }}>
+              <FormGroup>
+                <Label>Email</Label>
+                <Input
+                  type="text"
+                  name="user_name"
+                  id="user_id"
+                  value={this.state.user_name}
+                  onChange={this.onChange}
+                />
+              </FormGroup>
+            </Col>
+
+            <Col sm="12" md={{ size: 6, offset: 3 }}>
+              <FormGroup>
+                <Label>First Name</Label>
+                <Input
+                  type="text"
+                  name="first_name"
+                  value={this.state.first_name}
+                  onChange={this.onChange}
+                />
+              </FormGroup>
+            </Col>
+
+            <Col sm="12" md={{ size: 6, offset: 3 }}>
+              <FormGroup>
+                <Label>Last Name</Label>
+                <Input
+                  type="text"
+                  name="last_name"
+                  value={this.state.last_name}
+                  onChange={this.onChange}
+                />
+              </FormGroup>
+            </Col>
+
+            <Col sm="12" md={{ size: 6, offset: 3 }}>
+              <FormGroup>
+                <Label>Password</Label>
+                <Input
+                  type="password"
+                  name="password"
+                  id="pw_id"
+                  value={this.state.password}
+                  onChange={this.onChange}
+                />
+              </FormGroup>
+            </Col>
+
+            <Col sm="12" md={{ size: 6, offset: 3 }}>
+              <FormGroup>
+                <Label>Signature</Label>
+                <Input
+                  type="file"
+                  name="sig"
+                  onChange={this.onImageChange}
+                />
+              </FormGroup>
+            </Col>
+
+            <Col sm="12" md={{ size: 6, offset: 3 }}>
+              <Button type="submit">Create User</Button>
+            </Col>
+          </Form>
         </Container>
       </div>
     )
