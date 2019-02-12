@@ -40,10 +40,10 @@ class HomePage extends Component {
             <p>{this.state.textMessage}</p>
 
             <div className="buttons">
-              <Link tag={Link} to="/">
+              <Link to="/">
                 <button>Signup</button>
               </Link>
-              <Link tag={Link} to="/userLogin">
+              <Link to="/userLogin">
                 <button>Login</button>
               </Link>
             </div>

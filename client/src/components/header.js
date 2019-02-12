@@ -41,7 +41,7 @@ class Header extends Component {
             </NavLink>
           </NavItem>
           <NavItem>
-            <Link onClick={this.logout}>Logout</Link>
+            <NavLink tag={Link} to="" onClick={this.logout}><h5>Logout</h5></NavLink>
           </NavItem>
         </Nav>
       );
