@@ -1,6 +1,9 @@
+/*
+* Description: Displays the awards given by the user to the screen.
+* */
+
 import React, {Component} from 'react';
 import axios from 'axios';
-import {Link} from "react-router-dom";
 import {Table} from "reactstrap";
 
 
@@ -24,15 +27,20 @@ class UserViewMyAwards extends Component {
         this.getAwards();
     }
 
+    /*
+    * Description: Makes call to endpoint getting all of the awards given by the user. Will pass the web token to the endpoint for authentication.
+    * */
     getAwards = () => {
-
         axios.get('http://localhost:5000/user/6/award', this.state.config)
-            .then(res => this.setState({awards: res.data}))
-            .catch(err => console.log(err));
+            .then(res => this.setState({awards: res.data}))     // If user is authenticated, store the returned awards
+            .catch(err => console.log(err));                          // User is not authenticated
     };
 
-    getAwardData = ({id, award_type, recipient_first_name, recipient_last_name, date_granted, time_granted}) => {
 
+    /*
+    *  Description: Format how the awards are displayed to the screen.
+    * */
+    getAwardData = ({id, award_type, recipient_first_name, recipient_last_name, date_granted, time_granted}) => {
         console.log();
         return (
             <tr key={id}>

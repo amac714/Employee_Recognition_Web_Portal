@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import {Button, Col, Form, FormGroup, Input, Label, Row} from 'reactstrap';
-
+import {Col, Form, FormGroup, Input, Label, Row} from 'reactstrap';
 import SideSection from './sideSection';
-import {Link} from "react-router-dom";
 import axios from "axios";
 
 

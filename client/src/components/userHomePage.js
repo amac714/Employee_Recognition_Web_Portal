@@ -1,19 +1,28 @@
+/*
+* Description: The home page of the user.
+* */
+
+
 import React, {Component} from 'react';
 import SideSection from './sideSection';
 import { Row, Col } from 'reactstrap';
 import UserCreateAward from './userCreateAward';
 import UserViewGivenAwards from './userViewGivenAwards';
 
+
 class UserHomePage extends Component {
     constructor(props) {
         super(props);
 
+        // Arrays used in generating dates
         const monthName = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const dayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
+        // Get the day (i.e. Monday, Friday) of the week
         const day = new Date(),
             currentDay = dayName[day.getDay()];
 
+        // Get the month, day (i.e. 29), year
         const today = new Date(),
             currentDate = monthName[(today.getMonth())] + ' ' + today.getDate() + ", " + today.getFullYear();
 

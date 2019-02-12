@@ -1,3 +1,8 @@
+/*
+* Description: Component that allows the user to create an employee award.
+* */
+
+
 import React, {Component} from 'react';
 import axios from 'axios';
 import {Button, Form, FormGroup, Input, Col, Label} from 'reactstrap';
@@ -22,9 +27,13 @@ class UserCreateAward extends Component {
     }
 
 
+    /*
+    * Description: Upon user submitting form, will contact server endpoint to create an award.
+    * */
     handleSubmit = (e) => {
         e.preventDefault();
 
+        // Send award data
         axios.post('http://localhost:5000/user/6/award', {
             award_type: this.state.award_type,
             first_name: this.state.first_name,
@@ -34,7 +43,7 @@ class UserCreateAward extends Component {
         }, this.state.config)
             .then(res => {
                     console.log(res);
-                    window.location.reload()
+                    window.location.reload()            // reloads the web page so that form will reset and award table is refreshed
                 }
             )
             .catch(function (error) {

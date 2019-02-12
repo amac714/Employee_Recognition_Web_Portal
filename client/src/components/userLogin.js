@@ -1,7 +1,10 @@
+/*
+* Description: The page where the user logs in. User will be directed to home screen upon successful login.
+* */
+
 import React, {Component} from 'react';
 import {Container, Button, Form, FormGroup, Input, Col, Label} from 'reactstrap';
 import axios from "axios"
-import {Redirect} from 'react-router-dom';
 
 
 class UserLogin extends Component {
@@ -16,6 +19,9 @@ class UserLogin extends Component {
         };
     }
 
+    /*
+    * Description: Handles form input when user attempts to login by sending input username/password to server endpoint.
+    * */
     handleSubmit = (e) => {
         e.preventDefault();
         const {history} = this.props;
@@ -25,6 +31,7 @@ class UserLogin extends Component {
             username: this.state.username,
             password: this.state.password
         })
+            //successful login attempt
             .then(res => {
                     this.setState({userToken: res.data.access_token});
                     localStorage.setItem('username', this.state.username);  //store username
@@ -33,6 +40,8 @@ class UserLogin extends Component {
                     this.props.history.push('/userHomePage');               //route to user homepage
                 }
             )
+
+            //unsuccesfful login attempt
             .catch(function (error) {
                 console.log(error)
             });
@@ -46,9 +55,6 @@ class UserLogin extends Component {
 
 
     render() {
-        // if (this.state.userToken !== '') {
-        //   return <Redirect to='/userHomePage' />
-        // }
         return (
             <Container>
                 <Col sm="12" md={{size: 6, offset: 3}}>
