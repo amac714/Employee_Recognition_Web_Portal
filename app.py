@@ -211,27 +211,7 @@ def postAward(u_id):
         db.session.add(newAward)
         db.session.commit()
 
-        latex_jinja_env = jinja2.Environment(
-            block_start_string='\BLOCK{',
-            block_end_string='}',
-            variable_start_string='\VAR{',
-            variable_end_string='}',
-            comment_start_string='\#{',
-            comment_end_string='}',
-            line_statement_prefix='%%',
-            line_comment_prefix='%#',
-            trim_blocks=True,
-            autoescape=False,
-            loader=jinja2.FileSystemLoader(os.path.abspath('.'))
-        )
-
-        # template = latex_jinja_env.get_template('template.tex')
-        # template.render(awardType=newAward.award_type,
-        #                       date=newAward.date_granted,
-        #                       givenBy=user.first_name,
-        #                       firstName=newAward.recipient_first_name,
-        #                       lastName=newAward.recipient_last_name)
-
+        # Latex document sections
         header = r'''\documentclass{article}
         \begin{document}
         \begin{center}
@@ -241,15 +221,17 @@ def postAward(u_id):
                         \end{document}'''
 
 
-        awardTypeSection = r'''\begin{center}{\huge\textbf{''' + 'Employee of the ' + newAward.award_type + r'''}}\end{center}'''
+        awardTypeSection = r'''\begin{center}{\huge\textbf{''' + 'Employee of the ' + str(newAward.award_type) + r'''}}\end{center}'''
 
         inputDate = r'''\begin{center}{\large\textbf{''' + str(newAward.date_granted) + r'''}}\end{center}'''
 
 
-        recipeint = r'''\begin{center}{\Huge\textbf{''' + newAward.recipient_first_name + ' ' + newAward.recipient_last_name + r'''}}\end{center}'''
+        recipeint = r'''\begin{center}{\Huge\textbf{''' + str(newAward.recipient_first_name) + ' ' + str(newAward.recipient_last_name) + r'''}}\end{center}'''
 
         to_section = r'''\begin{center}{\large\textbf{''' + 'To' + r'''}}\end{center}'''
 
+
+        # Construct latex file
         content = header + \
                   awardTypeSection + \
                   inputDate + \
@@ -257,12 +239,16 @@ def postAward(u_id):
                   recipeint + \
                   footer
 
+
+        # Generate pdf file
         with open('awardPDF.tex', 'w') as f:
             f.write(content)
 
         commandLine = subprocess.Popen(['pdflatex', 'awardPDF.tex'])
         commandLine.communicate()
 
+
+        # Send email
         try:
             msg = Message("Employee Portal",
                           sender='ogmaemployeeawards@gmail.com',
@@ -274,17 +260,15 @@ def postAward(u_id):
 
             mail.send(msg)
 
-
+        # Error with sending email
         except Exception as e:
-            return str(e)
+            print str(e)
 
+        # Clean up files
         os.unlink('awardPDF.aux')
         os.unlink('awardPDF.log')
         os.unlink('awardPDF.tex')
         # os.unlink('awardPDF.pdf')
-
-
-
 
         return awardSchema.jsonify(newAward)
     else:
