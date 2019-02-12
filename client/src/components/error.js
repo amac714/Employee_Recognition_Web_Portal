@@ -6,7 +6,7 @@ class ErrorPage extends Component {
       <div>
         <h2>Error! Something went wrong</h2>
       </div>
-    )
+    );
   }
 }
 

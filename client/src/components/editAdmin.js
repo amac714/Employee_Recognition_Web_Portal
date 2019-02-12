@@ -1,6 +1,17 @@
+/*
+ * Description: Component for editing Admin users
+ */
+
 import React, { Component } from 'react';
-import { Container, Button, Form, FormGroup, 
-        Input, Col, FormFeedback} from 'reactstrap';
+import {
+  Container,
+  Button,
+  Form,
+  FormGroup,
+  Input,
+  Col,
+  FormFeedback,
+} from 'reactstrap';
 import axios from 'axios';
 
 class EditAdmin extends Component {
@@ -14,9 +25,9 @@ class EditAdmin extends Component {
       validate: false,
       config: {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-        }
-      }
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      },
     };
   }
 
@@ -24,40 +35,53 @@ class EditAdmin extends Component {
     this.getAdmin();
   }
 
+  // On form input change handler to set state
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
+  // Get Admin that will be edited
   getAdmin = () => {
     this.setState({
       id: this.props.location.state.id,
       admin_name: this.props.location.state.admin_name,
     });
-  }
+  };
 
-  deleteAdmin = (id) => {
-    axios.delete(`/admin/${id}`, this.state.config)
+  // Delete selected admin from table
+  deleteAdmin = id => {
+    axios
+      .delete(`/admin/${id}`, this.state.config)
       .then(this.props.history.push('/adminDash'))
       .catch(err => console.log(err));
-  }
+  };
 
-  saveEdit = (e) => {
+  // Save update to admin
+  saveEdit = e => {
     e.preventDefault();
     const { password, confirmPW, id } = this.state;
+    // PW validation
     if (password !== confirmPW) {
-      this.setState({ validate: true })
+      this.setState({ validate: true });
     } else {
-      axios.patch(`/admin/${id}`, {
-        admin_name: this.state.admin_name,
-        password: this.state.password
-      }, this.state.config)
-      .then((res) => {
-        console.log(res);
-        this.props.history.push('/adminDash');
-      })
-      .catch(err => console.log(err))
+      // Patch request to API endpoint to update admin. 
+      // Passes access token for auth.
+      axios
+        .patch(
+          `/admin/${id}`,
+          {
+            admin_name: this.state.admin_name,
+            password: this.state.password,
+          },
+          this.state.config
+        )
+        .then(res => {
+          console.log(res);
+          this.props.history.push('/adminDash');
+        })
+        .catch(err => console.log(err));
     }
-  }
+  };
 
   render() {
     return (
@@ -115,7 +139,12 @@ class EditAdmin extends Component {
             </Col>
 
             <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <Button color="danger" onClick={() => this.deleteAdmin(this.state.id)}>Delete Admin</Button>
+              <Button
+                color="danger"
+                onClick={() => this.deleteAdmin(this.state.id)}
+              >
+                Delete Admin
+              </Button>
             </Col>
           </Form>
         </Container>

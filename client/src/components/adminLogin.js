@@ -1,6 +1,17 @@
+/*
+ * Description: Admin login component
+ */
+
 import React, { Component } from 'react';
-import { Container, Button, Form, FormGroup, 
-        Input, Col, Label } from 'reactstrap';
+import {
+  Container,
+  Button,
+  Form,
+  FormGroup,
+  Input,
+  Col,
+  Label,
+} from 'reactstrap';
 import axios from 'axios';
 
 class AdminLogin extends Component {
@@ -14,25 +25,30 @@ class AdminLogin extends Component {
       // }
     };
   }
-  
-  login = (e) => {
+
+  // Handles logging in. 
+  // Makes post request to API. Sets access token
+  login = e => {
     e.preventDefault();
-    axios.post('/admin/login', {
-      username: this.state.username,
-      password: this.state.password
-    })
-    .then(res => {
-      localStorage.setItem('access_token', res.data.access_token);
-      this.props.history.push('/adminDash');
-    })
-    .catch(err => console.log(err))
-  }
+    axios
+      .post('/admin/login', {
+        username: this.state.username,
+        password: this.state.password,
+      })
+      .then(res => {
+        // On successful login, set access token and redirect to admin dashboard
+        localStorage.setItem('access_token', res.data.access_token);
+        this.props.history.push('/adminDash');
+      })
+      .catch(err => console.log(err));
+  };
 
-  onChange = (e) => {
-    this.setState({[e.target.name]: e.target.value})
-  }
+  // On change handler
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
-  render(){
+  render() {
     return (
       <Container>
         <Col sm="12" md={{ size: 6, offset: 3 }}>

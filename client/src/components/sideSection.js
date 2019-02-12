@@ -1,22 +1,18 @@
 import React from 'react';
 import Date from './sideViewComponents/date';
-import UserAccountInfo from './sideViewComponents/userAccountInfo'
-import Stats from './sideViewComponents/stats'
+import UserAccountInfo from './sideViewComponents/userAccountInfo';
+import Stats from './sideViewComponents/stats';
 
+function SideSection(props) {
+  return (
+    <div>
+      <Date currentDate={props.currentDate} currentDay={props.currentDay} />
 
-function SideSection(props){
-    return (
-      <div>
-          <Date
-            currentDate={props.currentDate}
-            currentDay={props.currentDay}
-          />
+      {props.userType === 'user' && <UserAccountInfo />}
 
-          {props.userType === "user" && <UserAccountInfo/>}
-
-          <Stats/>
-      </div>
-    );
+      <Stats />
+    </div>
+  );
 }
 
 export default SideSection;
