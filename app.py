@@ -10,6 +10,7 @@ from flask_jwt_extended import (JWTManager, jwt_required, verify_jwt_in_request,
 from werkzeug.exceptions import HTTPException
 from flask_mail import Mail, Message
 import os,subprocess
+from flask_heroku import Heroku
 
 
 app = Flask(__name__, template_folder="client/build", static_folder="client/build/static")
@@ -24,6 +25,7 @@ app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'ogmaemployeeawards@gmail.com'
 app.config['MAIL_PASSWORD'] = 'ntid96zitg'
 
+heroku = Heroku(app)
 mail = Mail(app)
 db = SQLAlchemy(app)
 marsh = Marshmallow(app)

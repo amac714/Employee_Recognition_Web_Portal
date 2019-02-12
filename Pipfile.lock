@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "fd2bead7be6846a36aa69b94fe557d14c500718ec4547c9eecf29dbe7a61afc7"
+            "sha256": "5627f613909fd1ea1575893b0acbce7dc0f2445ff9b4f70e93007e817983b049"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -118,6 +118,13 @@
             ],
             "index": "pypi",
             "version": "==3.0.7"
+        },
+        "flask-heroku": {
+            "hashes": [
+                "sha256:ace93c5dd9c9a1b09588a49742153b24435f1ed3d9dcecb8531ffb6e0b4dfb97"
+            ],
+            "index": "pypi",
+            "version": "==0.1.9"
         },
         "flask-jwt-extended": {
             "hashes": [
