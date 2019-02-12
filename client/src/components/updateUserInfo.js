@@ -27,7 +27,7 @@ class UpdateUserInfo extends Component {
 
     axios
       .patch(
-        `http://localhost:5000/user/6`,
+        `/user/6`,
         {
           first_name: this.state.first_name,
           last_name: this.state.last_name,

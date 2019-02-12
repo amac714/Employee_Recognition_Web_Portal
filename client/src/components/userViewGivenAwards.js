@@ -31,7 +31,7 @@ class UserViewMyAwards extends Component {
    * */
   getAwards = () => {
     axios
-      .get('http://localhost:5000/user/6/award', this.state.config)
+      .get('/user/6/award', this.state.config)
       .then(res => this.setState({ awards: res.data })) // If user is authenticated, store the returned awards
       .catch(err => console.log(err)); // User is not authenticated
   };
