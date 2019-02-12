@@ -194,7 +194,6 @@ def getAwardByUser(u_id):
 import os,glob,subprocess
 
 
-
 # POST : Create new award
 # NEED TO CHECK IF RECIPENT IS IN THE DB
 @app.route('/user/<int:u_id>/award', methods=['POST'])
@@ -265,11 +264,14 @@ def postAward(u_id):
         commandLine.communicate()
 
         try:
-            msg = Message("Hey!!!",
+            msg = Message("Employee Portal",
                           sender='ogmaemployeeawards@gmail.com',
                           recipients=['bsphair@gmail.com'])
-            msg.body = "Congrats on the award!"
-            # msg.attach('awardPDF.pdf') #, content_type=None, data=None, disposition=None, headers=None)
+            msg.body = "Congrats on the award!!!"
+
+            with app.open_resource("awardPDF.pdf") as fp:
+                msg.attach("awardPDS.pdf", "award/pdf",fp.read())
+
             mail.send(msg)
 
 
@@ -279,7 +281,7 @@ def postAward(u_id):
         os.unlink('awardPDF.aux')
         os.unlink('awardPDF.log')
         os.unlink('awardPDF.tex')
-        os.unlink('awardPDF.pdf')
+        # os.unlink('awardPDF.pdf')
 
 
 
