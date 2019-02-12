@@ -195,7 +195,6 @@ import os,glob,subprocess
 
 
 
-
 # POST : Create new award
 # NEED TO CHECK IF RECIPENT IS IN THE DB
 @app.route('/user/<int:u_id>/award', methods=['POST'])
@@ -259,15 +258,28 @@ def postAward(u_id):
                   recipeint + \
                   footer
 
-        with open('myfile.tex', 'w') as f:
+        with open('awardPDF.tex', 'w') as f:
             f.write(content)
 
-        commandLine = subprocess.Popen(['pdflatex', 'myfile.tex'])
+        commandLine = subprocess.Popen(['pdflatex', 'awardPDF.tex'])
         commandLine.communicate()
 
-        os.unlink('myfile.aux')
-        os.unlink('myfile.log')
-        os.unlink('myfile.tex')
+        try:
+            msg = Message("Hey!!!",
+                          sender='ogmaemployeeawards@gmail.com',
+                          recipients=['bsphair@gmail.com'])
+            msg.body = "Congrats on the award!"
+            # msg.attach('awardPDF.pdf') #, content_type=None, data=None, disposition=None, headers=None)
+            mail.send(msg)
+
+
+        except Exception as e:
+            return str(e)
+
+        os.unlink('awardPDF.aux')
+        os.unlink('awardPDF.log')
+        os.unlink('awardPDF.tex')
+        os.unlink('awardPDF.pdf')
 
 
 
@@ -373,7 +385,7 @@ def getBIReport():
 ''' ################################################ ERROR HANDLING ################################################ '''
 
 
-Error handlers for exceptions
+# Error handlers for exceptions
 @app.errorhandler(Exception)
 def bad_request(error):
     if isinstance(error, HTTPException):
