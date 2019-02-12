@@ -245,13 +245,12 @@ def postAward(u_id):
 
         awardTypeSection = r'''\begin{center}{\huge\textbf{''' + 'Employee of the ' + newAward.award_type + r'''}}\end{center}'''
 
-        inputDate = r'''\begin{center}{\large\textbf{''' + 'Date' + r'''}}\end{center}'''
+        inputDate = r'''\begin{center}{\large\textbf{''' + str(newAward.date_granted) + r'''}}\end{center}'''
 
 
         recipeint = r'''\begin{center}{\Huge\textbf{''' + newAward.recipient_first_name + ' ' + newAward.recipient_last_name + r'''}}\end{center}'''
 
         to_section = r'''\begin{center}{\large\textbf{''' + 'To' + r'''}}\end{center}'''
-
 
         content = header + \
                   awardTypeSection + \
@@ -374,7 +373,7 @@ def getBIReport():
 ''' ################################################ ERROR HANDLING ################################################ '''
 
 
-# Error handlers for exceptions
+Error handlers for exceptions
 @app.errorhandler(Exception)
 def bad_request(error):
     if isinstance(error, HTTPException):
