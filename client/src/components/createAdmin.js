@@ -1,57 +1,80 @@
+/*
+ * Description: Admin component to add new Admins to DB
+ */
+
 import React, { Component } from 'react';
-import { Container, Button, Form, FormGroup, 
-        Input, Col, Label, FormFeedback, Alert } from 'reactstrap';
+import {
+  Container,
+  Button,
+  Form,
+  FormGroup,
+  Input,
+  Col,
+  Label,
+  FormFeedback,
+  Alert,
+} from 'reactstrap';
 import axios from 'axios';
 
 class CreateAdmin extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       admin_name: '',
       password: '',
       confirmPW: '',
       validate: false,
-      visible: false
-    }
+      visible: false,
+    };
   }
 
-  onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value })
-  }
+  // Sets state on input change
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
-  handleSubmit = (e) => {
+  // On submit function. Makes post request to endpoint.
+  handleSubmit = e => {
     e.preventDefault();
+    // Get access token and create header for auth
     let token = localStorage.getItem('access_token');
     let config = {
-      headers: { 'Authorization': `Bearer ${token}` }
-    }
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    // Confirm password
     const { password, confirmPW } = this.state;
-    if(password !== confirmPW) {
-      this.setState({ validate: true })
-    }else {
-      axios.post('/admin', {
-        admin_name: this.state.admin_name,
-        password: this.state.password
-      }, config)
-      .then((res) => {
-        this.setState({ 
-          visible: true
+    if (password !== confirmPW) {
+      this.setState({ validate: true });
+    } else {
+      // Post request. Passing new admin info and auth token
+      axios
+        .post(
+          '/admin',
+          {
+            admin_name: this.state.admin_name,
+            password: this.state.password,
+          },
+          config
+        )
+        .then(res => {
+          // Shows alert banner
+          this.setState({
+            visible: true,
+          });
+          console.log(res);
+          //this.props.history.push('/adminDash');
         })
-        console.log(res);
-        //this.props.history.push('/adminDash');
-      })
-      .catch(err => console.log(err))
+        .catch(err => console.log(err));
     }
-  }
+  };
 
   render() {
     return (
       <div>
         <Container>
-          <Alert color="success" isOpen={this.state.visible}>Admin has been created! 
-            <a href='/adminDash'>
-               Click here to return to dashboard
-            </a>
+          <Alert color="success" isOpen={this.state.visible}>
+            Admin has been created!
+            <a href="/adminDash">Click here to return to dashboard</a>
           </Alert>
           <Col sm="12" md={{ size: 6, offset: 3 }}>
             <h2>Create New Admin</h2>
@@ -94,7 +117,9 @@ class CreateAdmin extends Component {
                   value={this.state.confirmPW}
                   onChange={this.onChange}
                 />
-                <FormFeedback invalid="true">Password doesn't match!</FormFeedback>
+                <FormFeedback invalid="true">
+                  Password doesn't match!
+                </FormFeedback>
               </FormGroup>
             </Col>
 
@@ -104,7 +129,7 @@ class CreateAdmin extends Component {
           </Form>
         </Container>
       </div>
-    )
+    );
   }
 }
 

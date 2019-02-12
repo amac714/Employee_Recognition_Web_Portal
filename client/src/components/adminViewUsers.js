@@ -1,3 +1,7 @@
+/*
+ * Description: Component to display Users in DB
+ */
+
 import React, { Component } from 'react';
 import { Table, Container } from 'reactstrap';
 import axios from 'axios';
@@ -7,23 +11,28 @@ class ViewUsers extends Component {
   constructor() {
     super();
     this.state = {
-      users: []
-    }
+      users: [],
+    };
   }
 
+  // When component loads, get and render users
   componentDidMount() {
     this.getUsers();
   }
 
+  // Get users from DB with get request to API and sets state
   getUsers = () => {
     let token = localStorage.getItem('access_token');
     let config = {
-      headers: { 'Authorization': `Bearer ${token}` }
-    }
-    axios.get('/user', config)
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    axios
+      .get('/user', config)
       .then(res => this.setState({ users: res.data }))
       .catch(err => console.log(err));
-  }
+  };
+
+  // Render users into table
   renderUsers = ({ id, user_name, first_name, last_name }) => {
     return (
       <tr key={id}>

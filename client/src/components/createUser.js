@@ -1,10 +1,21 @@
+/*
+ * Description: Admin component to add new users to DB
+ */
+
 import React, { Component } from 'react';
-import { Container, Button, Form, FormGroup, 
-        Input, Col, Label, FormFeedback, Alert } from 'reactstrap';
+import {
+  Container,
+  Button,
+  Form,
+  FormGroup,
+  Input,
+  Col,
+  Label,
+} from 'reactstrap';
 import axios from 'axios';
 
 class CreateUser extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       user_name: '',
@@ -13,19 +24,23 @@ class CreateUser extends Component {
       password: '',
       confirmPW: '',
       sig: '',
-    }
+    };
   }
 
-  onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value })
-  }
+  // Sets state for inputs of type=text
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
-  onImageChange = (e) => {
-    this.setState({sig: e.target.files[0]})
+  // Set state for user's signature
+  onImageChange = e => {
+    this.setState({ sig: e.target.files[0] });
     console.log(this.state.sig);
-  }
+  };
 
-  handleSubmit = (e) => {
+  // On submit function. Puts user input together as FormData
+  // and make post request to API endpoint
+  handleSubmit = e => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('username', this.state.user_name);
@@ -33,21 +48,20 @@ class CreateUser extends Component {
     formData.append('first_name', this.state.first_name);
     formData.append('last_name', this.state.last_name);
     formData.append('sig', this.state.sig);
-    let token = localStorage.getItem('access_token');
+    let token = localStorage.getItem('access_token'); // need access token for auth
     let config = {
-      headers: { 'Authorization': `Bearer ${token}` }
-    }
-    axios.post('/user', formData, config)
-    .then((res) => {
-      console.log(res);
-      //this.props.history.push('/adminDash');
-    })
-    .catch(err => console.log(err))
-    
-  }
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    axios
+      .post('/user', formData, config)
+      .then(res => {
+        console.log(res);
+        //this.props.history.push('/adminDash');
+      })
+      .catch(err => console.log(err));
+  };
 
   render() {
-
     return (
       <div>
         <Container>
@@ -108,11 +122,7 @@ class CreateUser extends Component {
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <FormGroup>
                 <Label>Signature</Label>
-                <Input
-                  type="file"
-                  name="sig"
-                  onChange={this.onImageChange}
-                />
+                <Input type="file" name="sig" onChange={this.onImageChange} />
               </FormGroup>
             </Col>
 
@@ -122,7 +132,7 @@ class CreateUser extends Component {
           </Form>
         </Container>
       </div>
-    )
+    );
   }
 }
 

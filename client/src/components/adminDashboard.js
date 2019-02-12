@@ -1,3 +1,7 @@
+/*
+ * Description: Component for Admin dashboard
+ */
+
 import React, { Component } from 'react';
 import { Button, Container, Col, Row } from 'reactstrap';
 import ViewUsers from './adminViewUsers';
@@ -12,10 +16,12 @@ class AdminDashboard extends Component {
     }
   }
 
+  // Sets which component to display
   handleClick = (button) => {
     this.setState({ buttonPressed: button })
   }
 
+  // Renders component based on button pressed
   renderComponent = () => {
     if(this.state.buttonPressed === 1)
       return <ViewUsers />

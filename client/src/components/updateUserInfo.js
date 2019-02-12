@@ -1,92 +1,93 @@
-import React, {Component} from 'react';
-import {Col, Form, FormGroup, Input, Label, Row} from 'reactstrap';
+import React, { Component } from 'react';
+import { Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
 import SideSection from './sideSection';
-import axios from "axios";
-
+import axios from 'axios';
 
 class UpdateUserInfo extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            id: null,
-            userType: "user",
-            first_name: '',
-            last_name: '',
-            config: {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-                }
-            }
-        }
-    }
-
-
-    handleSubmit = (e) => {
-        e.preventDefault();
-
-        // const {id} = this.state;
-
-        axios.patch(`http://localhost:5000/user/6`, {
-            first_name: this.state.first_name,
-            last_name: this.state.last_name
-        }, this.state.config)
-
-            .then((res) => {
-                console.log(res);
-                this.props.history.push('/userHomePage');
-            })
-            .catch(err => console.log(err))
+    this.state = {
+      id: null,
+      userType: 'user',
+      first_name: '',
+      last_name: '',
+      config: {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      },
     };
+  }
 
+  handleSubmit = e => {
+    e.preventDefault();
 
-    onChange = (e) => {
-        this.setState({[e.target.name]: e.target.value})
-    };
+    // const {id} = this.state;
 
+    axios
+      .patch(
+        `http://localhost:5000/user/6`,
+        {
+          first_name: this.state.first_name,
+          last_name: this.state.last_name,
+        },
+        this.state.config
+      )
 
-    render() {
-        return (
-            <div>
-                <Row>
-                    <Col xs="2" style={{border: "1px solid black"}}>
-                        <SideSection userType={this.state.userType}/>
-                    </Col>
+      .then(res => {
+        console.log(res);
+        this.props.history.push('/userHomePage');
+      })
+      .catch(err => console.log(err));
+  };
 
-                    <Col xs="10" style={{border: "1px solid red"}}>
-                        <h1>Update Account Information</h1>
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
-                        <Form onSubmit={this.handleSubmit} method="POST">
-                            <Col sm="12" md={{size: 6, offset: 3}}>
-                                <FormGroup>
-                                    <Label>Update Name</Label>
-                                    <Input
-                                        type="text"
-                                        name="first_name"
-                                        id="first_name"
-                                        placeholder="first name"
-                                        value={this.state.first_name}
-                                        onChange={this.onChange}
-                                    />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Input
-                                        type="text"
-                                        name="last_name"
-                                        id="last_name"
-                                        placeholder="last name"
-                                        value={this.state.last_name}
-                                        onChange={this.onChange}
-                                    />
-                                    <button>Update</button>
-                                </FormGroup>
-                            </Col>
-                        </Form>
-                    </Col>
-                </Row>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div>
+        <Row>
+          <Col xs="2" style={{ border: '1px solid black' }}>
+            <SideSection userType={this.state.userType} />
+          </Col>
+
+          <Col xs="10" style={{ border: '1px solid red' }}>
+            <h1>Update Account Information</h1>
+
+            <Form onSubmit={this.handleSubmit} method="POST">
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <FormGroup>
+                  <Label>Update Name</Label>
+                  <Input
+                    type="text"
+                    name="first_name"
+                    id="first_name"
+                    placeholder="first name"
+                    value={this.state.first_name}
+                    onChange={this.onChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Input
+                    type="text"
+                    name="last_name"
+                    id="last_name"
+                    placeholder="last name"
+                    value={this.state.last_name}
+                    onChange={this.onChange}
+                  />
+                  <button>Update</button>
+                </FormGroup>
+              </Col>
+            </Form>
+          </Col>
+        </Row>
+      </div>
+    );
+  }
 }
 
 export default UpdateUserInfo;
