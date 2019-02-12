@@ -33,7 +33,7 @@ class UserLogin extends Component {
     const { history } = this.props;
 
     axios
-      .post('http://localhost:5000/user/login', {
+      .post('/user/login', {
         username: this.state.username,
         password: this.state.password,
       })

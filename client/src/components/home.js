@@ -21,7 +21,7 @@ class HomePage extends Component {
 
   componentDidMount() {
     axios
-      .get('http://localhost:5000/')
+      .get('/')
       .then(res => {
         console.log(res);
         this.setState({ msg: res.data.data });
