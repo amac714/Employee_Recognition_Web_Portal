@@ -267,7 +267,7 @@ def postAward(u_id):
             msg = Message("Employee Portal",
                           sender='ogmaemployeeawards@gmail.com',
                           recipients=['bsphair@gmail.com'])
-            msg.body = "Congrats on the award!!!"
+            msg.body = "Congrats on the award!!!\n"
 
             with app.open_resource("awardPDF.pdf") as fp:
                 msg.attach("awardPDS.pdf", "award/pdf",fp.read())
