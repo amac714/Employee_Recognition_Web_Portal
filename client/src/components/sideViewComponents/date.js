@@ -1,10 +1,14 @@
+/*
+* Description: Will display the date to the screen.
+* */
+
+
 import React, {Component} from 'react';
 import './sideSection.css';
 
 class Date extends Component {
 
     render() {
-
         return (
             <div className="dateText">
                 <p>{this.props.currentDay}</p>
