@@ -8,9 +8,9 @@ from datetime import datetime
 from flask_jwt_extended import (JWTManager, jwt_required, verify_jwt_in_request, get_jwt_claims, create_access_token,
                                 get_jwt_identity)
 from werkzeug.exceptions import HTTPException
-import os
 from flask_mail import Mail, Message
-import jinja2
+import os,subprocess
+
 
 app = Flask(__name__, template_folder="client/build", static_folder="client/build/static")
 
@@ -60,6 +60,15 @@ def getIndUser(u_id):
     if user:
         schema = UserSchema()
         return jsonify(schema.dump(user).data)
+    else:
+        return jsonify({"User": "User not found."})
+
+
+# Get user's username
+def check_user_in_db(firstName, lastName):
+    user = Users.query.filter_by(first_name=firstName, last_name=lastName).first()
+    if user:
+        return user.user_name
     else:
         return jsonify({"User": "User not found."})
 
@@ -191,8 +200,6 @@ def getAwardByUser(u_id):
         return jsonify({"User": "User does not exist."})
 
 
-import os,glob,subprocess
-
 
 # POST : Create new award
 # NEED TO CHECK IF RECIPENT IS IN THE DB
@@ -225,7 +232,6 @@ def postAward(u_id):
 
         inputDate = r'''\begin{center}{\large\textbf{''' + str(newAward.date_granted) + r'''}}\end{center}'''
 
-
         recipeint = r'''\begin{center}{\Huge\textbf{''' + str(newAward.recipient_first_name) + ' ' + str(newAward.recipient_last_name) + r'''}}\end{center}'''
 
         to_section = r'''\begin{center}{\large\textbf{''' + 'To' + r'''}}\end{center}'''
@@ -248,11 +254,15 @@ def postAward(u_id):
         commandLine.communicate()
 
 
+        # Get recipient's email address (username)
+        recipient_email = check_user_in_db(newAward.recipient_first_name, newAward.recipient_last_name)
+
+
         # Send email
         try:
             msg = Message("Employee Portal",
                           sender='ogmaemployeeawards@gmail.com',
-                          recipients=['bsphair@gmail.com'])
+                          recipients=[recipient_email])
             msg.body = "Congrats on the award!!!\n"
 
             with app.open_resource("awardPDF.pdf") as fp:
@@ -268,7 +278,7 @@ def postAward(u_id):
         os.unlink('awardPDF.aux')
         os.unlink('awardPDF.log')
         os.unlink('awardPDF.tex')
-        # os.unlink('awardPDF.pdf')
+        # os.unlink('awardPDF.pdf') !!! DON'T FORGET TO UNCOMMENT !!!
 
         return awardSchema.jsonify(newAward)
     else:
