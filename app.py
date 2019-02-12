@@ -64,6 +64,15 @@ def getIndUser(u_id):
         return jsonify({"User": "User not found."})
 
 
+# Get user's username
+def check_user_in_db(firstName, lastName):
+    user = Users.query.filter_by(first_name=firstName, last_name=lastName).first()
+    if user:
+        return user.user_name
+    else:
+        return jsonify({"User": "User not found."})
+
+
 # POST : Create new user 
 @app.route('/user', methods=['POST'])
 @admin_only
@@ -192,16 +201,6 @@ def getAwardByUser(u_id):
 
 
 
-def check_user_in_db(firstName, lastName):
-    user = Users.query.filter_by(first_name=firstName, last_name=lastName).first()
-
-    if user:
-        return user.user_name
-
-    else:
-        return jsonify({"User": "User not found."})
-
-
 # POST : Create new award
 # NEED TO CHECK IF RECIPENT IS IN THE DB
 @app.route('/user/<int:u_id>/award', methods=['POST'])
@@ -254,9 +253,9 @@ def postAward(u_id):
         commandLine = subprocess.Popen(['pdflatex', 'awardPDF.tex'])
         commandLine.communicate()
 
+
         # Get recipient's email address (username)
-        recipient_email = check_user_in_db('Brian', 'Phair')
-        # print(recipient_email)
+        recipient_email = check_user_in_db(newAward.recipient_first_name, newAward.recipient_last_name)
 
 
         # Send email
@@ -279,9 +278,7 @@ def postAward(u_id):
         os.unlink('awardPDF.aux')
         os.unlink('awardPDF.log')
         os.unlink('awardPDF.tex')
-        # os.unlink('awardPDF.pdf')
-
-        print(recipient_email)
+        # os.unlink('awardPDF.pdf') !!! DON'T FORGET TO UNCOMMENT !!!
 
         return awardSchema.jsonify(newAward)
     else:
