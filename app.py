@@ -393,4 +393,4 @@ def bad_request(error):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
