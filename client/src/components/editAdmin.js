@@ -48,14 +48,6 @@ class EditAdmin extends Component {
     });
   };
 
-  // Delete selected admin from table
-  deleteAdmin = id => {
-    axios
-      .delete(`/admin/${id}`, this.state.config)
-      .then(this.props.history.push('/adminDash'))
-      .catch(err => console.log(err));
-  };
-
   // Save update to admin
   saveEdit = e => {
     e.preventDefault();
@@ -138,14 +130,6 @@ class EditAdmin extends Component {
               <Button type="submit">Save Admin</Button>
             </Col>
 
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <Button
-                color="danger"
-                onClick={() => this.deleteAdmin(this.state.id)}
-              >
-                Delete Admin
-              </Button>
-            </Col>
           </Form>
         </Container>
       </div>

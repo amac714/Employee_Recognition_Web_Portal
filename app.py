@@ -47,7 +47,7 @@ def index():
 
 # GET : Get all user
 @app.route('/user', methods=['GET'])
-@admin_only
+# @admin_only
 def getAllUser():
     users = Users.query.all()
     schema = UserSchema(many=True)
@@ -56,7 +56,7 @@ def getAllUser():
 
 # GET : Get individual user
 @app.route('/user/<int:u_id>', methods=['GET'])
-@admin_only
+# @admin_only
 def getIndUser(u_id):
     user = Users.query.get(u_id)
     if user:
@@ -126,7 +126,7 @@ def deleteUser(u_id):
 
 # GET : Get all admin
 @app.route('/admin', methods=['GET'])
-@admin_only
+# @admin_only
 def getAllAdmin():
     admins = Admins.query.all()
     schema = AdminSchema(many=True)
@@ -135,7 +135,7 @@ def getAllAdmin():
 
 # GET : Get individual admin
 @app.route('/admin/<int:a_id>', methods=['GET'])
-@admin_only
+# @admin_only
 def getIndAdmin(a_id):
     admins = Admins.query.filter_by(id=a_id).first()
     if admins:
@@ -159,7 +159,7 @@ def postAdmin():
 
 # PATCH : Update admin username and password
 @app.route('/admin/<int:a_id>', methods=['PATCH'])
-@admin_only
+# @admin_only
 def patchAdmin(a_id):
     admin = Admins.query.get(a_id)
     if admin:
@@ -175,7 +175,7 @@ def patchAdmin(a_id):
 
 # DELETE : Delete admin given username and id
 @app.route('/admin/<int:a_id>', methods=['DELETE'])
-@admin_only
+# @admin_only
 def deleteAdmin(a_id):
     admin = Admins.query.get(a_id)
     if admin:
@@ -393,4 +393,4 @@ def bad_request(error):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { Table, Container } from 'reactstrap';
+import { Table, Container, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -12,6 +12,11 @@ class ViewAdmins extends Component {
     super();
     this.state = {
       admins: [],
+      config: {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      },
     };
   }
 
@@ -22,13 +27,17 @@ class ViewAdmins extends Component {
 
   // Get admin users from DB and set state
   getAdmins = () => {
-    let token = localStorage.getItem('access_token');
-    let config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
     axios
-      .get('/admin', config)
+      .get('/admin', this.state.config)
       .then(res => this.setState({ admins: res.data }))
+      .catch(err => console.log(err));
+  };
+
+  // Delete selected admin from table
+  deleteAdmin = id => {
+    axios
+      .delete(`/admin/${id}`, this.state.config)
+      .then(this.getAdmins())
       .catch(err => console.log(err));
   };
 
@@ -42,14 +51,16 @@ class ViewAdmins extends Component {
         admin_name: `${admin_name}`,
       },
     };
+    
     // Admin users are mapped into the table so key is set to id
     return (
       <tr key={id}>
         <th scope="row">{id}</th>
-        <th>{admin_name}</th>
-        <th>
-          <Link to={edit}>Update</Link>
-        </th>
+        <td>{admin_name}</td>
+        <td>
+          <Link to={edit}><i class="fa fa-pencil-square-o" aria-hidden="true"></i></Link>
+        </td>
+        <td><a href="#0" onClick={() => this.deleteAdmin(`${id}`)}><i class="fas fa-trash-alt" style={{ color: 'red' }}></i></a></td>
       </tr>
     );
   };
@@ -66,7 +77,8 @@ class ViewAdmins extends Component {
               <tr>
                 <th>Id</th>
                 <th>Admin Name</th>
-                <th />
+                <th>Edit</th>
+                <th>Delete</th>
               </tr>
             </thead>
             <tbody>{admins.map(this.renderAdmins)}</tbody>
