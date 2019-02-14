@@ -12,6 +12,11 @@ class ViewUsers extends Component {
     super();
     this.state = {
       users: [],
+      config: {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      },
     };
   }
 
@@ -22,20 +27,23 @@ class ViewUsers extends Component {
 
   // Get users from DB with get request to API and sets state
   getUsers = () => {
-    let token = localStorage.getItem('access_token');
-    let config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
     axios
-      .get('/user', config)
+      .get('/user', this.state.config)
       .then(res => this.setState({ users: res.data }))
+      .catch(err => console.log(err));
+  };
+
+  deleteUser = id => {
+    axios
+      .delete(`/user/${id}`, this.state.config)
+      .then(this.getUsers())
       .catch(err => console.log(err));
   };
 
   // Render users into table
   renderUsers = ({ id, user_name, first_name, last_name }) => {
     const edit = {
-      pathname: '/editAdmin',
+      pathname: '/editUser',
       state: {
         id: `${id}`,
         user_name: `${user_name}`,
@@ -43,6 +51,8 @@ class ViewUsers extends Component {
         last_name: `${last_name}`,
       },
     };
+
+    console.log(edit);
 
     return (
       <tr key={id}>
@@ -52,12 +62,12 @@ class ViewUsers extends Component {
         <td>{last_name}</td>
         <td>
           <Link to={edit}>
-            <i class="fa fa-pencil-square-o" aria-hidden="true" />
+            <i className="fa fa-pencil-square-o" aria-hidden="true" />
           </Link>
         </td>
         <td>
-          <a href="#0" onClick={() => this.deleteAdmin(`${id}`)}>
-            <i class="fas fa-trash-alt" style={{ color: 'red' }} />
+          <a href="#0" onClick={() => this.deleteUser(`${id}`)}>
+            <i className="fas fa-trash-alt" style={{ color: 'red' }} />
           </a>
         </td>
       </tr>

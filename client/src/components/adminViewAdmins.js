@@ -51,16 +51,22 @@ class ViewAdmins extends Component {
         admin_name: `${admin_name}`,
       },
     };
-    
+
     // Admin users are mapped into the table so key is set to id
     return (
       <tr key={id}>
         <th scope="row">{id}</th>
         <td>{admin_name}</td>
         <td>
-          <Link to={edit}><i class="fa fa-pencil-square-o" aria-hidden="true"></i></Link>
+          <Link to={edit}>
+            <i className="fa fa-pencil-square-o" aria-hidden="true" />
+          </Link>
         </td>
-        <td><a href="#0" onClick={() => this.deleteAdmin(`${id}`)}><i class="fas fa-trash-alt" style={{ color: 'red' }}></i></a></td>
+        <td>
+          <a href="#0" onClick={() => this.deleteAdmin(`${id}`)}>
+            <i className="fas fa-trash-alt" style={{ color: 'red' }} />
+          </a>
+        </td>
       </tr>
     );
   };

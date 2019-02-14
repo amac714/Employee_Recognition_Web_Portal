@@ -24,6 +24,7 @@ class CreateUser extends Component {
       password: '',
       confirmPW: '',
       sig: '',
+      previewSig: '',
     };
   }
 
@@ -34,7 +35,16 @@ class CreateUser extends Component {
 
   // Set state for user's signature
   onImageChange = e => {
-    this.setState({ sig: e.target.files[0] });
+    e.preventDefault();
+    let reader = new FileReader();
+    let file = e.target.files[0];
+    reader.onloadend = () => {
+      this.setState({
+        sig: file,
+        previewSig: reader.result
+      });
+    }
+    reader.readAsDataURL(file)
     console.log(this.state.sig);
   };
 
@@ -62,6 +72,14 @@ class CreateUser extends Component {
   };
 
   render() {
+    let {previewSig} = this.state;
+    let $previewSig = null;
+    if(previewSig) {
+      $previewSig = (<img alt="previewSig" src={previewSig} style={{ height: '200px', width: '500px' }}/>)
+    } else {
+      $previewSig = (<div>Upload a signature</div>)
+    }
+    
     return (
       <div>
         <Container>
@@ -125,7 +143,9 @@ class CreateUser extends Component {
                 <Input type="file" name="sig" onChange={this.onImageChange} />
               </FormGroup>
             </Col>
-
+            <Col sm="12" md={{ size: 6, offset: 3 }}>
+              {$previewSig}
+            </Col>
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <Button type="submit">Create User</Button>
             </Col>

@@ -15,6 +15,7 @@ import DesignAward from './components/designAward';
 import CreateAdmin from './components/createAdmin';
 import EditAdmin from './components/editAdmin';
 import CreateUser from './components/createUser';
+import EditUser from './components/editUser';
 
 // import { Provider } from "react-redux"
 
@@ -37,6 +38,7 @@ class App extends Component {
             <Route path="/adminDash" component={AdminDashboard} />
             <Route path="/addAdmin" component={CreateAdmin} />
             <Route path="/editAdmin" component={EditAdmin} />
+            <Route path="/editUser" component={EditUser} />
             <Route path="/createUser" component={CreateUser} />
             <Route path="/adminViewUsers" component={ViewUsers} />
             <Route path="/updateUserInfo" component={UpdateUserInfo} />
