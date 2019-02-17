@@ -11,6 +11,7 @@ class ViewAdmins extends Component {
   constructor() {
     super();
     this.state = {
+      admin_id: '',
       admins: [],
       config: {
         headers: {
@@ -29,7 +30,10 @@ class ViewAdmins extends Component {
   getAdmins = () => {
     axios
       .get('/admin', this.state.config)
-      .then(res => this.setState({ admins: res.data }))
+      .then(res => this.setState({ 
+        admin_id: localStorage.getItem('admin_id'),
+        admins: res.data, 
+      }))
       .catch(err => console.log(err));
   };
 
@@ -52,23 +56,39 @@ class ViewAdmins extends Component {
       },
     };
 
-    // Admin users are mapped into the table so key is set to id
-    return (
-      <tr key={id}>
-        <th scope="row">{id}</th>
-        <td>{admin_name}</td>
-        <td>
-          <Link to={edit}>
-            <i className="fa fa-pencil-square-o" aria-hidden="true" />
-          </Link>
-        </td>
-        <td>
-          <a href="#0" onClick={() => this.deleteAdmin(`${id}`)}>
-            <i className="fas fa-trash-alt" style={{ color: 'red' }} />
-          </a>
-        </td>
-      </tr>
-    );
+    if(this.state.admin_id === `${id}`) {
+      // Don't let logged in admin delete themselves
+      return (
+        <tr key={id}>
+          <th scope="row">{id}</th>
+          <td>{admin_name}</td>
+          <td>
+            <Link to={edit}>
+              <i className="fa fa-pencil-square-o" aria-hidden="true" />
+            </Link>
+          </td>
+          <td></td>
+        </tr>
+      )
+    }else {
+      // Admin users are mapped into the table so key is set to id
+      return (
+        <tr key={id}>
+          <th scope="row">{id}</th>
+          <td>{admin_name}</td>
+          <td>
+            <Link to={edit}>
+              <i className="fa fa-pencil-square-o" aria-hidden="true" />
+            </Link>
+          </td>
+          <td>
+            <a href="#0" onClick={() => this.deleteAdmin(`${id}`)}>
+              <i className="fas fa-trash-alt" style={{ color: 'red' }} />
+            </a>
+          </td>
+        </tr>
+      );
+    }
   };
 
   render() {
@@ -87,7 +107,7 @@ class ViewAdmins extends Component {
                 <th>Delete</th>
               </tr>
             </thead>
-            <tbody>{admins.map(this.renderAdmins)}</tbody>
+            <tbody>{admins.sort((a, b) => a.id - b.id).map(this.renderAdmins)}</tbody>
           </Table>
         </Container>
       </div>

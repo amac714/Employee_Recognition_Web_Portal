@@ -11,6 +11,8 @@ import {
   Input,
   Col,
   Label,
+  Alert,
+  FormFeedback
 } from 'reactstrap';
 import axios from 'axios';
 
@@ -25,6 +27,8 @@ class CreateUser extends Component {
       confirmPW: '',
       sig: '',
       previewSig: '',
+      visible: false,
+      validate: false,
     };
   }
 
@@ -52,24 +56,44 @@ class CreateUser extends Component {
   // and make post request to API endpoint
   handleSubmit = e => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('username', this.state.user_name);
-    formData.append('password', this.state.password);
-    formData.append('first_name', this.state.first_name);
-    formData.append('last_name', this.state.last_name);
-    formData.append('sig', this.state.sig);
-    let token = localStorage.getItem('access_token'); // need access token for auth
-    let config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
-    axios
-      .post('/user', formData, config)
-      .then(res => {
-        console.log(res);
-        //this.props.history.push('/adminDash');
-      })
-      .catch(err => console.log(err));
+    const { password, confirmPW } = this.state;
+    if (password !== confirmPW) {
+      this.setState({ validate: true });
+    } else {
+      const formData = new FormData();
+      formData.append('username', this.state.user_name);
+      formData.append('password', this.state.password);
+      formData.append('first_name', this.state.first_name);
+      formData.append('last_name', this.state.last_name);
+      formData.append('sig', this.state.sig);
+      let token = localStorage.getItem('access_token'); // need access token for auth
+      let config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+      axios
+        .post('/user', formData, config)
+        .then(res => {
+          console.log(res);
+          // Clear state and display confirmation
+          this.setState({
+            user_name: '',
+            password: '',
+            confirmPW: '',
+            first_name: '',
+            last_name: '',
+            sig: '',
+            previewSig: '',
+            visible: true,
+            validate: !this.state.validate
+          })
+        })
+        .catch(err => console.log(err));
+    } 
   };
+
+  redirect = () => {
+    this.props.history.push('/adminDash');
+  }
 
   render() {
     let {previewSig} = this.state;
@@ -83,6 +107,11 @@ class CreateUser extends Component {
     return (
       <div>
         <Container>
+          <Alert color="success" isOpen={this.state.visible}>
+            User has been created!
+            <button onClick={this.redirect}>Return to Dashboard</button>
+          </Alert>
+
           <Col sm="12" md={{ size: 6, offset: 3 }}>
             <h2>Create New User</h2>
           </Col>
@@ -134,6 +163,22 @@ class CreateUser extends Component {
                   value={this.state.password}
                   onChange={this.onChange}
                 />
+              </FormGroup>
+            </Col>
+
+            <Col sm="12" md={{ size: 6, offset: 3 }}>
+              <FormGroup>
+                <Label>Confirm Password</Label>
+                <Input
+                  invalid={this.state.validate}
+                  type="password"
+                  name="confirmPW"
+                  value={this.state.confirmPW}
+                  onChange={this.onChange}
+                />
+                <FormFeedback invalid="true">
+                  Password doesn't match!
+                </FormFeedback>
               </FormGroup>
             </Col>
 

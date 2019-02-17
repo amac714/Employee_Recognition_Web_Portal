@@ -33,6 +33,7 @@ class ViewUsers extends Component {
       .catch(err => console.log(err));
   };
 
+  // Delete user
   deleteUser = id => {
     axios
       .delete(`/user/${id}`, this.state.config)
@@ -92,7 +93,7 @@ class ViewUsers extends Component {
                 <th>Delete</th>
               </tr>
             </thead>
-            <tbody>{users.map(this.renderUsers)}</tbody>
+            <tbody>{users.sort((a, b) => a.id - b.id).map(this.renderUsers)}</tbody>
           </Table>
         </Container>
       </div>

@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { Button, Nav, NavItem, NavLink, Col, Row, Container } from 'reactstrap';
+import { Button, Nav, NavItem, NavLink, Col, Row, Alert } from 'reactstrap';
 import ViewUsers from './adminViewUsers';
 import ViewAdmins from './adminViewAdmins';
 import Reports from './sideViewComponents/reports';
@@ -47,7 +47,6 @@ class AdminDashboard extends Component {
               </NavItem>
             </Nav>
           </Col>
-
           <Col sm="12" md={{ size: 6, offset: 1 }}>
             {this.renderComponent()}
           </Col>
