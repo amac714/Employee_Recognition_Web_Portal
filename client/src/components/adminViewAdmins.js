@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { Table, Container } from 'reactstrap';
+import { Table, Container, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -11,7 +11,13 @@ class ViewAdmins extends Component {
   constructor() {
     super();
     this.state = {
+      admin_id: '',
       admins: [],
+      config: {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      },
     };
   }
 
@@ -22,13 +28,20 @@ class ViewAdmins extends Component {
 
   // Get admin users from DB and set state
   getAdmins = () => {
-    let token = localStorage.getItem('access_token');
-    let config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
     axios
-      .get('/admin', config)
-      .then(res => this.setState({ admins: res.data }))
+      .get('/admin', this.state.config)
+      .then(res => this.setState({ 
+        admin_id: localStorage.getItem('admin_id'),
+        admins: res.data, 
+      }))
+      .catch(err => console.log(err));
+  };
+
+  // Delete selected admin from table
+  deleteAdmin = id => {
+    axios
+      .delete(`/admin/${id}`, this.state.config)
+      .then(this.getAdmins())
       .catch(err => console.log(err));
   };
 
@@ -42,16 +55,40 @@ class ViewAdmins extends Component {
         admin_name: `${admin_name}`,
       },
     };
-    // Admin users are mapped into the table so key is set to id
-    return (
-      <tr key={id}>
-        <th scope="row">{id}</th>
-        <th>{admin_name}</th>
-        <th>
-          <Link to={edit}>Update</Link>
-        </th>
-      </tr>
-    );
+
+    if(this.state.admin_id === `${id}`) {
+      // Don't let logged in admin delete themselves
+      return (
+        <tr key={id}>
+          <th scope="row">{id}</th>
+          <td>{admin_name}</td>
+          <td>
+            <Link to={edit}>
+              <i className="fa fa-pencil-square-o" aria-hidden="true" />
+            </Link>
+          </td>
+          <td></td>
+        </tr>
+      )
+    }else {
+      // Admin users are mapped into the table so key is set to id
+      return (
+        <tr key={id}>
+          <th scope="row">{id}</th>
+          <td>{admin_name}</td>
+          <td>
+            <Link to={edit}>
+              <i className="fa fa-pencil-square-o" aria-hidden="true" />
+            </Link>
+          </td>
+          <td>
+            <a href="#0" onClick={() => this.deleteAdmin(`${id}`)}>
+              <i className="fas fa-trash-alt" style={{ color: 'red' }} />
+            </a>
+          </td>
+        </tr>
+      );
+    }
   };
 
   render() {
@@ -66,10 +103,11 @@ class ViewAdmins extends Component {
               <tr>
                 <th>Id</th>
                 <th>Admin Name</th>
-                <th />
+                <th>Edit</th>
+                <th>Delete</th>
               </tr>
             </thead>
-            <tbody>{admins.map(this.renderAdmins)}</tbody>
+            <tbody>{admins.sort((a, b) => a.id - b.id).map(this.renderAdmins)}</tbody>
           </Table>
         </Container>
       </div>

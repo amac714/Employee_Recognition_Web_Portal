@@ -12,6 +12,11 @@ class ViewUsers extends Component {
     super();
     this.state = {
       users: [],
+      config: {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      },
     };
   }
 
@@ -22,26 +27,50 @@ class ViewUsers extends Component {
 
   // Get users from DB with get request to API and sets state
   getUsers = () => {
-    let token = localStorage.getItem('access_token');
-    let config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
     axios
-      .get('/user', config)
+      .get('/user', this.state.config)
       .then(res => this.setState({ users: res.data }))
+      .catch(err => console.log(err));
+  };
+
+  // Delete user
+  deleteUser = id => {
+    axios
+      .delete(`/user/${id}`, this.state.config)
+      .then(this.getUsers())
       .catch(err => console.log(err));
   };
 
   // Render users into table
   renderUsers = ({ id, user_name, first_name, last_name }) => {
+    const edit = {
+      pathname: '/editUser',
+      state: {
+        id: `${id}`,
+        user_name: `${user_name}`,
+        first_name: `${first_name}`,
+        last_name: `${last_name}`,
+      },
+    };
+
+    console.log(edit);
+
     return (
       <tr key={id}>
         <th scope="row">{id}</th>
-        <th>{user_name}</th>
-        <th>{first_name}</th>
-        <th>{last_name}</th>
-        <th>Update</th>
-        <th>Delete</th>
+        <td>{user_name}</td>
+        <td>{first_name}</td>
+        <td>{last_name}</td>
+        <td>
+          <Link to={edit}>
+            <i className="fa fa-pencil-square-o" aria-hidden="true" />
+          </Link>
+        </td>
+        <td>
+          <a href="#0" onClick={() => this.deleteUser(`${id}`)}>
+            <i className="fas fa-trash-alt" style={{ color: 'red' }} />
+          </a>
+        </td>
       </tr>
     );
   };
@@ -60,11 +89,11 @@ class ViewUsers extends Component {
                 <th>Username</th>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th />
-                <th />
+                <th>Edit</th>
+                <th>Delete</th>
               </tr>
             </thead>
-            <tbody>{users.map(this.renderUsers)}</tbody>
+            <tbody>{users.sort((a, b) => a.id - b.id).map(this.renderUsers)}</tbody>
           </Table>
         </Container>
       </div>

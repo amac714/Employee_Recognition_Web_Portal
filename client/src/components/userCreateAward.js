@@ -33,7 +33,7 @@ class UserCreateAward extends Component {
     // Send award data
     axios
       .post(
-        '/user/6/award',
+        '/user/9/award',
         {
           award_type: this.state.award_type,
           first_name: this.state.first_name,

@@ -23,11 +23,6 @@ class EditAdmin extends Component {
       password: '',
       confirmPW: '',
       validate: false,
-      config: {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-        },
-      },
     };
   }
 
@@ -48,23 +43,20 @@ class EditAdmin extends Component {
     });
   };
 
-  // Delete selected admin from table
-  deleteAdmin = id => {
-    axios
-      .delete(`/admin/${id}`, this.state.config)
-      .then(this.props.history.push('/adminDash'))
-      .catch(err => console.log(err));
-  };
-
   // Save update to admin
   saveEdit = e => {
+    let token = localStorage.getItem('access_token');
+    let config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
     e.preventDefault();
     const { password, confirmPW, id } = this.state;
     // PW validation
     if (password !== confirmPW) {
       this.setState({ validate: true });
     } else {
-      // Patch request to API endpoint to update admin. 
+      // Patch request to API endpoint to update admin.
       // Passes access token for auth.
       axios
         .patch(
@@ -73,7 +65,7 @@ class EditAdmin extends Component {
             admin_name: this.state.admin_name,
             password: this.state.password,
           },
-          this.state.config
+          config
         )
         .then(res => {
           console.log(res);
@@ -90,7 +82,7 @@ class EditAdmin extends Component {
           <Col sm="12" md={{ size: 6, offset: 3 }}>
             <h2>Edit Admin</h2>
           </Col>
-          <Form onSubmit={this.saveEdit} method="POST">
+          <Form onSubmit={this.saveEdit}>
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <FormGroup>
                 <Input
@@ -136,15 +128,6 @@ class EditAdmin extends Component {
 
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <Button type="submit">Save Admin</Button>
-            </Col>
-
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <Button
-                color="danger"
-                onClick={() => this.deleteAdmin(this.state.id)}
-              >
-                Delete Admin
-              </Button>
             </Col>
           </Form>
         </Container>

@@ -36,8 +36,10 @@ class AdminLogin extends Component {
         password: this.state.password,
       })
       .then(res => {
-        // On successful login, store access token and redirect to admin dashboard
+        // On successful login, store access token and id then redirect to admin dashboard
         localStorage.setItem('access_token', res.data.access_token);
+        localStorage.setItem('admin_id', res.data.id);
+        console.log(localStorage.getItem('admin_id'));
         this.props.history.push('/adminDash');
       })
       .catch(err => console.log(err));

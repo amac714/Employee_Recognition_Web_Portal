@@ -57,16 +57,21 @@ class CreateAdmin extends Component {
           config
         )
         .then(res => {
-          // Shows alert banner
           this.setState({
             visible: true,
+            admin_name: '',
+            password: '',
+            confirmPW: '',
+            validate: !this.state.validate
           });
-          console.log(res);
-          //this.props.history.push('/adminDash');
         })
         .catch(err => console.log(err));
     }
   };
+
+  renderRedirect = () => {
+    this.props.history.push('/adminDash');
+  }
 
   render() {
     return (
@@ -74,8 +79,9 @@ class CreateAdmin extends Component {
         <Container>
           <Alert color="success" isOpen={this.state.visible}>
             Admin has been created!
-            <a href="/adminDash">Click here to return to dashboard</a>
+            <button onClick={this.renderRedirect}>Return to Dashboard</button>
           </Alert>
+          
           <Col sm="12" md={{ size: 6, offset: 3 }}>
             <h2>Create New Admin</h2>
           </Col>

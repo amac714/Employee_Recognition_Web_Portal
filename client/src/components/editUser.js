@@ -1,5 +1,5 @@
 /*
- * Description: Admin component to add new users to DB
+ * Description: Component for editing Users
  */
 
 import React, { Component } from 'react';
@@ -10,34 +10,39 @@ import {
   FormGroup,
   Input,
   Col,
+  FormFeedback,
   Label,
-  Alert,
-  FormFeedback
 } from 'reactstrap';
 import axios from 'axios';
 
-class CreateUser extends Component {
-  constructor() {
-    super();
+class EditUser extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
+      id: '',
       user_name: '',
       first_name: '',
       last_name: '',
       password: '',
       confirmPW: '',
-      sig: '',
-      previewSig: '',
-      visible: false,
       validate: false,
+      config: {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      },
     };
   }
 
-  // Sets state for inputs of type=text
+  componentDidMount() {
+    this.getUser();
+  }
+
+  // On form input change handler to set state
   onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  // Set state for user's signature
   onImageChange = e => {
     e.preventDefault();
     let reader = new FileReader();
@@ -45,85 +50,82 @@ class CreateUser extends Component {
     reader.onloadend = () => {
       this.setState({
         sig: file,
-        previewSig: reader.result
+        previewSig: reader.result,
       });
-    }
-    reader.readAsDataURL(file)
+    };
+    reader.readAsDataURL(file);
     console.log(this.state.sig);
   };
 
-  // On submit function. Puts user input together as FormData
-  // and make post request to API endpoint
-  handleSubmit = e => {
+  // Get User that will be edited
+  getUser = () => {
+    this.setState({
+      id: this.props.location.state.id,
+      user_name: this.props.location.state.user_name,
+      first_name: this.props.location.state.first_name,
+      last_name: this.props.location.state.last_name,
+    });
+  };
+
+  // Save update
+  saveEdit = e => {
     e.preventDefault();
-    const { password, confirmPW } = this.state;
+    const { password, confirmPW, id } = this.state;
+    // PW validation
     if (password !== confirmPW) {
       this.setState({ validate: true });
     } else {
-      const formData = new FormData();
-      formData.append('username', this.state.user_name);
-      formData.append('password', this.state.password);
-      formData.append('first_name', this.state.first_name);
-      formData.append('last_name', this.state.last_name);
-      formData.append('sig', this.state.sig);
-      let token = localStorage.getItem('access_token'); // need access token for auth
-      let config = {
-        headers: { Authorization: `Bearer ${token}` },
-      };
+      // Patch request to API endpoint to update user.
+      // Passes access token for auth.
       axios
-        .post('/user', formData, config)
+        .patch(
+          `/user/${id}`,
+          {
+            // user_name: this.state.user_name,
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+            // password: this.state.password,
+          },
+          this.state.config
+        )
         .then(res => {
           console.log(res);
-          // Clear state and display confirmation
-          this.setState({
-            user_name: '',
-            password: '',
-            confirmPW: '',
-            first_name: '',
-            last_name: '',
-            sig: '',
-            previewSig: '',
-            visible: true,
-            validate: !this.state.validate
-          })
+          this.props.history.push('/adminDash');
         })
         .catch(err => console.log(err));
-    } 
+    }
   };
 
-  redirect = () => {
-    this.props.history.push('/adminDash');
-  }
-
   render() {
-    let {previewSig} = this.state;
+    let { previewSig } = this.state;
     let $previewSig = null;
-    if(previewSig) {
-      $previewSig = (<img alt="previewSig" src={previewSig} style={{ height: '200px', width: '500px' }}/>)
+    if (previewSig) {
+      $previewSig = (
+        <img
+          alt="previewSig"
+          src={previewSig}
+          style={{ height: '200px', width: '500px' }}
+        />
+      );
     } else {
-      $previewSig = (<div>Upload a signature</div>)
+      $previewSig = <div>Upload a signature</div>;
     }
-    
+
     return (
       <div>
         <Container>
-          <Alert color="success" isOpen={this.state.visible}>
-            User has been created!
-            <button onClick={this.redirect}>Return to Dashboard</button>
-          </Alert>
-
           <Col sm="12" md={{ size: 6, offset: 3 }}>
-            <h2>Create New User</h2>
+            <h2>Edit User</h2>
           </Col>
-          <Form onSubmit={this.handleSubmit} method="POST">
+          <Form onSubmit={this.saveEdit}>
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <FormGroup>
-                <Label>Email</Label>
                 <Input
                   type="text"
                   name="user_name"
                   id="user_id"
                   value={this.state.user_name}
+                  placeholder="New Email"
                   onChange={this.onChange}
                 />
               </FormGroup>
@@ -131,11 +133,11 @@ class CreateUser extends Component {
 
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <FormGroup>
-                <Label>First Name</Label>
                 <Input
                   type="text"
                   name="first_name"
                   value={this.state.first_name}
+                  placeholder="First Name"
                   onChange={this.onChange}
                 />
               </FormGroup>
@@ -143,11 +145,11 @@ class CreateUser extends Component {
 
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <FormGroup>
-                <Label>Last Name</Label>
                 <Input
                   type="text"
                   name="last_name"
                   value={this.state.last_name}
+                  placeholder="Last Name"
                   onChange={this.onChange}
                 />
               </FormGroup>
@@ -155,12 +157,12 @@ class CreateUser extends Component {
 
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <FormGroup>
-                <Label>Password</Label>
                 <Input
                   type="password"
                   name="password"
                   id="pw_id"
                   value={this.state.password}
+                  placeholder="New Password"
                   onChange={this.onChange}
                 />
               </FormGroup>
@@ -168,12 +170,13 @@ class CreateUser extends Component {
 
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <FormGroup>
-                <Label>Confirm Password</Label>
                 <Input
                   invalid={this.state.validate}
                   type="password"
                   name="confirmPW"
+                  id="cpw_id"
                   value={this.state.confirmPW}
+                  placeholder="Confirm Password"
                   onChange={this.onChange}
                 />
                 <FormFeedback invalid="true">
@@ -192,7 +195,7 @@ class CreateUser extends Component {
               {$previewSig}
             </Col>
             <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <Button type="submit">Create User</Button>
+              <Button type="submit">Save User</Button>
             </Col>
           </Form>
         </Container>
@@ -201,4 +204,4 @@ class CreateUser extends Component {
   }
 }
 
-export default CreateUser;
+export default EditUser;

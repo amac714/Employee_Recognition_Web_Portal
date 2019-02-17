@@ -30,7 +30,7 @@ class Reports extends Component {
     return (
       <div>
         <Row>
-          <h3>View Reports</h3>
+          {/* <h3>View Reports</h3> */}
           <Col>
             <Button name="modal1" color="danger" onClick={this.toggle}>
               Report 1

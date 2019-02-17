@@ -1,14 +1,14 @@
-/* .container-div {
-  margin: auto;
-  width: 40%;
-  border: 1px solid black;
-  padding: 15px;
-  margin-top: 50px;
+.list-header {
+  background: #f7f7f7;
+  border: 1px solid darken(#f7f7f7, 7%);
+  color: #666;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.2rem, 1.6rem;
 }
 
-.admin_dash_header {
-  font-size: 1.18em;
-  font-weight: bold;
-  padding-bottom: 10px;
-  letter-spacing: 2px;
-} */
+.test {
+  display: block;
+  color: inherit;
+  padding: 5px 10px;
+}

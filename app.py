@@ -206,7 +206,7 @@ def getAwardByUser(u_id):
 # POST : Create new award
 # NEED TO CHECK IF RECIPENT IS IN THE DB
 @app.route('/user/<int:u_id>/award', methods=['POST'])
-# @user_only
+@user_only
 def postAward(u_id):
     user = Users.query.get(u_id)
     if user:
@@ -348,7 +348,7 @@ def userLogin():
 
 # GET : Retrieve BI report and return in json format
 @app.route('/bi/report', methods=['GET'])
-# @admin_only
+@admin_only
 def getBIReport():
     totalAdmin = Admins.query.count()
     totalUser = Users.query.count()
