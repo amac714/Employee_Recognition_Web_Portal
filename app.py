@@ -217,7 +217,7 @@ def postAward(u_id):
         db.session.commit()
 
         # Create Award
-        generateAward(newAward)
+        generateAward(newAward, user)
         
         return awardSchema.jsonify(newAward)
     else:
@@ -240,7 +240,7 @@ def deleteAward(u_id, aw_id):
 ''' ################################################ SEND MAIL ################################################ '''
 
 
-def generateAward(newAward):
+def generateAward(newAward, authorizedUser):
   
     # Latex document sections
     header = r'''\documentclass{article}
