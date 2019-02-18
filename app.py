@@ -17,13 +17,7 @@ app = Flask(__name__, template_folder="client/build", static_folder="client/buil
 
 CORS(app)
 app.config.from_object(os.environ['APP_SETTINGS'])
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USERNAME'] = 'ogmaemployeeawards@gmail.com'
-app.config['MAIL_PASSWORD'] = 'ntid96zitg'
 
 heroku = Heroku(app)
 mail = Mail(app)
@@ -102,6 +96,8 @@ def patchUser(u_id):
         schema = UserSchema()
         user.first_name = request.json['first_name']
         user.last_name = request.json['last_name']
+        user.user_name = request.json['username']
+        user.user_password = request.json['password']
         db.session.commit()
         return schema.jsonify(user)
     else:
@@ -220,68 +216,9 @@ def postAward(u_id):
         db.session.add(newAward)
         db.session.commit()
 
-        # Latex document sections
-        header = r'''\documentclass{article}
-        \begin{document}
-        \begin{center}
-        '''
-
-        footer = r'''   \end{center}
-                        \end{document}'''
-
-
-        awardTypeSection = r'''\begin{center}{\huge\textbf{''' + 'Employee of the ' + str(newAward.award_type) + r'''}}\end{center}'''
-
-        inputDate = r'''\begin{center}{\large\textbf{''' + str(newAward.date_granted) + r'''}}\end{center}'''
-
-        recipeint = r'''\begin{center}{\Huge\textbf{''' + str(newAward.recipient_first_name) + ' ' + str(newAward.recipient_last_name) + r'''}}\end{center}'''
-
-        to_section = r'''\begin{center}{\large\textbf{''' + 'To' + r'''}}\end{center}'''
-
-
-        # Construct latex file
-        content = header + \
-                  awardTypeSection + \
-                  inputDate + \
-                  to_section + \
-                  recipeint + \
-                  footer
-
-
-        # Generate pdf file
-        with open('awardPDF.tex', 'w') as f:
-            f.write(content)
-
-        commandLine = subprocess.Popen(['pdflatex', 'awardPDF.tex'])
-        commandLine.communicate()
-
-
-        # Get recipient's email address (username)
-        recipient_email = check_user_in_db(newAward.recipient_first_name, newAward.recipient_last_name)
-
-
-        # Send email
-        try:
-            msg = Message("Employee Portal",
-                          sender='ogmaemployeeawards@gmail.com',
-                          recipients=[recipient_email])
-            msg.body = "Congrats on the award!!!\n"
-
-            with app.open_resource("awardPDF.pdf") as fp:
-                msg.attach("awardPDS.pdf", "award/pdf",fp.read())
-
-            mail.send(msg)
-
-        # Error with sending email
-        except Exception as e:
-            print str(e)
-
-        # Clean up files
-        os.unlink('awardPDF.aux')
-        os.unlink('awardPDF.log')
-        os.unlink('awardPDF.tex')
-        # os.unlink('awardPDF.pdf') !!! DON'T FORGET TO UNCOMMENT !!!
-
+        # Create Award
+        generateAward(newAward)
+        
         return awardSchema.jsonify(newAward)
     else:
         return jsonify({"User": "User does not exist. Cannot create award."})
@@ -303,12 +240,77 @@ def deleteAward(u_id, aw_id):
 ''' ################################################ SEND MAIL ################################################ '''
 
 
+def generateAward(newAward):
+  
+    # Latex document sections
+    header = r'''\documentclass{article}
+            \begin{document}
+            \begin{center}
+            '''
+
+    footer = r'''   \end{center}
+                    \end{document}'''
+
+
+    awardTypeSection = r'''\begin{center}{\huge\textbf{''' + 'Employee of the ' + str(newAward.award_type) + r'''}}\end{center}'''
+
+    inputDate = r'''\begin{center}{\large\textbf{''' + str(newAward.date_granted) + r'''}}\end{center}'''
+
+    recipeint = r'''\begin{center}{\Huge\textbf{''' + str(newAward.recipient_first_name) + ' ' + str(newAward.recipient_last_name) + r'''}}\end{center}'''
+
+    to_section = r'''\begin{center}{\large\textbf{''' + 'To' + r'''}}\end{center}'''
+
+
+    # Construct latex file
+    content = header + \
+              awardTypeSection + \
+              inputDate + \
+              to_section + \
+              recipeint + \
+              footer
+
+
+    # Generate pdf file
+    with open('awardPDF.tex', 'w') as f:
+        f.write(content)
+
+    commandLine = subprocess.Popen(['pdflatex', 'awardPDF.tex'])
+    commandLine.communicate()
+
+
+    # Get recipient's email address (username)
+    recipient_email = check_user_in_db(newAward.recipient_first_name, newAward.recipient_last_name)
+
+
+    # Send email
+    try:
+        msg = Message("Employee Portal",
+                      sender='ogmaemployeeawards@gmail.com',
+                      recipients=[recipient_email])
+        msg.body = "Congrats on the award!!!\n"
+
+        with app.open_resource("awardPDF.pdf") as fp:
+            msg.attach("awardPDS.pdf", "award/pdf",fp.read())
+
+        mail.send(msg)
+
+    # Error with sending email
+    except Exception as e:
+        print str(e)
+
+    # Clean up files
+    os.unlink('awardPDF.aux')
+    os.unlink('awardPDF.log')
+    os.unlink('awardPDF.tex')
+    # os.unlink('awardPDF.pdf') !!! DON'T FORGET TO UNCOMMENT !!!
+
+
 @app.route('/send-mail/')
 def send_mail():
     try:
         msg = Message("Hey!!!",
                       sender='ogmaemployeeawards@gmail.com',
-                      recipients=['bsphair@gmail.com'])
+                      recipients=['tonp@oregonstate.edu'])
         msg.body = "Congrats on the award!"
         mail.send(msg)
         return 'Mail sent!!!'

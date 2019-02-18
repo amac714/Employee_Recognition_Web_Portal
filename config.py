@@ -5,6 +5,7 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = 'ogmasecret'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
     JWT_SECRET_KEY = 'jwtsecret'
     JWT_ACCESS_TOKEN_EXPIRES = 3600
