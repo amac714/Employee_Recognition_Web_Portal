@@ -81,10 +81,10 @@ class EditUser extends Component {
         .patch(
           `/user/${id}`,
           {
-            // user_name: this.state.user_name,
+            username: this.state.user_name,
             first_name: this.state.first_name,
             last_name: this.state.last_name,
-            // password: this.state.password,
+            password: this.state.password,
           },
           this.state.config
         )
