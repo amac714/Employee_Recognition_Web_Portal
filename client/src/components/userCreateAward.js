@@ -25,6 +25,13 @@ class UserCreateAward extends Component {
 
     sendAward = () => {
         this.props.submitAward(this.state);
+        this.setState({
+            award_type: 'week',
+            first_name: '',
+            last_name: '',
+            time_granted: '',
+            date_granted: '',
+        })
     };
 
     render() {
@@ -72,6 +79,7 @@ class UserCreateAward extends Component {
                                 name='last_name'
                                 id='last_name'
                                 placeholder='Last Name'
+                                value={this.state.last_name}
                                 onChange={this.onChange}
                             />
                         </FormGroup>
@@ -85,6 +93,7 @@ class UserCreateAward extends Component {
                             name='time_granted'
                             id='time_granted'
                             placeholder='Time Granted'
+                            value={this.state.time_granted}
                             onChange={this.onChange}
                         />
                     </Col>
@@ -98,6 +107,7 @@ class UserCreateAward extends Component {
                                 name='date_granted'
                                 id='date_granted'
                                 placeholder='Date Granted'
+                                value={this.state.date_granted}
                                 onChange={this.onChange}
                             />
                         </FormGroup>
