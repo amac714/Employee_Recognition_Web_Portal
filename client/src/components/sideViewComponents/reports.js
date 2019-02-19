@@ -17,7 +17,11 @@ class Reports extends Component {
   }
 
   componentDidMount() {
-    axios.get('/bi/report')
+    let token = localStorage.getItem('access_token');
+    let config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    axios.get('/bi/report', config)
     .then(res => {
       // console.log(res.data)
       this.setState({

@@ -84,7 +84,7 @@ class CreateUser extends Component {
                         sig: '',
                         previewSig: '',
                         visible: true,
-                        validate: true
+                        validate: false
                     })
                 })
                 .catch(err => console.log(err));
