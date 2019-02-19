@@ -71,36 +71,39 @@ class UserHomePage extends Component {
     }
 
 
-
     submitAward = (e) => {
         // Send award data
         axios
-          .post(
-            'http://localhost:5000/user/'+ this.state.id +'/award',
-            {
-              award_type: e.award_type,
-              first_name: e.first_name,
-              last_name: e.last_name,
-              time_granted: e.time_granted,
-              date_granted: e.date_granted,
-            },
-            this.state.config
-          )
-          .then(res => {
-            this.setState({
-              award_type: 'week',
-              first_name: '',
-              last_name: '',
-              time_granted: '',
-              date_granted: '',
+            .post(
+                'http://localhost:5000/user/' + this.state.id + '/award',
+                {
+                    award_type: e.award_type,
+                    first_name: e.first_name,
+                    last_name: e.last_name,
+                    time_granted: e.time_granted,
+                    date_granted: e.date_granted,
+                },
+                this.state.config
+            )
+            .then(res => {
+                // console.log(res)
+                this.setState({
+                    award_type: 'week',
+                    first_name: '',
+                    last_name: '',
+                    time_granted: '',
+                    date_granted: '',
+                });
+
+                // alert("Award Created!!!");
+                console.log(this.props.history);
+                alert("ST")
+                // this.props.history.push('/userHomePage');
+            })
+
+            .catch(function (error) {
+                console.log(error);
             });
-
-            alert("Award Created!!!")
-          })
-
-          .catch(function(error) {
-            console.log(error);
-          });
     };
 
 
