@@ -54,7 +54,6 @@ class EditUser extends Component {
       });
     };
     reader.readAsDataURL(file);
-    console.log(this.state.sig);
   };
 
   // Get User that will be edited
@@ -89,7 +88,6 @@ class EditUser extends Component {
           this.state.config
         )
         .then(res => {
-          console.log(res);
           this.props.history.push('/adminDash');
         })
         .catch(err => console.log(err));
