@@ -207,11 +207,11 @@ def postAward(u_id):
     user = Users.query.get(u_id)
     if user:
         awardSchema = AwardSchema()
-        newAward = Awards(request.form['award_type'],
-                          request.form['first_name'],
-                          request.form['last_name'],
-                          request.form['time_granted'],  # 00:00:00
-                          request.form['date_granted'],  # yyyy-mm-dd
+        newAward = Awards(request.json['award_type'],
+                          request.json['first_name'],
+                          request.json['last_name'],
+                          request.json['time_granted'],  # 00:00:00
+                          request.json['date_granted'],  # yyyy-mm-dd
                           u_id)
         db.session.add(newAward)
         db.session.commit()
