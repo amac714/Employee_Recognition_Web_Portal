@@ -3,7 +3,7 @@
  * */
 
 import React, {Component} from 'react';
-import {Container, Form, FormGroup, Input, Col, Label} from 'reactstrap';
+import {Container, Form, FormGroup, Input, Col, Label, Button} from 'reactstrap';
 
 
 class UserCreateAward extends Component {
@@ -18,15 +18,13 @@ class UserCreateAward extends Component {
         };
     }
 
-
+    /**/
     onChange = e => {
         this.setState({[e.target.name]: e.target.value});
     };
 
     sendAward = () => {
         this.props.submitAward(this.state);
-        console.log(this.state)
-
     };
 
     render() {
@@ -34,7 +32,7 @@ class UserCreateAward extends Component {
             <Container>
                 <h1>Create Award</h1>
 
-                <Form onSubmit={this.sendAward.bind(this)}>
+                <Form>
                     <Col sm="12" md={{size: 6, offset: 3}}>
                         <FormGroup>
                             <Label>Award Type</Label>
@@ -106,12 +104,9 @@ class UserCreateAward extends Component {
                     </Col>
 
                     <Col sm="12" md={{size: 6, offset: 3}}>
-                        <input type="submit" value="Submit"/>
+                        <Button type="button" onClick={this.sendAward}>Submit</Button>
                     </Col>
                 </Form>
-                {/*<Col sm="12" md={{size: 6, offset: 3}}>*/}
-                    {/*<button onClick={this.sendAward.bind(this)}>Out of Form</button>*/}
-                {/*</Col>*/}
             </Container>
         );
     }

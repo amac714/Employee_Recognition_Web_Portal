@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import SideSection from './sideSection';
-import {Row, Col} from 'reactstrap';
+import {Table, Row, Col, Alert, Container} from 'reactstrap';
 import UserCreateAward from './userCreateAward';
 import UserViewGivenAwards from './userViewGivenAwards';
 import axios from 'axios';
@@ -53,6 +53,7 @@ class UserHomePage extends Component {
                 today.getFullYear();
 
         this.state = {
+            awards: [],
             userType: 'user',
             currentDate: currentDate,
             currentDay: currentDay,
@@ -62,6 +63,7 @@ class UserHomePage extends Component {
             last_name: '',
             time_granted: '',
             date_granted: '',
+            sent: false,
             config: {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('access_token')}`
@@ -71,36 +73,64 @@ class UserHomePage extends Component {
     }
 
 
+    componentDidMount() {
+        this.getAwards();
+    }
+
+
+    /*
+    * Description: Makes call to endpoint getting all of the awards given by the user. Will pass the web token to the endpoint for authentication.
+ * */
+    getAwards = () => {
+        axios
+            .get('/user/' + this.state.id + '/award', this.state.config)
+            .then(res => this.setState({awards: res.data})) // If user is authenticated, store the returned awards
+            .catch(err => console.log(err)); // User is not authenticated
+    };
+
 
     submitAward = (e) => {
+        // console.log(e);
+        //e.preventDefault();
         // Send award data
         axios
-          .post(
-            'http://localhost:5000/user/'+ this.state.id +'/award',
-            {
-              award_type: e.award_type,
-              first_name: e.first_name,
-              last_name: e.last_name,
-              time_granted: e.time_granted,
-              date_granted: e.date_granted,
-            },
-            this.state.config
-          )
-          .then(res => {
-            this.setState({
-              award_type: 'week',
-              first_name: '',
-              last_name: '',
-              time_granted: '',
-              date_granted: '',
+            .post(
+                'http://localhost:5000/user/' + this.state.id + '/award',
+                {
+                    award_type: e.award_type,
+                    first_name: e.first_name,
+                    last_name: e.last_name,
+                    time_granted: e.time_granted,
+                    date_granted: e.date_granted,
+                },
+                this.state.config
+            )
+            .then(res => {
+                //alert("In Then");
+                console.log(res);
+                console.log(res.data);
+                this.setState({sent: false});
+                this.renderPage();
+                this.props.history.push('/userHomePage'); //route to user homepage
+                this.getAwards()
+
+            })
+            .catch(function (error) {
+                //alert("In Catch");
+                console.log(error);
             });
 
-            alert("Award Created!!!")
-          })
+    };
 
-          .catch(function(error) {
-            console.log(error);
-          });
+    /**/
+    renderPage = () => {
+        this.setState({
+            award_type: '',
+            first_name: '',
+            last_name: '',
+            time_granted: '',
+            date_granted: '',
+        })
     };
 
 
@@ -108,6 +138,7 @@ class UserHomePage extends Component {
         return (
             <div>
                 <Row>
+
                     <Col xs="2" style={{border: '1px solid black'}}>
                         <SideSection
                             userType={this.state.userType}
@@ -117,12 +148,13 @@ class UserHomePage extends Component {
 
                     <Col xs="5" style={{border: '1px solid red'}}>
                         <UserCreateAward
+                            clearForm={this.state.sent}
                             submitAward={this.submitAward}
                         />
                     </Col>
 
                     <Col xs="5" style={{border: '1px solid green'}}>
-                        {/*<UserViewGivenAwards/>*/}
+                        <UserViewGivenAwards awards={this.state.awards}/>
                     </Col>
                 </Row>
             </div>
@@ -131,3 +163,5 @@ class UserHomePage extends Component {
 }
 
 export default UserHomePage;
+
+
