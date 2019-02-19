@@ -26,7 +26,7 @@ class UserLogin extends Component {
   }
 
   /*
-   * Description: Handles form input when user attempts to login by sending input username/password to server endpoint.
+   * Description: Handles form input when user attempts to login by sending input username/password to server endpoint. 
    * */
   handleSubmit = e => {
     e.preventDefault();
