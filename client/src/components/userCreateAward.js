@@ -25,7 +25,13 @@ class UserCreateAward extends Component {
 
     sendAward = () => {
         this.props.submitAward(this.state);
-        console.log(this.state)
+        this.setState({
+            award_type: 'week',
+            first_name: '',
+            last_name: '',
+            time_granted: '',
+            date_granted: '',
+        })
 
     };
 
@@ -110,7 +116,7 @@ class UserCreateAward extends Component {
                     </Col>
                 </Form>
                 {/*<Col sm="12" md={{size: 6, offset: 3}}>*/}
-                    {/*<button onClick={this.sendAward.bind(this)}>Out of Form</button>*/}
+                {/*<button onClick={this.sendAward.bind(this)}>Out of Form</button>*/}
                 {/*</Col>*/}
             </Container>
         );
