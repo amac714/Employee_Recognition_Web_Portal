@@ -1,86 +1,139 @@
 import React, { Component } from 'react';
-import { Chart } from 'react-google-charts';
+import { Bar, Pie } from 'react-chartjs-2';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
+import axios from 'axios';
 
 class Reports extends Component {
   constructor(props) {
     super(props);
     this.state = {
       option: '',
+      grantedAwards: [],
+      withMostAwards: [],
+      totalUser: 0,
+      totalAdmin: 0,
+      load: false,
     };
   }
 
-  ExampleChart = () => {
+  componentDidMount() {
+    axios.get('/bi/report')
+    .then(res => {
+      // console.log(res.data)
+      this.setState({
+        totalUser: res.data.totalUser,
+        totalAdmin: res.data.totalAdmin,
+        grantedAwards: res.data.userGrantedMostAwards,
+        withMostAwards: res.data.userWithMostAwards
+      })
+    })
+    .catch(err => console.log(err))
+  }
+
+  grantedAwardsReport = () => {
+    const labels = [];
+    const dataset = [];
+    const bgColor = [];
+    for(let i = 0; i < this.state.grantedAwards.length; i++) {
+      labels.push(this.state.grantedAwards[i][0])
+      dataset.push(this.state.grantedAwards[i][2])
+      bgColor.push(this.getRandomColor())
+    }
+
+    const data = {
+      labels: labels,
+      datasets: [{
+        data: dataset,
+        backgroundColor: bgColor,
+        hoverBackgroundColor: bgColor
+      }]
+    };
+
     return (
-      <Chart
-        width={'500px'}
-        height={'300px'}
-        chartType="Bar"
-        loader={<div>Loading Chart</div>}
-        data={[
-          ['Year', 'Sales', 'Expenses', 'Profit'],
-          ['2014', 1000, 400, 200],
-          ['2015', 1170, 460, 250],
-          ['2016', 660, 1120, 300],
-          ['2017', 1030, 540, 350],
-        ]}
-        options={{
-          // Material design options
-          chart: {
-            title: 'Company Performance',
-            subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-          },
-        }}
-        // For tests
-        rootProps={{ 'data-testid': '2' }}
-      />
+      <div>
+        <h2>Most Awards Granted Report</h2>
+        <Pie data={data} />
+      </div>
     );
   };
 
-  DiffChart = () => {
+  awardsWonReport = () => {
+    const labels = [];
+    const dataset = [];
+    for (let i = 0; i < this.state.withMostAwards.length; i++) {
+      labels.push(this.state.withMostAwards[i][0])
+      dataset.push(this.state.withMostAwards[i][2])
+    }
+
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Awards Won',
+          backgroundColor: 'rgba(255,99,132,0.2)',
+          borderColor: 'rgba(255,99,132,1)',
+          borderWidth: 1,
+          hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+          hoverBorderColor: 'rgba(255,99,132,1)',
+          data: dataset
+        }
+      ]
+    };
+
     return (
-      <Chart
-        width={'500px'}
-        height={'300px'}
-        chartType="BarChart"
-        loader={<div>Loading Chart</div>}
-        data={[
-          ['City', '2010 Population', '2000 Population'],
-          ['New York City, NY', 8175000, 8008000],
-          ['Los Angeles, CA', 3792000, 3694000],
-          ['Chicago, IL', 2695000, 2896000],
-          ['Houston, TX', 2099000, 1953000],
-          ['Philadelphia, PA', 1526000, 1517000],
-        ]}
-        options={{
-          title: 'Population of Largest U.S. Cities',
-          chartArea: { width: '50%' },
-          hAxis: {
-            title: 'Total Population',
-            minValue: 0,
-          },
-          vAxis: {
-            title: 'City',
-          },
-        }}
-        // For tests
-        rootProps={{ 'data-testid': '1' }}
-      />
+      <div>
+        <h2>Most Awards Won Report</h2>
+        <Bar 
+          data={data}
+          height={100}
+          options={{
+            scales: {
+              yAxes: [{
+                display: true,
+                ticks: {
+                  beginAtZero: true,
+                  suggestedMax: 10
+                }
+              }]
+            }
+          }}
+        />
+      </div>
     );
   };
+
   RunReport = () => {
     if (this.state.option === '1') {
-      return this.ExampleChart();
+      return this.grantedAwardsReport();
     } else if (this.state.option === '2') {
-      return this.DiffChart();
+      return this.awardsWonReport();
     } else {
       return <div>No reports</div>;
     }
   };
 
+  // On select input change handler
   onChange = e => {
     this.setState({ option: e.target.value });
   };
+
+  loading = () => {
+    return (
+      <div>Loading...</div>
+    )
+  }
+
+  // Returns a random color in hex
+  getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for(let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+
+    return color;
+  }
+
   render() {
     return (
       <div>
@@ -94,12 +147,12 @@ class Reports extends Component {
               onChange={this.onChange}
             >
               <option>-</option>
-              <option value="1">Example Chart</option>
-              <option value="2">A Different Chart</option>
+              <option value="1">Most Awards Granted</option>
+              <option value="2">Most Awards Received</option>
             </Input>
           </FormGroup>
         </Form>
-        {this.RunReport()}
+        <div>{this.RunReport()}</div>
       </div>
     );
   }
