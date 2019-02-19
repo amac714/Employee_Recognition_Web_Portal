@@ -63,7 +63,7 @@ class UserHomePage extends Component {
             last_name: '',
             time_granted: '',
             date_granted: '',
-            sent: false,
+            clearForm: false,
             config: {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('access_token')}`
@@ -80,7 +80,7 @@ class UserHomePage extends Component {
 
     /*
     * Description: Makes call to endpoint getting all of the awards given by the user. Will pass the web token to the endpoint for authentication.
- * */
+    */
     getAwards = () => {
         axios
             .get('/user/' + this.state.id + '/award', this.state.config)
@@ -90,8 +90,7 @@ class UserHomePage extends Component {
 
 
     submitAward = (e) => {
-        // console.log(e);
-        //e.preventDefault();
+
         // Send award data
         axios
             .post(
@@ -106,10 +105,9 @@ class UserHomePage extends Component {
                 this.state.config
             )
             .then(res => {
-                //alert("In Then");
                 console.log(res);
                 console.log(res.data);
-                this.setState({sent: false});
+                // this.setState({sent: false});
                 this.renderPage();
                 this.props.history.push('/userHomePage'); //route to user homepage
                 this.getAwards()
