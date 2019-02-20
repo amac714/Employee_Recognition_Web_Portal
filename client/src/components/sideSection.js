@@ -10,7 +10,7 @@ function SideSection(props) {
 
       {props.userType === 'user' && <UserAccountInfo />}
 
-      <Stats />
+      <Stats numberOfAwards={props.numberOfAwards}/>
     </div>
   );
 }

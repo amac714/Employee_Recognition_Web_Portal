@@ -54,6 +54,7 @@ class UserHomePage extends Component {
 
         this.state = {
             awards: [],
+            numberOfAwardsGiven: 0,
             userType: 'user',
             currentDate: currentDate,
             currentDay: currentDay,
@@ -63,7 +64,6 @@ class UserHomePage extends Component {
             last_name: '',
             time_granted: '',
             date_granted: '',
-            clearForm: false,
             config: {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('access_token')}`
@@ -75,6 +75,11 @@ class UserHomePage extends Component {
 
     componentDidMount() {
         this.getAwards();
+        this.timer = setInterval(() => this.getAwards(), 5000);
+    }
+
+    componentWillUnmount() {
+        this.timer = null;
     }
 
 
@@ -84,8 +89,9 @@ class UserHomePage extends Component {
     getAwards = () => {
         axios
             .get('/user/' + this.state.id + '/award', this.state.config)
-            .then(res => this.setState({awards: res.data})) // If user is authenticated, store the returned awards
+            .then(res => this.setState({awards: res.data, numberOfAwardsGiven: res.data.length})) // If user is authenticated, store the returned awards
             .catch(err => console.log(err)); // User is not authenticated
+
     };
 
 
@@ -107,7 +113,6 @@ class UserHomePage extends Component {
             .then(res => {
                 console.log(res);
                 console.log(res.data);
-                // this.setState({sent: false});
                 this.renderPage();
                 this.props.history.push('/userHomePage'); //route to user homepage
                 this.getAwards()
@@ -133,6 +138,8 @@ class UserHomePage extends Component {
 
 
     render() {
+
+
         return (
             <div>
                 <Row>
@@ -141,6 +148,7 @@ class UserHomePage extends Component {
                         <SideSection
                             userType={this.state.userType}
                             currentDate={this.state.currentDate}
+                            numberOfAwards={this.state.numberOfAwardsGiven}
                         />
                     </Col>
 

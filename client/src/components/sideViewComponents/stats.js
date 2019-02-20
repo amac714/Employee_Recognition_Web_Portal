@@ -12,7 +12,7 @@ class Stats extends Component {
         <h1>Submitted Awards</h1>
         <p>Employee of the Week:</p>
         <p>Employee of the Month:</p>
-        <p>Total Awards:</p>
+        <p>Total Awards: {this.props.numberOfAwards}</p>
       </div>
     );
   }
