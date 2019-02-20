@@ -10,7 +10,7 @@ class UserCreateAward extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            award_type: 'week',
+            award_type: 'Week',
             first_name: '',
             last_name: '',
             time_granted: '',
@@ -26,7 +26,7 @@ class UserCreateAward extends Component {
     sendAward = () => {
         this.props.submitAward(this.state);
         this.setState({
-            award_type: 'week',
+            award_type: 'Week',
             first_name: '',
             last_name: '',
             time_granted: '',
@@ -37,7 +37,7 @@ class UserCreateAward extends Component {
     render() {
         return (
             <Container>
-                <h1>Create Award</h1>
+                <h2>Create Award</h2>
 
                 <Form>
                     <Col sm="12" md={{size: 6, offset: 3}}>
@@ -49,8 +49,8 @@ class UserCreateAward extends Component {
                                 id="award_type"
                                 onChange={this.onChange}
                             >
-                                <option value="week">Week</option>
-                                <option value="month">Month</option>
+                                <option value="Week">Week</option>
+                                <option value="Month">Month</option>
                             </Input>
                         </FormGroup>
                     </Col>
