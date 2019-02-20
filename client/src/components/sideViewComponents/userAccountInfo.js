@@ -6,10 +6,6 @@ class UserAccountInfo extends Component {
     return (
       <div>
         <p>Username: {localStorage.getItem('username')}</p>
-        <p>Signature Image</p>
-        <Link to="/updateUserInfo">
-          <button>Update</button>
-        </Link>
       </div>
     );
   }
