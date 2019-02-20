@@ -10,9 +10,9 @@ class Stats extends Component {
         <p>My Total Awards:</p>
 
         <h1>Submitted Awards</h1>
-        <p>Employee of the Week:</p>
-        <p>Employee of the Month:</p>
-        <p>Total Awards: {this.props.numberOfAwards}</p>
+        <p>Employee of the Week: {this.props.awardData.employeeOfTheWeek}</p>
+        <p>Employee of the Month: {this.props.awardData.employeeOfTheMonth}</p>
+        <p>Total Awards: {this.props.awardData.numberOfAwardsGiven}</p>
       </div>
     );
   }

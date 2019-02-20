@@ -10,7 +10,9 @@ function SideSection(props) {
 
       {props.userType === 'user' && <UserAccountInfo />}
 
-      <Stats numberOfAwards={props.numberOfAwards}/>
+      <Stats
+          awardData={props.awardData}
+      />
     </div>
   );
 }

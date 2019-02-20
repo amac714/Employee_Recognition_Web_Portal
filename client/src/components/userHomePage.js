@@ -54,7 +54,11 @@ class UserHomePage extends Component {
 
         this.state = {
             awards: [],
-            numberOfAwardsGiven: 0,
+            awardData: {
+                numberOfAwardsGiven: 0,
+                employeeOfTheWeek: 0,
+                employeeOfTheMonth: 0,
+            },
             userType: 'user',
             currentDate: currentDate,
             currentDay: currentDay,
@@ -87,11 +91,32 @@ class UserHomePage extends Component {
     * Description: Makes call to endpoint getting all of the awards given by the user. Will pass the web token to the endpoint for authentication.
     */
     getAwards = () => {
+        var weekAwardCount = 0;
+        var monthAwardCount = 0;
+
         axios
             .get('/user/' + this.state.id + '/award', this.state.config)
-            .then(res => this.setState({awards: res.data, numberOfAwardsGiven: res.data.length})) // If user is authenticated, store the returned awards
-            .catch(err => console.log(err)); // User is not authenticated
+            .then(res => {
+                res.data.forEach(function (item) {
+                    if (item.award_type === "Week") {
+                        weekAwardCount++;
+                    } else if (item.award_type === "Month") {
+                        monthAwardCount++;
+                    }
+                });
 
+                let awardDataCopy = this.state.awardData;
+                awardDataCopy['numberOfAwardsGiven'] = res.data.length;
+                awardDataCopy['employeeOfTheWeek'] = weekAwardCount;
+                awardDataCopy['employeeOfTheMonth'] = monthAwardCount;
+                console.log(awardDataCopy);
+
+                this.setState({
+                    awards: res.data,
+                    awardData: awardDataCopy,
+                })
+            }) // If user is authenticated, store the returned awards
+            .catch(err => console.log(err)); // User is not authenticated
     };
 
 
@@ -116,7 +141,6 @@ class UserHomePage extends Component {
                 this.renderPage();
                 this.props.history.push('/userHomePage'); //route to user homepage
                 this.getAwards()
-
             })
             .catch(function (error) {
                 //alert("In Catch");
@@ -148,7 +172,7 @@ class UserHomePage extends Component {
                         <SideSection
                             userType={this.state.userType}
                             currentDate={this.state.currentDate}
-                            numberOfAwards={this.state.numberOfAwardsGiven}
+                            awardData={this.state.awardData}
                         />
                     </Col>
 
