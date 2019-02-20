@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import SideSection from './sideSection';
-import {Table, Row, Col, Alert, Container} from 'reactstrap';
+import {Row, Col} from 'reactstrap';
 import UserCreateAward from './userCreateAward';
 import UserViewGivenAwards from './userViewGivenAwards';
 import axios from 'axios';
@@ -109,7 +109,6 @@ class UserHomePage extends Component {
                 awardDataCopy['numberOfAwardsGiven'] = res.data.length;
                 awardDataCopy['employeeOfTheWeek'] = weekAwardCount;
                 awardDataCopy['employeeOfTheMonth'] = monthAwardCount;
-                console.log(awardDataCopy);
 
                 this.setState({
                     awards: res.data,

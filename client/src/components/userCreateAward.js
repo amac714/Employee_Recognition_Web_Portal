@@ -37,7 +37,7 @@ class UserCreateAward extends Component {
     render() {
         return (
             <Container>
-                <h1>Create Award</h1>
+                <h2>Create Award</h2>
 
                 <Form>
                     <Col sm="12" md={{size: 6, offset: 3}}>
