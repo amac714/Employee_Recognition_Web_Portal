@@ -147,6 +147,7 @@ def getIndAdmin(a_id):
 
 # POST : Create new admin
 @app.route('/admin', methods=['POST'])
+@admin_only
 def postAdmin():
     adminSchema = AdminSchema()
     passHash = bcrypt.generate_password_hash(request.json['password'])
@@ -204,7 +205,6 @@ def getAwardByUser(u_id):
 
 
 # POST : Create new award
-# NEED TO CHECK IF RECIPENT IS IN THE DB
 @app.route('/user/<int:u_id>/award', methods=['POST'])
 @user_only
 def postAward(u_id):
