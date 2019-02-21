@@ -9,8 +9,8 @@ class Date extends Component {
   render() {
     return (
       <div className="dateText">
-        <p>{this.props.currentDay}</p>
-        <p>{this.props.currentDate}</p>
+        <p>{this.props.date.currentDay}</p>
+        <p>{this.props.date.currentDate}</p>
       </div>
     );
   }

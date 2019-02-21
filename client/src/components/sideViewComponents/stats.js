@@ -4,11 +4,6 @@ class Stats extends Component {
   render() {
     return (
       <div>
-        {/*<h1>Stats</h1>*/}
-        {/*<p>Employee of the Week:</p>*/}
-        {/*<p>Employee of the Month:</p>*/}
-        {/*<p>My Total Awards:</p>*/}
-
         <h2>Submitted Awards</h2>
         <p>Employee of the Week: {this.props.awardData.employeeOfTheWeek}</p>
         <p>Employee of the Month: {this.props.awardData.employeeOfTheMonth}</p>

@@ -1,93 +1,93 @@
-import React, { Component } from 'react';
-import { Col, Form, FormGroup, Input, Label, Row } from 'reactstrap';
-import SideSection from './sideSection';
-import axios from 'axios';
+import React, {Component} from 'react';
+import {Button, Col, Form, FormGroup, Input, Row} from 'reactstrap';
+
 
 class UpdateUserInfo extends Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.state = {
-      id: null,
-      userType: 'user',
-      first_name: '',
-      last_name: '',
-      config: {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-        },
-      },
+        this.state = {
+            first_name: '',
+            last_name: '',
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        this.setState({
+            first_name: this.props.currentData.first_name,
+            last_name: this.props.currentData.last_name,
+        })
+    }
+
+    onChange = e => {
+        this.setState({[e.target.name]: e.target.value});
     };
-  }
 
-  handleSubmit = e => {
-    e.preventDefault();
 
-    // const {id} = this.state;
+    handleSubmit = () => {
+        let {new_password1, new_password2} = this.state;
 
-    axios
-      .patch(
-        '/user/6',
-        {
-          first_name: this.state.first_name,
-          last_name: this.state.last_name,
-        },
-        this.state.config
-      )
+        if(this.confirmNonEmptyFields()){
+            this.props.updateAccount(this.state);
+        }else{
+            alert("Cannot have empty fields")
+        }
+    };
 
-      .then(res => {
-        console.log(res);
-        this.props.history.push('/userHomePage');
-      })
-      .catch(err => console.log(err));
-  };
 
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+    confirmNonEmptyFields = () => {
+        const {first_name, last_name} = this.state;
 
-  render() {
-    return (
-      <div>
-        <Row>
-          <Col xs="2" style={{ border: '1px solid black' }}>
-            <SideSection userType={this.state.userType} />
-          </Col>
+        if (first_name.length === 0 || last_name.length === 0) {
+            return false
+        } else {
+            return true
+        }
 
-          <Col xs="10" style={{ border: '1px solid red' }}>
-            <h1>Update Account Information</h1>
+    };
 
-            <Form onSubmit={this.handleSubmit} method="POST">
-              <Col sm="12" md={{ size: 6, offset: 3 }}>
-                <FormGroup>
-                  <Label>Update Name</Label>
-                  <Input
-                    type="text"
-                    name="first_name"
-                    id="first_name"
-                    placeholder="first name"
-                    value={this.state.first_name}
-                    onChange={this.onChange}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Input
-                    type="text"
-                    name="last_name"
-                    id="last_name"
-                    placeholder="last name"
-                    value={this.state.last_name}
-                    onChange={this.onChange}
-                  />
-                  <button>Update</button>
-                </FormGroup>
-              </Col>
-            </Form>
-          </Col>
-        </Row>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div>
+                <Row>
+                    <Col xs="12" style={{border: '1px solid red'}}>
+                        <h1>Update Account Information</h1>
+
+                        <Form>
+                            <Col sm="12" md={{size: 6, offset: 3}}>
+                                <h4>New Info</h4>
+                                <FormGroup>
+                                    <Input
+                                        type="text"
+                                        name="first_name"
+                                        id="first_name"
+                                        placeholder="first name"
+                                        value={this.state.first_name}
+                                        onChange={this.onChange}
+                                    />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Input
+                                        type="text"
+                                        name="last_name"
+                                        id="last_name"
+                                        placeholder="last name"
+                                        value={this.state.last_name}
+                                        onChange={this.onChange}
+                                    />
+                                </FormGroup>
+
+                            </Col>
+                            <Col sm="12" md={{size: 6, offset: 3}}>
+                                <Button type="button" onClick={this.handleSubmit}>Submit</Button>
+                            </Col>
+                        </Form>
+                    </Col>
+                </Row>
+            </div>
+        );
+    }
 }
 
 export default UpdateUserInfo;
