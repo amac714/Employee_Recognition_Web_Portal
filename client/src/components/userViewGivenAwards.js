@@ -3,7 +3,6 @@
  * */
 
 import React, {Component} from 'react';
-import axios from 'axios';
 import {Table} from 'reactstrap';
 
 class UserViewMyAwards extends Component {
@@ -33,7 +32,7 @@ class UserViewMyAwards extends Component {
     render() {
         return (
             <div>
-                <h1>Given Awards</h1>
+                <h2>Given Awards</h2>
                 <Table>
                     <thead>
                     <tr>

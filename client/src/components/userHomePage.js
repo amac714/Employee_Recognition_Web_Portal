@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import SideSection from './sideSection';
-import {Table, Row, Col, Alert, Container} from 'reactstrap';
+import {Row, Col} from 'reactstrap';
 import UserCreateAward from './userCreateAward';
 import UserViewGivenAwards from './userViewGivenAwards';
 import axios from 'axios';
@@ -54,6 +54,11 @@ class UserHomePage extends Component {
 
         this.state = {
             awards: [],
+            awardData: {
+                numberOfAwardsGiven: 0,
+                employeeOfTheWeek: 0,
+                employeeOfTheMonth: 0,
+            },
             userType: 'user',
             currentDate: currentDate,
             currentDay: currentDay,
@@ -63,7 +68,6 @@ class UserHomePage extends Component {
             last_name: '',
             time_granted: '',
             date_granted: '',
-            sent: false,
             config: {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('access_token')}`
@@ -75,23 +79,48 @@ class UserHomePage extends Component {
 
     componentDidMount() {
         this.getAwards();
+        this.timer = setInterval(() => this.getAwards(), 5000);
+    }
+
+    componentWillUnmount() {
+        this.timer = null;
     }
 
 
     /*
     * Description: Makes call to endpoint getting all of the awards given by the user. Will pass the web token to the endpoint for authentication.
- * */
+    */
     getAwards = () => {
+        var weekAwardCount = 0;
+        var monthAwardCount = 0;
+
         axios
             .get('/user/' + this.state.id + '/award', this.state.config)
-            .then(res => this.setState({awards: res.data})) // If user is authenticated, store the returned awards
+            .then(res => {
+                res.data.forEach(function (item) {
+                    if (item.award_type === "Week") {
+                        weekAwardCount++;
+                    } else if (item.award_type === "Month") {
+                        monthAwardCount++;
+                    }
+                });
+
+                let awardDataCopy = this.state.awardData;
+                awardDataCopy['numberOfAwardsGiven'] = res.data.length;
+                awardDataCopy['employeeOfTheWeek'] = weekAwardCount;
+                awardDataCopy['employeeOfTheMonth'] = monthAwardCount;
+
+                this.setState({
+                    awards: res.data,
+                    awardData: awardDataCopy,
+                })
+            }) // If user is authenticated, store the returned awards
             .catch(err => console.log(err)); // User is not authenticated
     };
 
 
     submitAward = (e) => {
-        // console.log(e);
-        //e.preventDefault();
+
         // Send award data
         axios
             .post(
@@ -106,14 +135,11 @@ class UserHomePage extends Component {
                 this.state.config
             )
             .then(res => {
-                //alert("In Then");
                 console.log(res);
                 console.log(res.data);
-                this.setState({sent: false});
                 this.renderPage();
                 this.props.history.push('/userHomePage'); //route to user homepage
                 this.getAwards()
-
             })
             .catch(function (error) {
                 //alert("In Catch");
@@ -135,6 +161,8 @@ class UserHomePage extends Component {
 
 
     render() {
+
+
         return (
             <div>
                 <Row>
@@ -143,6 +171,7 @@ class UserHomePage extends Component {
                         <SideSection
                             userType={this.state.userType}
                             currentDate={this.state.currentDate}
+                            awardData={this.state.awardData}
                         />
                     </Col>
 

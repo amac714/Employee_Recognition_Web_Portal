@@ -359,26 +359,59 @@ def getBIReport():
     totalEmpWeek = Awards.query.filter_by(award_type='Employee of the Week').count()
 
     # Users that has the most awards - descending
-    userWithMostAwards = db.session.query(Users.first_name, Users.last_name, func.count(Awards.award_type)) \
+    userWithMostAwards_Total = db.session.query(Users.first_name, Users.last_name, func.count(Awards.award_type)) \
         .join(Awards, Users.first_name == Awards.recipient_first_name) \
         .group_by(Users.first_name, Users.last_name) \
         .order_by(func.count(Awards.award_type) \
-                  .desc()).all()
+        .desc()).all()
+
+    userWithMostAwards_Month = db.session.query(Users.first_name, Users.last_name, func.count(Awards.award_type)) \
+        .join(Awards, Users.first_name == Awards.recipient_first_name) \
+        .filter(Awards.award_type=='Employee of the Month') \
+        .group_by(Users.first_name, Users.last_name, Awards.award_type) \
+        .order_by(func.count(Awards.award_type) \
+        .desc()).all()
+
+    userWithMostAwards_Week = db.session.query(Users.first_name, Users.last_name, func.count(Awards.award_type)) \
+        .join(Awards, Users.first_name == Awards.recipient_first_name) \
+        .filter(Awards.award_type=='Employee of the Week') \
+        .group_by(Users.first_name, Users.last_name, Awards.award_type) \
+        .order_by(func.count(Awards.award_type) \
+        .desc()).all()
+
 
     # User that granted the most awards - descending
-    userGrantedMostAwards = db.session.query(Users.first_name, Users.last_name, func.count(Awards.created_by_user)) \
+    userGrantedMostAwards_Total = db.session.query(Users.first_name, Users.last_name, func.count(Awards.created_by_user)) \
         .join(Awards, Users.id == Awards.created_by_user) \
         .group_by(Users.first_name, Users.last_name) \
         .order_by(func.count(Awards.created_by_user) \
-                  .desc()).all()
+        .desc()).all()
+
+    userGrantedMostAwards_Month = db.session.query(Users.first_name, Users.last_name, func.count(Awards.created_by_user)) \
+        .join(Awards, Users.id == Awards.created_by_user) \
+        .filter(Awards.award_type=='Employee of the Month') \
+        .group_by(Users.first_name, Users.last_name) \
+        .order_by(func.count(Awards.created_by_user) \
+        .desc()).all()
+
+    userGrantedMostAwards_Week = db.session.query(Users.first_name, Users.last_name, func.count(Awards.created_by_user)) \
+        .join(Awards, Users.id == Awards.created_by_user) \
+        .filter(Awards.award_type=='Employee of the Week') \
+        .group_by(Users.first_name, Users.last_name) \
+        .order_by(func.count(Awards.created_by_user) \
+        .desc()).all()
 
     return jsonify({"totalAdmin": totalAdmin,
                     'totalUser': totalUser,
                     'totalAward': totalAward,
                     'totalEmpMonth': totalEmpMonth,
                     'totalEmpWeek': totalEmpWeek,
-                    'userWithMostAwards': userWithMostAwards,
-                    'userGrantedMostAwards': userGrantedMostAwards
+                    'userWithMostAwards': {"total":userWithMostAwards_Total, 
+                                           "month": userWithMostAwards_Month, 
+                                           "week": userWithMostAwards_Week},
+                    'userGrantedMostAwards': {"total": userGrantedMostAwards_Total, 
+                                              "month": userGrantedMostAwards_Month, 
+                                              "week": userGrantedMostAwards_Week}
                     })
 
 
