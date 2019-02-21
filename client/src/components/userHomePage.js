@@ -10,8 +10,8 @@ import UserViewGivenAwards from './userViewGivenAwards';
 import DateSection from './sideViewComponents/date'
 import StatsSection from './sideViewComponents/stats'
 import UserAccountInfoSection from './sideViewComponents/userAccountInfo'
+import UpdateUserAccountForm from './updateUserInfo'
 import axios from 'axios';
-import {Link} from 'react-router-dom';
 
 
 class UserHomePage extends Component {
@@ -63,23 +63,18 @@ class UserHomePage extends Component {
                 employeeOfTheWeek: 0,
                 employeeOfTheMonth: 0,
             },
-            displayType: 'homepage',
+            displayType: 'updateUserInfo',
             dateData: {
                 currentDate: currentDate,
                 currentDay: currentDay,
             },
-            // currentDate: currentDate,
-            // currentDay: currentDay,
             id: localStorage.getItem('id'),
             award_type: '',
             first_name: '',
             last_name: '',
             time_granted: '',
             date_granted: '',
-            currentUserData: {
-                user_first_name: '',
-                user_last_name: '',
-            },
+            currentUserData: [],
             config: {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('access_token')}`
@@ -91,12 +86,26 @@ class UserHomePage extends Component {
 
     componentDidMount() {
         this.getAwards();
+        this.getUser();
         this.timer = setInterval(() => this.getAwards(), 5000);
     }
 
     componentWillUnmount() {
         this.timer = null;
     }
+
+
+    getUser = () => {
+        axios
+            .get('/user/' + localStorage.getItem('id'))
+            .then(res => {
+                console.log(res.data);
+                this.setState({
+                    currentUserData: res.data
+                });
+            }) // If user is authenticated, store the returned awards
+            .catch(err => console.log(err)); // User is not authenticated
+    };
 
 
     /*
@@ -154,7 +163,6 @@ class UserHomePage extends Component {
                 this.getAwards()
             })
             .catch(function (error) {
-                //alert("In Catch");
                 console.log(error);
             });
 
@@ -181,27 +189,29 @@ class UserHomePage extends Component {
                 displayType: 'homepage'
             })
         }
-
     };
 
-    // updateAccount = e => {
-    //
-    //     axios
-    //         .patch(
-    //             '/user/' + this.state.id,
-    //             {
-    //                 first_name: this.state.first_name,
-    //                 last_name: this.state.last_name,
-    //             },
-    //             this.state.config
-    //         )
-    //
-    //         .then(res => {
-    //             console.log(res);
-    //             this.props.history.push('/userHomePage');
-    //         })
-    //         .catch(err => console.log(err));
-    // };
+    updateAccount = e => {
+
+
+        // axios
+        //     .patch(
+        //         '/user/' + this.state.id,
+        //         {
+        //             first_name: e.first_name,
+        //             last_name: e.last_name,
+        //             username: e.username,
+        //             password: e.password,
+        //         },
+        //         this.state.config
+        //     )
+        //
+        //     .then(res => {
+        //         console.log(res);
+        //         // this.props.history.push('/userHomePage');
+        //     })
+        //     .catch(err => console.log(err));
+    };
 
 
     render() {
@@ -217,15 +227,18 @@ class UserHomePage extends Component {
                         submitAward={this.submitAward}
                     />
                 </div>;
+
             displayAwardData =
                 <div>
                     <UserViewGivenAwards awards={this.state.awards}/>
                 </div>
+
         } else if (display === "updateUserInfo") {
             displayPage =
                 <div>
-                    <UserAccountInfoSection
-
+                    <UpdateUserAccountForm
+                        updateAccount={this.updateAccount}
+                        currentData={this.state.currentUserData}
                     />
                 </div>
         }

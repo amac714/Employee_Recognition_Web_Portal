@@ -50,7 +50,7 @@ def getAllUser():
 
 # GET : Get individual user
 @app.route('/user/<int:u_id>', methods=['GET'])
-@admin_only
+# @admin_only
 def getIndUser(u_id):
     user = Users.query.get(u_id)
     if user:
