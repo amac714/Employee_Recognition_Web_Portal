@@ -220,6 +220,10 @@ class UserHomePage extends Component {
             .catch(err => console.log(err));
     };
 
+
+    /*
+    * Description: Delete a certain award
+    * */
     deleteAward = e => {
         console.log(e);
 

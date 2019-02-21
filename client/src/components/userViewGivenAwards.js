@@ -7,8 +7,18 @@ import {Table} from 'reactstrap';
 
 class UserViewMyAwards extends Component {
 
+    /*
+    * Description: Will send the award id to parent (userHomePage.js) and delete that award
+    * */
     deleteAward = (e) => {
-        this.props.deleteAward(e)
+
+        if (window.confirm("Confirm Delete")) {
+            this.props.deleteAward(e)
+        } else {
+            console.log("I'm done")
+        }
+
+
     };
 
 
@@ -38,9 +48,7 @@ class UserViewMyAwards extends Component {
     };
 
 
-
     render() {
-
         return (
             <div>
                 <h2>Given Awards</h2>
