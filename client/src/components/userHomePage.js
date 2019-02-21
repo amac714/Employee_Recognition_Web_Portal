@@ -141,8 +141,10 @@ class UserHomePage extends Component {
     };
 
 
+    /*
+    * Description: Create award
+    * */
     submitAward = (e) => {
-
         // Send award data
         axios
             .post(
@@ -169,7 +171,9 @@ class UserHomePage extends Component {
 
     };
 
-    /**/
+    /*
+    * Description: Clears award form
+    * */
     renderPage = () => {
         this.setState({
             award_type: '',
@@ -180,6 +184,9 @@ class UserHomePage extends Component {
         })
     };
 
+    /*
+    * Description: Change main display between award + db award info AND updating info form
+    * */
     changeDisplay = () => {
         if (this.state.displayType === "homepage") {
             this.setState({
@@ -192,8 +199,11 @@ class UserHomePage extends Component {
         }
     };
 
-    updateAccount = e => {
 
+    /*
+    * Description: Update user First + Last name
+    * */
+    updateAccount = e => {
         axios
             .patch(
                 '/user/' + this.state.id,
