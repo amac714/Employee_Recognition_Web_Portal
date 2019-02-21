@@ -7,6 +7,11 @@ import {Table} from 'reactstrap';
 
 class UserViewMyAwards extends Component {
 
+    deleteAward = (e) => {
+        this.props.deleteAward(e)
+    };
+
+
     /*
      *  Description: Format how the awards are displayed to the screen.
      * */
@@ -25,11 +30,17 @@ class UserViewMyAwards extends Component {
                 <th>{recipient_last_name}</th>
                 <th>{date_granted}</th>
                 <th>{time_granted}</th>
+                <th>
+                    <button type="button" onClick={() => this.deleteAward(id)}>Delete</button>
+                </th>
             </tr>
         );
     };
 
+
+
     render() {
+
         return (
             <div>
                 <h2>Given Awards</h2>
@@ -41,6 +52,7 @@ class UserViewMyAwards extends Component {
                         <th>Recipient Last Name</th>
                         <th>Date Given</th>
                         <th>Time Given</th>
+                        <th>Delete Award</th>
                     </tr>
                     </thead>
                     <tbody>{this.props.awards.map(this.getAwardData)}</tbody>

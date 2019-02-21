@@ -103,8 +103,7 @@ class UserHomePage extends Component {
                 this.setState({
                     currentUserData: res.data
                 });
-                console.log(this.state.currentUserData)
-            }) // If user is authenticated, store the returned awards
+            })
             .catch(err => console.log(err)); // User is not authenticated
     };
 
@@ -136,7 +135,7 @@ class UserHomePage extends Component {
                     awards: res.data,
                     awardData: awardDataCopy,
                 })
-            }) // If user is authenticated, store the returned awards
+            })
             .catch(err => console.log(err)); // User is not authenticated
     };
 
@@ -145,7 +144,6 @@ class UserHomePage extends Component {
     * Description: Create award
     * */
     submitAward = (e) => {
-        // Send award data
         axios
             .post(
                 'http://localhost:5000/user/' + this.state.id + '/award',
@@ -222,6 +220,18 @@ class UserHomePage extends Component {
             .catch(err => console.log(err));
     };
 
+    deleteAward = e => {
+        console.log(e);
+
+        axios.delete('/user/' + this.state.id + '/award/' + e, this.state.config)
+            .then(res =>{
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    };
 
     render() {
         const display = this.state.displayType;
@@ -239,7 +249,10 @@ class UserHomePage extends Component {
 
             displayAwardData =
                 <div>
-                    <UserViewGivenAwards awards={this.state.awards}/>
+                    <UserViewGivenAwards
+                        awards={this.state.awards}
+                        deleteAward={this.deleteAward}
+                    />
                 </div>
 
         } else if (display === "updateUserInfo") {

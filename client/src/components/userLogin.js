@@ -30,7 +30,6 @@ class UserLogin extends Component {
    * */
   handleSubmit = e => {
     e.preventDefault();
-
     axios
       .post('/user/login', {
         username: this.state.username,
