@@ -5,7 +5,9 @@ class UserAccountInfo extends Component {
   render() {
     return (
       <div>
-        <p>Username: {localStorage.getItem('username')}</p>
+        <p>Username: {this.props.currentUserData.user_name}</p>
+        <p>First Name: {this.props.currentUserData.first_name}</p>
+        <p>Last Name: {this.props.currentUserData.last_name}</p>
       </div>
     );
   }

@@ -92,16 +92,20 @@ def postUser():
 @jwt_required
 def patchUser(u_id):
     user = Users.query.get(u_id)
-    if user:
+
+    if user: # and bcrypt.check_password_hash(user.user_password, request.json['password']):
         schema = UserSchema()
         user.first_name = request.json['first_name']
         user.last_name = request.json['last_name']
-        user.user_name = request.json['username']
-        user.user_password = request.json['password']
+        # user.user_name = request.json['username']
+        # user.user_password = request.json['password']
         db.session.commit()
         return schema.jsonify(user)
     else:
         return jsonify({"User": "User not found."})
+
+
+
 
 
 # DELETE : Delete user given id 

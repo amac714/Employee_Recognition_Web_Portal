@@ -10,7 +10,7 @@ import UserViewGivenAwards from './userViewGivenAwards';
 import DateSection from './sideViewComponents/date'
 import StatsSection from './sideViewComponents/stats'
 import UserAccountInfoSection from './sideViewComponents/userAccountInfo'
-import UpdateUserAccountForm from './updateUserInfo'
+import UpdateUserInfo from './updateUserInfo'
 import axios from 'axios';
 
 
@@ -63,7 +63,7 @@ class UserHomePage extends Component {
                 employeeOfTheWeek: 0,
                 employeeOfTheMonth: 0,
             },
-            displayType: 'updateUserInfo',
+            displayType: 'homepage',
             dateData: {
                 currentDate: currentDate,
                 currentDay: currentDay,
@@ -99,10 +99,11 @@ class UserHomePage extends Component {
         axios
             .get('/user/' + localStorage.getItem('id'))
             .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 this.setState({
                     currentUserData: res.data
                 });
+                console.log(this.state.currentUserData)
             }) // If user is authenticated, store the returned awards
             .catch(err => console.log(err)); // User is not authenticated
     };
@@ -156,8 +157,8 @@ class UserHomePage extends Component {
                 this.state.config
             )
             .then(res => {
-                console.log(res);
-                console.log(res.data);
+                // console.log(res);
+                // console.log(res.data);
                 this.renderPage();
                 this.props.history.push('/userHomePage'); //route to user homepage
                 this.getAwards()
@@ -193,24 +194,22 @@ class UserHomePage extends Component {
 
     updateAccount = e => {
 
+        axios
+            .patch(
+                '/user/' + this.state.id,
+                {
+                    first_name: e.first_name,
+                    last_name: e.last_name,
+                },
+                this.state.config
+            )
 
-        // axios
-        //     .patch(
-        //         '/user/' + this.state.id,
-        //         {
-        //             first_name: e.first_name,
-        //             last_name: e.last_name,
-        //             username: e.username,
-        //             password: e.password,
-        //         },
-        //         this.state.config
-        //     )
-        //
-        //     .then(res => {
-        //         console.log(res);
-        //         // this.props.history.push('/userHomePage');
-        //     })
-        //     .catch(err => console.log(err));
+            .then(res => {
+                console.log(res);
+                this.getUser();
+                this.changeDisplay();
+            })
+            .catch(err => console.log(err));
     };
 
 
@@ -236,7 +235,7 @@ class UserHomePage extends Component {
         } else if (display === "updateUserInfo") {
             displayPage =
                 <div>
-                    <UpdateUserAccountForm
+                    <UpdateUserInfo
                         updateAccount={this.updateAccount}
                         currentData={this.state.currentUserData}
                     />
@@ -252,7 +251,7 @@ class UserHomePage extends Component {
                             date={this.state.dateData}
                         />
 
-                        <UserAccountInfoSection/>
+                        <UserAccountInfoSection currentUserData={this.state.currentUserData}/>
 
                         <button onClick={this.changeDisplay}>Update Account</button>
 
