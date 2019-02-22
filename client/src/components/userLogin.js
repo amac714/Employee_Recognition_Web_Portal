@@ -30,7 +30,6 @@ class UserLogin extends Component {
    * */
   handleSubmit = e => {
     e.preventDefault();
-
     axios
       .post('/user/login', {
         username: this.state.username,
@@ -42,6 +41,10 @@ class UserLogin extends Component {
         localStorage.setItem('username', this.state.username); //store username
         localStorage.setItem('access_token', this.state.userToken); //store user's generated token
         localStorage.setItem('id', this.state.id);
+        localStorage.setItem('password', this.state.password);
+        localStorage.setItem('first_name', this.state.first_name);
+        localStorage.setItem('last_name', this.state.last_name);
+
         this.props.history.push('/userHomePage'); //route to user homepage
       })
 

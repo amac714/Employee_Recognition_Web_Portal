@@ -50,7 +50,7 @@ def getAllUser():
 
 # GET : Get individual user
 @app.route('/user/<int:u_id>', methods=['GET'])
-@admin_only
+# @admin_only
 def getIndUser(u_id):
     user = Users.query.get(u_id)
     if user:
@@ -92,16 +92,20 @@ def postUser():
 @jwt_required
 def patchUser(u_id):
     user = Users.query.get(u_id)
+
     if user:
         schema = UserSchema()
         user.first_name = request.json['first_name']
         user.last_name = request.json['last_name']
-        user.user_name = request.json['username']
-        user.user_password = request.json['password']
+        # user.user_name = request.json['username']
+        # user.user_password = request.json['password']
         db.session.commit()
         return schema.jsonify(user)
     else:
         return jsonify({"User": "User not found."})
+
+
+
 
 
 # DELETE : Delete user given id 
@@ -143,6 +147,7 @@ def getIndAdmin(a_id):
 
 # POST : Create new admin
 @app.route('/admin', methods=['POST'])
+@admin_only
 def postAdmin():
     adminSchema = AdminSchema()
     passHash = bcrypt.generate_password_hash(request.json['password'])
@@ -200,7 +205,6 @@ def getAwardByUser(u_id):
 
 
 # POST : Create new award
-# NEED TO CHECK IF RECIPENT IS IN THE DB
 @app.route('/user/<int:u_id>/award', methods=['POST'])
 @user_only
 def postAward(u_id):

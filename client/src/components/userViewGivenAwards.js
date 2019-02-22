@@ -8,6 +8,21 @@ import {Table} from 'reactstrap';
 class UserViewMyAwards extends Component {
 
     /*
+    * Description: Will send the award id to parent (userHomePage.js) and delete that award
+    * */
+    deleteAward = (e) => {
+
+        if (window.confirm("Confirm Delete")) {
+            this.props.deleteAward(e)
+        } else {
+            console.log("I'm done")
+        }
+
+
+    };
+
+
+    /*
      *  Description: Format how the awards are displayed to the screen.
      * */
     getAwardData = ({
@@ -25,9 +40,13 @@ class UserViewMyAwards extends Component {
                 <th>{recipient_last_name}</th>
                 <th>{date_granted}</th>
                 <th>{time_granted}</th>
+                <th>
+                    <button type="button" onClick={() => this.deleteAward(id)}>Delete</button>
+                </th>
             </tr>
         );
     };
+
 
     render() {
         return (
@@ -41,6 +60,7 @@ class UserViewMyAwards extends Component {
                         <th>Recipient Last Name</th>
                         <th>Date Given</th>
                         <th>Time Given</th>
+                        <th>Delete Award</th>
                     </tr>
                     </thead>
                     <tbody>{this.props.awards.map(this.getAwardData)}</tbody>

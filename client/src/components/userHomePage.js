@@ -7,6 +7,10 @@ import SideSection from './sideSection';
 import {Row, Col} from 'reactstrap';
 import UserCreateAward from './userCreateAward';
 import UserViewGivenAwards from './userViewGivenAwards';
+import DateSection from './sideViewComponents/date'
+import StatsSection from './sideViewComponents/stats'
+import UserAccountInfoSection from './sideViewComponents/userAccountInfo'
+import UpdateUserInfo from './updateUserInfo'
 import axios from 'axios';
 
 
@@ -59,15 +63,18 @@ class UserHomePage extends Component {
                 employeeOfTheWeek: 0,
                 employeeOfTheMonth: 0,
             },
-            userType: 'user',
-            currentDate: currentDate,
-            currentDay: currentDay,
+            displayType: 'homepage',
+            dateData: {
+                currentDate: currentDate,
+                currentDay: currentDay,
+            },
             id: localStorage.getItem('id'),
             award_type: '',
             first_name: '',
             last_name: '',
             time_granted: '',
             date_granted: '',
+            currentUserData: [],
             config: {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('access_token')}`
@@ -79,12 +86,26 @@ class UserHomePage extends Component {
 
     componentDidMount() {
         this.getAwards();
+        this.getUser();
         this.timer = setInterval(() => this.getAwards(), 5000);
     }
 
     componentWillUnmount() {
         this.timer = null;
     }
+
+
+    getUser = () => {
+        axios
+            .get('/user/' + localStorage.getItem('id'))
+            .then(res => {
+                // console.log(res.data);
+                this.setState({
+                    currentUserData: res.data
+                });
+            })
+            .catch(err => console.log(err)); // User is not authenticated
+    };
 
 
     /*
@@ -114,14 +135,15 @@ class UserHomePage extends Component {
                     awards: res.data,
                     awardData: awardDataCopy,
                 })
-            }) // If user is authenticated, store the returned awards
+            })
             .catch(err => console.log(err)); // User is not authenticated
     };
 
 
+    /*
+    * Description: Create award
+    * */
     submitAward = (e) => {
-
-        // Send award data
         axios
             .post(
                 'http://localhost:5000/user/' + this.state.id + '/award',
@@ -135,20 +157,21 @@ class UserHomePage extends Component {
                 this.state.config
             )
             .then(res => {
-                console.log(res);
-                console.log(res.data);
+                // console.log(res);
+                // console.log(res.data);
                 this.renderPage();
                 this.props.history.push('/userHomePage'); //route to user homepage
                 this.getAwards()
             })
             .catch(function (error) {
-                //alert("In Catch");
                 console.log(error);
             });
 
     };
 
-    /**/
+    /*
+    * Description: Clears award form
+    * */
     renderPage = () => {
         this.setState({
             award_type: '',
@@ -159,32 +182,130 @@ class UserHomePage extends Component {
         })
     };
 
+    /*
+    * Description: Change main display between award + db award info AND updating info form
+    * */
+    changeDisplay = () => {
+        if (this.state.displayType === "homepage") {
+            this.setState({
+                displayType: 'updateUserInfo'
+            })
+        } else {
+            this.setState({
+                displayType: 'homepage'
+            })
+        }
+    };
+
+
+    /*
+    * Description: Update user First + Last name
+    * */
+    updateAccount = e => {
+        axios
+            .patch(
+                '/user/' + this.state.id,
+                {
+                    first_name: e.first_name,
+                    last_name: e.last_name,
+                },
+                this.state.config
+            )
+
+            .then(res => {
+                console.log(res);
+                this.getUser();
+                this.changeDisplay();
+            })
+            .catch(err => console.log(err));
+    };
+
+
+    /*
+    * Description: Delete a certain award
+    * */
+    deleteAward = e => {
+        console.log(e);
+
+        axios.delete('/user/' + this.state.id + '/award/' + e, this.state.config)
+            .then(res =>{
+                console.log(res)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    };
 
     render() {
+        const display = this.state.displayType;
+        let displayPage;
+        let displayAwardData;
 
+        if (display === "homepage") {
+            displayPage =
+                <div>
+                    <UserCreateAward
+                        clearForm={this.state.sent}
+                        submitAward={this.submitAward}
+                    />
+                </div>;
+
+            displayAwardData =
+                <div>
+                    <UserViewGivenAwards
+                        awards={this.state.awards}
+                        deleteAward={this.deleteAward}
+                    />
+                </div>
+
+        } else if (display === "updateUserInfo") {
+            displayPage =
+                <div>
+                    <UpdateUserInfo
+                        updateAccount={this.updateAccount}
+                        currentData={this.state.currentUserData}
+                    />
+                </div>
+        }
 
         return (
             <div>
                 <Row>
 
                     <Col xs="2" style={{border: '1px solid black'}}>
-                        <SideSection
-                            userType={this.state.userType}
-                            currentDate={this.state.currentDate}
+                        <DateSection
+                            date={this.state.dateData}
+                        />
+
+                        <UserAccountInfoSection currentUserData={this.state.currentUserData}/>
+
+                        <button onClick={this.changeDisplay}>Update Account</button>
+
+                        <StatsSection
                             awardData={this.state.awardData}
                         />
+
                     </Col>
 
+
+                    {this.state.displayType === "homepage" &&
                     <Col xs="5" style={{border: '1px solid red'}}>
-                        <UserCreateAward
-                            clearForm={this.state.sent}
-                            submitAward={this.submitAward}
-                        />
+                        {displayPage}
                     </Col>
+                    }
 
+                    {this.state.displayType === "homepage" &&
                     <Col xs="5" style={{border: '1px solid green'}}>
-                        <UserViewGivenAwards awards={this.state.awards}/>
+                        {displayAwardData}
                     </Col>
+                    }
+
+                    {this.state.displayType === "updateUserInfo" &&
+                    <Col xs="10" style={{border: '1px solid blue'}}>
+                        {displayPage}
+                    </Col>
+                    }
                 </Row>
             </div>
         );
