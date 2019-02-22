@@ -98,7 +98,8 @@ def patchUser(u_id):
         user.first_name = request.json['first_name']
         user.last_name = request.json['last_name']
         # user.user_name = request.json['username']
-        # user.user_password = request.json['password']
+        passHash = bcrypt.generate_password_hash(request.json['password'])
+        # user.user_password = passHash
         db.session.commit()
         return schema.jsonify(user)
     else:
