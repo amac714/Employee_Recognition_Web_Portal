@@ -2,9 +2,9 @@
  * Description: Component to display Admin users
  */
 
-import React, {Component} from 'react';
-import {Table, Container, Button} from 'reactstrap';
-import {Link} from 'react-router-dom';
+import React, { Component } from 'react';
+import { Table, Container } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 class ViewAdmins extends Component {

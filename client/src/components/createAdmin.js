@@ -62,7 +62,7 @@ class CreateAdmin extends Component {
             admin_name: '',
             password: '',
             confirmPW: '',
-            validate: !this.state.validate
+            validate: false
           });
         })
         .catch(err => console.log(err));

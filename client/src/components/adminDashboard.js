@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { Button, Nav, NavItem, NavLink, Col, Row, Alert } from 'reactstrap';
+import { Nav, NavItem, NavLink, Col, Row } from 'reactstrap';
 import ViewUsers from './adminViewUsers';
 import ViewAdmins from './adminViewAdmins';
 import Reports from './sideViewComponents/reports';
@@ -51,21 +51,6 @@ class AdminDashboard extends Component {
             {this.renderComponent()}
           </Col>
         </Row>
-        {/* <Row>
-          <Col xs="2" style={{ border: '1px solid black' }}>
-            <Reports />
-            <Button onClick={() => this.handleClick(1)}>View Users</Button>
-            <Button onClick={() => this.handleClick(2)}>View Admins</Button>
-          </Col>
-          <Col>
-            {this.renderComponent()}
-          </Col>
-
-          <Col sm="12" md={{ size: 6, offset: 3 }}>
-            <Button onClick={() => this.handleClick(1)}>View Users</Button>
-            <Button onClick={() => this.handleClick(2)}>View Admins</Button>
-          </Col> 
-        </Row> */}
       </div>
     );
   }
