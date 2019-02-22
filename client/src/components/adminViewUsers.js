@@ -53,8 +53,6 @@ class ViewUsers extends Component {
       },
     };
 
-    console.log(edit);
-
     return (
       <tr key={id}>
         <th scope="row">{id}</th>

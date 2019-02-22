@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { Button, Nav, NavItem, NavLink, Col, Row } from 'reactstrap';
+import { Nav, NavItem, NavLink, Col, Row } from 'reactstrap';
 import ViewUsers from './adminViewUsers';
 import ViewAdmins from './adminViewAdmins';
 import Reports from './sideViewComponents/reports';
