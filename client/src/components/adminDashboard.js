@@ -12,10 +12,19 @@ class AdminDashboard extends Component {
   constructor() {
     super();
     this.state = {
-      buttonPressed: 0,
+      buttonPressed: '',
     };
   }
 
+  // Displays appropriate component
+  componentDidMount() {
+    if (this.props.location.state) {
+      if (this.props.location.state.from === 1)
+        this.setState({ buttonPressed: 1 });
+      else if (this.props.location.state.from === 2)
+        this.setState({ buttonPressed: 2 });
+    } else this.setState({ buttonPressed: 0 });
+  }
   // Sets which component to display
   handleClick = button => {
     this.setState({ buttonPressed: button });
@@ -26,7 +35,7 @@ class AdminDashboard extends Component {
     if (this.state.buttonPressed === 1) return <ViewUsers />;
     else if (this.state.buttonPressed === 2) return <ViewAdmins />;
     else if (this.state.buttonPressed === 3) return <Reports />;
-    else return (<h2>Admin Dashboard</h2>)
+    else return <h2>Admin Dashboard</h2>;
   };
 
   render() {
@@ -37,13 +46,19 @@ class AdminDashboard extends Component {
             <h3>Menu</h3>
             <Nav vertical>
               <NavItem>
-                <NavLink href="#" onClick={() => this.handleClick(1)}>View Users</NavLink>
+                <NavLink href="#" onClick={() => this.handleClick(1)}>
+                  View Users
+                </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="#" onClick={() => this.handleClick(2)}>View Admins</NavLink>
+                <NavLink href="#" onClick={() => this.handleClick(2)}>
+                  View Admins
+                </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="#" onClick={() => this.handleClick(3)}>View Reports</NavLink>
+                <NavLink href="#" onClick={() => this.handleClick(3)}>
+                  View Reports
+                </NavLink>
               </NavItem>
             </Nav>
           </Col>

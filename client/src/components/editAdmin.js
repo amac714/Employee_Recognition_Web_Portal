@@ -4,6 +4,7 @@
 
 import React, { Component } from 'react';
 import {
+  Alert,
   Container,
   Button,
   Form,
@@ -23,6 +24,8 @@ class EditAdmin extends Component {
       password: '',
       confirmPW: '',
       validate: false,
+      invalidAdmin: false,
+      visible: false,
     };
   }
 
@@ -69,9 +72,32 @@ class EditAdmin extends Component {
         )
         .then(res => {
           console.log(res);
-          this.props.history.push('/adminDash');
+          this.setState(
+            {
+              admin_name: '',
+              password: '',
+              confirmPW: '',
+              validate: false,
+              invalidAdmin: false,
+              visible: true,
+            },
+            () => {
+              // Redirect back to admin dashboard after 1 seconds on success
+              window.setTimeout(() => {
+                this.props.history.push({
+                  pathname: '/adminDash',
+                  state: {
+                    from: 2,
+                  },
+                });
+              }, 1000);
+            }
+          );
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          console.log(err);
+          this.setState({ invalidAdmin: true });
+        });
     }
   };
 
@@ -79,6 +105,9 @@ class EditAdmin extends Component {
     return (
       <div>
         <Container>
+          <Alert color="success" isOpen={this.state.visible}>
+            Admin has been saved!
+          </Alert>
           <Col sm="12" md={{ size: 6, offset: 3 }}>
             <h2>Edit Admin</h2>
           </Col>
@@ -87,12 +116,16 @@ class EditAdmin extends Component {
               <FormGroup>
                 <Input
                   type="text"
+                  invalid={this.state.invalidAdmin}
                   name="admin_name"
                   id="admin_id"
                   value={this.state.admin_name}
                   placeholder="Admin Name"
                   onChange={this.onChange}
                 />
+                <FormFeedback invalid="true">
+                  Username is already taken!
+                </FormFeedback>
               </FormGroup>
             </Col>
 
