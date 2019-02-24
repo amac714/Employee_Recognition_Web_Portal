@@ -31,7 +31,8 @@ class Header extends Component {
     else if (
       path === '/adminDash' ||
       path === '/addAdmin' ||
-      path === '/createUser'
+      path === '/createUser' ||
+      path === '/editUser'
     )
       item = (
         <Nav className="ml-auto" navbar>

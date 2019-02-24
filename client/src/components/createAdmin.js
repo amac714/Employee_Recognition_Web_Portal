@@ -25,6 +25,7 @@ class CreateAdmin extends Component {
       confirmPW: '',
       validate: false,
       visible: false,
+      invalidAdmin: false,
     };
   }
 
@@ -57,21 +58,34 @@ class CreateAdmin extends Component {
           config
         )
         .then(res => {
-          this.setState({
-            visible: true,
-            admin_name: '',
-            password: '',
-            confirmPW: '',
-            validate: false
-          });
+          this.setState(
+            {
+              visible: true,
+              admin_name: '',
+              password: '',
+              confirmPW: '',
+              validate: false,
+              invalidAdmin: false,
+            },
+            () => {
+              // Redirect back to admin dashboard after 2 seconds on success
+              window.setTimeout(() => {
+                this.props.history.push({
+                  pathname: '/adminDash',
+                  state: {
+                    from: 2,
+                  }
+                });
+              }, 2000);
+            }
+          );
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          console.log(err);
+          this.setState({ invalidAdmin: true });
+        });
     }
   };
-
-  renderRedirect = () => {
-    this.props.history.push('/adminDash');
-  }
 
   render() {
     return (
@@ -79,9 +93,8 @@ class CreateAdmin extends Component {
         <Container>
           <Alert color="success" isOpen={this.state.visible}>
             Admin has been created!
-            <button onClick={this.renderRedirect}>Return to Dashboard</button>
           </Alert>
-          
+
           <Col sm="12" md={{ size: 6, offset: 3 }}>
             <h2>Create New Admin</h2>
           </Col>
@@ -91,11 +104,15 @@ class CreateAdmin extends Component {
                 <Label>Username</Label>
                 <Input
                   type="text"
+                  invalid={this.state.invalidAdmin}
                   name="admin_name"
                   id="admin_id"
                   value={this.state.admin_name}
                   onChange={this.onChange}
                 />
+                <FormFeedback invalid="true">
+                  Username is already taken!
+                </FormFeedback>
               </FormGroup>
             </Col>
 

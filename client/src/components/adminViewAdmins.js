@@ -59,7 +59,7 @@ class ViewAdmins extends Component {
         if (this.state.admin_id === `${id}`) {
             // Don't let logged in admin delete themselves
             return (
-                <tr key={id}>
+                <tr key={id} style={{ color: 'red'}}>
                     <th scope="row">{id}</th>
                     <td>{admin_name}</td>
                     <td>
@@ -67,7 +67,7 @@ class ViewAdmins extends Component {
                             <i className="fa fa-pencil-square-o" aria-hidden="true"/>
                         </Link>
                     </td>
-                    <td></td>
+                    <td>Logged in as this admin</td>
                 </tr>
             )
         } else {
@@ -92,13 +92,16 @@ class ViewAdmins extends Component {
     };
 
     render() {
-        const {admins} = this.state;
+        // get admins array and sort by id
+        const { admins } = this.state;
+        admins.sort((a, b) => a.id - b.id);
+        
         return (
             <div>
                 <Container>
                     <h1>Admins</h1>
                     <Link to="/addAdmin">Add New Admin</Link>
-                    <Table>
+                    <Table responsive>
                         <thead>
                         <tr>
                             <th>Id</th>
@@ -107,7 +110,7 @@ class ViewAdmins extends Component {
                             <th>Delete</th>
                         </tr>
                         </thead>
-                        <tbody>{admins.sort((a, b) => a.id - b.id).map(this.renderAdmins)}</tbody>
+                        <tbody>{admins.map(this.renderAdmins)}</tbody>
                     </Table>
                 </Container>
             </div>

@@ -80,7 +80,7 @@ class ViewUsers extends Component {
         <Container>
           <h1>Users</h1>
           <Link to="/createUser">Create New User</Link>
-          <Table>
+          <Table responsive>
             <thead>
               <tr>
                 <th>Id</th>
