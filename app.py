@@ -245,9 +245,12 @@ def deleteAward(u_id, aw_id):
 
 
 def generateAward(newAward, authorizedUser):
-  
+
+    print(newAward.date_granted)
+
     # Latex document sections
     header = r'''\documentclass{article}
+            \usepackage{graphicx}
             \begin{document}
             \begin{center}
             '''
@@ -256,7 +259,7 @@ def generateAward(newAward, authorizedUser):
                     \end{document}'''
 
 
-    awardTypeSection = r'''\begin{center}{\huge\textbf{''' + 'Employee of the ' + str(newAward.award_type) + r'''}}\end{center}'''
+    awardTypeSection = r'''\begin{center}{\huge\textbf{''' +  str(newAward.award_type) + r'''}}\end{center}'''
 
     inputDate = r'''\begin{center}{\large\textbf{''' + str(newAward.date_granted) + r'''}}\end{center}'''
 
@@ -264,6 +267,7 @@ def generateAward(newAward, authorizedUser):
 
     to_section = r'''\begin{center}{\large\textbf{''' + 'To' + r'''}}\end{center}'''
 
+    sender_signiture = r'''\begin{center}\includegraphics[scale=0.8]''' + authorizedUser.user_signature + r'''\end{center}'''
 
     # Construct latex file
     content = header + \
@@ -290,11 +294,13 @@ def generateAward(newAward, authorizedUser):
     try:
         msg = Message("Employee Portal",
                       sender='ogmaemployeeawards@gmail.com',
-                      recipients=[recipient_email])
+                      recipients=[recipient_email],
+                      date=[newAward.date_granted])
         msg.body = "Congrats on the award!!!\n"
 
         with app.open_resource("awardPDF.pdf") as fp:
             msg.attach("awardPDS.pdf", "award/pdf",fp.read())
+
 
         mail.send(msg)
 
@@ -309,19 +315,6 @@ def generateAward(newAward, authorizedUser):
     # os.unlink('awardPDF.pdf') !!! DON'T FORGET TO UNCOMMENT !!!
 
 
-@app.route('/send-mail/')
-def send_mail():
-    try:
-        msg = Message("Hey!!!",
-                      sender='ogmaemployeeawards@gmail.com',
-                      recipients=['tonp@oregonstate.edu'])
-        msg.body = "Congrats on the award!"
-        mail.send(msg)
-        return 'Mail sent!!!'
-
-
-    except Exception as e:
-        return str(e)
 
 
 ''' ################################################ LOGIN ################################################ '''

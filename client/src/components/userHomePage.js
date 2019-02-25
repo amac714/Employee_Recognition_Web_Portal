@@ -119,9 +119,9 @@ class UserHomePage extends Component {
             .get('/user/' + this.state.id + '/award', this.state.config)
             .then(res => {
                 res.data.forEach(function (item) {
-                    if (item.award_type === "Week") {
+                    if (item.award_type === "Employee of the Week") {
                         weekAwardCount++;
-                    } else if (item.award_type === "Month") {
+                    } else if (item.award_type === "Employee of the Month") {
                         monthAwardCount++;
                     }
                 });
