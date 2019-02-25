@@ -54,11 +54,6 @@ class Header extends Component {
       item = (
         <Nav className="ml-auto" navbar>
           <NavItem>
-            <NavLink tag={Link} to="/designAward">
-              <button>New Employee Award</button>
-            </NavLink>
-          </NavItem>
-          <NavItem>
             <NavLink tag={Link} to="/userHomePage">
               <h5>Profile</h5>
             </NavLink>
