@@ -294,11 +294,11 @@ def generateAward(newAward, authorizedUser):
     try:
         msg = Message("Employee Portal",
                       sender='ogmaemployeeawards@gmail.com',
-                      recipients=[recipient_email]
+                      recipients=[recipient_email])
         msg.body = "Congrats on the award!!!\n"
 
         with app.open_resource("awardPDF.pdf") as fp:
-            msg.attach("awardPDS.pdf", "award/pdf",fp.read())
+            msg.attach("awardPDS.pdf", "award/pdf", fp.read())
 
 
         mail.send(msg)
