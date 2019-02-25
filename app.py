@@ -267,7 +267,7 @@ def generateAward(newAward, authorizedUser):
 
     to_section = r'''\begin{center}{\large\textbf{''' + 'To' + r'''}}\end{center}'''
 
-    sender_signiture = r'''\begin{center}\includegraphics[scale=0.8]''' + authorizedUser.user_signature + r'''\end{center}'''
+    # sender_signiture = r'''\begin{center}\includegraphics[scale=0.8]''' + authorizedUser.user_signature + r'''\end{center}'''
 
     # Construct latex file
     content = header + \
@@ -294,8 +294,7 @@ def generateAward(newAward, authorizedUser):
     try:
         msg = Message("Employee Portal",
                       sender='ogmaemployeeawards@gmail.com',
-                      recipients=[recipient_email],
-                      date=[newAward.date_granted])
+                      recipients=[recipient_email]
         msg.body = "Congrats on the award!!!\n"
 
         with app.open_resource("awardPDF.pdf") as fp:
