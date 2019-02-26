@@ -4,6 +4,7 @@
 
 import React, {Component} from 'react';
 import {Table} from 'reactstrap';
+import Container from "reactstrap/es/Container";
 
 class UserViewMyAwards extends Component {
 
@@ -50,8 +51,8 @@ class UserViewMyAwards extends Component {
 
     render() {
         return (
-            <div>
-                <h2>Given Awards</h2>
+            <Container>
+                <h2 className="text-center">Given Awards</h2>
                 <Table>
                     <thead>
                     <tr>
@@ -65,7 +66,7 @@ class UserViewMyAwards extends Component {
                     </thead>
                     <tbody>{this.props.awards.map(this.getAwardData)}</tbody>
                 </Table>
-            </div>
+            </Container>
         );
     }
 }

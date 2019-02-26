@@ -4,10 +4,10 @@ class Stats extends Component {
   render() {
     return (
       <div>
-        <h2>Submitted Awards</h2>
-        <p>Employee of the Week: {this.props.awardData.employeeOfTheWeek}</p>
-        <p>Employee of the Month: {this.props.awardData.employeeOfTheMonth}</p>
-        <p>Total Awards: {this.props.awardData.numberOfAwardsGiven}</p>
+          <h2><strong>Submitted Awards</strong></h2>
+          <p>Employee of the Week: <strong>{this.props.awardData.employeeOfTheWeek}</strong></p>
+          <p>Employee of the Month: <strong>{this.props.awardData.employeeOfTheMonth}</strong></p>
+          <p>Total Awards: <strong>{this.props.awardData.numberOfAwardsGiven}</strong></p>
       </div>
     );
   }

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Col, Form, FormGroup, Input, Row} from 'reactstrap';
+import Container from "reactstrap/es/Container";
 
 
 class UpdateUserInfo extends Component {
@@ -49,7 +50,7 @@ class UpdateUserInfo extends Component {
 
     render() {
         return (
-            <div>
+            <Container>
                 <Row>
                     <Col xs="12" style={{border: '1px solid red'}}>
                         <h1>Update Account Information</h1>
@@ -85,7 +86,7 @@ class UpdateUserInfo extends Component {
                         </Form>
                     </Col>
                 </Row>
-            </div>
+            </Container>
         );
     }
 }

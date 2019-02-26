@@ -3,14 +3,13 @@
  * */
 
 import React, { Component } from 'react';
-import './sideSection.css';
 
 class Date extends Component {
   render() {
     return (
       <div className="dateText">
-        <p>{this.props.date.currentDay}</p>
-        <p>{this.props.date.currentDate}</p>
+          <p><strong>{this.props.date.currentDay}</strong></p>
+          <p><strong>{this.props.date.currentDate}</strong></p>
       </div>
     );
   }
