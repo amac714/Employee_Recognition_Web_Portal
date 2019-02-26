@@ -3,11 +3,12 @@ import Date from './sideViewComponents/date';
 import UserAccountInfo from './sideViewComponents/userAccountInfo';
 import Stats from './sideViewComponents/stats';
 import {Link} from 'react-router-dom';
+import Container from "reactstrap/es/Container";
 
 
 function SideSection(props) {
     return (
-        <div>
+        <Container>
             <Date currentDate={props.currentDate} currentDay={props.currentDay}/>
 
             <UserAccountInfo/>
@@ -19,7 +20,7 @@ function SideSection(props) {
             <Stats
                 awardData={props.awardData}
             />
-        </div>
+        </Container>
     );
 }
 

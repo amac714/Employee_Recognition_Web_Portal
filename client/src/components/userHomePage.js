@@ -3,7 +3,6 @@
  * */
 
 import React, {Component} from 'react';
-import SideSection from './sideSection';
 import {Row, Col} from 'reactstrap';
 import UserCreateAward from './userCreateAward';
 import UserViewGivenAwards from './userViewGivenAwards';
@@ -12,9 +11,11 @@ import StatsSection from './sideViewComponents/stats'
 import UserAccountInfoSection from './sideViewComponents/userAccountInfo'
 import UpdateUserInfo from './updateUserInfo'
 import axios from 'axios';
+import './userHomePageStyle.css'
+import Container from "reactstrap/es/Container";
 
 
-class UserHomePage extends Component {
+export default class UserHomePage extends Component {
     constructor(props) {
         super(props);
 
@@ -228,7 +229,7 @@ class UserHomePage extends Component {
         console.log(e);
 
         axios.delete('/user/' + this.state.id + '/award/' + e, this.state.config)
-            .then(res =>{
+            .then(res => {
                 console.log(res)
             })
             .catch(err => {
@@ -270,48 +271,49 @@ class UserHomePage extends Component {
         }
 
         return (
-            <div>
-                <Row>
+            <Container fluid className="page" style={{border: '1px solid black'}}>
+                <Row style={{border: '1px solid red'}}>
+                    <Col xs="2" className="side_section">
+                        <div className="side_section_date">
+                            <DateSection
+                                date={this.state.dateData}
+                            />
+                        </div>
 
-                    <Col xs="2" style={{border: '1px solid black'}}>
-                        <DateSection
-                            date={this.state.dateData}
-                        />
+                        <div className="side_section_user_data">
+                            <UserAccountInfoSection currentUserData={this.state.currentUserData}/>
+                            <button onClick={this.changeDisplay}>Update Account</button>
+                        </div>
 
-                        <UserAccountInfoSection currentUserData={this.state.currentUserData}/>
-
-                        <button onClick={this.changeDisplay}>Update Account</button>
-
-                        <StatsSection
-                            awardData={this.state.awardData}
-                        />
-
+                        <div className="side_section_stats">
+                            <StatsSection
+                                awardData={this.state.awardData}
+                            />
+                        </div>
                     </Col>
 
 
                     {this.state.displayType === "homepage" &&
-                    <Col xs="5" style={{border: '1px solid red'}}>
+                    <Col xs="4">
                         {displayPage}
                     </Col>
                     }
 
                     {this.state.displayType === "homepage" &&
-                    <Col xs="5" style={{border: '1px solid green'}}>
+                    <Col xs="6">
                         {displayAwardData}
                     </Col>
                     }
 
                     {this.state.displayType === "updateUserInfo" &&
-                    <Col xs="10" style={{border: '1px solid blue'}}>
+                    <Col xs="10">
                         {displayPage}
                     </Col>
                     }
                 </Row>
-            </div>
+            </Container>
         );
     }
 }
-
-export default UserHomePage;
 
 

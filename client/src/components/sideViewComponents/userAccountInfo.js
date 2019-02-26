@@ -4,9 +4,9 @@ class UserAccountInfo extends Component {
   render() {
     return (
       <div>
-        <p>Username: {this.props.currentUserData.user_name}</p>
-        <p>First Name: {this.props.currentUserData.first_name}</p>
-        <p>Last Name: {this.props.currentUserData.last_name}</p>
+          <p>Username: <strong>{this.props.currentUserData.user_name}</strong></p>
+          <p>First Name: <strong>{this.props.currentUserData.first_name}</strong></p>
+          <p>Last Name: <strong>{this.props.currentUserData.last_name}</strong></p>
       </div>
     );
   }
