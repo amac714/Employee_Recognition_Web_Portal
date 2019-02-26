@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { Nav, NavItem, NavLink, Col, Row } from 'reactstrap';
+import { Nav, NavItem, NavLink, Col, Row, Container } from 'reactstrap';
 import ViewUsers from './adminViewUsers';
 import ViewAdmins from './adminViewAdmins';
 import Reports from './sideViewComponents/reports';
@@ -41,31 +41,33 @@ class AdminDashboard extends Component {
   render() {
     return (
       <div>
-        <Row>
-          <Col xs="2" style={{ border: '1px solid black' }}>
-            <h3>Menu</h3>
-            <Nav vertical>
-              <NavItem>
-                <NavLink href="#" onClick={() => this.handleClick(1)}>
-                  View Users
+       <Container>
+          <Row>
+            <Col xs="2" style={{ border: '1px solid black' }}>
+              <h3>Menu</h3>
+              <Nav vertical>
+                <NavItem>
+                  <NavLink href="#" onClick={() => this.handleClick(1)}>
+                    View Users
                 </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="#" onClick={() => this.handleClick(2)}>
-                  View Admins
+                </NavItem>
+                <NavItem>
+                  <NavLink href="#" onClick={() => this.handleClick(2)}>
+                    View Admins
                 </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="#" onClick={() => this.handleClick(3)}>
-                  View Reports
+                </NavItem>
+                <NavItem>
+                  <NavLink href="#" onClick={() => this.handleClick(3)}>
+                    View Reports
                 </NavLink>
-              </NavItem>
-            </Nav>
-          </Col>
-          <Col sm="12" md={{ size: 6, offset: 1 }}>
-            {this.renderComponent()}
-          </Col>
-        </Row>
+                </NavItem>
+              </Nav>
+            </Col>
+            <Col sm="12" md={{ size: 6, offset: 1 }}>
+              {this.renderComponent()}
+            </Col>
+          </Row>
+       </Container>
       </div>
     );
   }

@@ -10,7 +10,6 @@ import {
   FormGroup,
   Input,
   Col,
-  Label,
 } from 'reactstrap';
 import axios from 'axios';
 
@@ -53,40 +52,44 @@ class AdminLogin extends Component {
   render() {
     return (
       <Container>
-        <Col sm="12" md={{ size: 6, offset: 3 }}>
-          <h2>Admin Sign In</h2>
-        </Col>
-        <Form onSubmit={this.login}>
-          <Col sm="12" md={{ size: 6, offset: 3 }}>
-            <FormGroup>
-              <Label>Username</Label>
-              <Input
-                type="text"
-                name="username"
-                id="admin_id"
-                placeholder="Admin"
-                value={this.state.username}
-                onChange={this.onChange}
-              />
-            </FormGroup>
-          </Col>
-          <Col sm="12" md={{ size: 6, offset: 3 }}>
-            <FormGroup>
-              <Label>Password</Label>
-              <Input
-                type="password"
-                name="password"
-                id="pw_id"
-                placeholder="******"
-                value={this.state.password}
-                onChange={this.onChange}
-              />
-            </FormGroup>
-          </Col>
-          <Col sm="12" md={{ size: 6, offset: 3 }}>
-            <Button>Login</Button>
-          </Col>
-        </Form>
+        <div className="login--form">
+          <div className="login--inner">
+            <Col sm="12" md={{ size: 6, offset: 3 }}>
+              <h1 className="login--title">Admin Login</h1>
+            </Col>
+            <Form onSubmit={this.login}>
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <FormGroup>
+                  <Input
+                    type="text"
+                    name="username"
+                    className="input--login"
+                    id="admin_id"
+                    placeholder="Username"
+                    value={this.state.username}
+                    onChange={this.onChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <FormGroup>
+                  <Input
+                    type="password"
+                    name="password"
+                    className="input--login"
+                    id="pw_id"
+                    placeholder="Password"
+                    value={this.state.password}
+                    onChange={this.onChange}
+                  />
+                </FormGroup>
+              </Col>
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <Button color="primary" block className="input--login">SIGN IN</Button>
+              </Col>
+            </Form>
+          </div>
+        </div>
       </Container>
     );
   }
