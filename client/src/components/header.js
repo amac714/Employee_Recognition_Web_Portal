@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { Nav, NavItem, Navbar, NavbarBrand, NavLink } from 'reactstrap';
+import { Nav, NavItem, Navbar, NavbarBrand, NavLink, Container } from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
 
 class Header extends Component {
@@ -23,7 +23,7 @@ class Header extends Component {
         <Nav className="ml-auto" navbar>
           <NavItem>
             <NavLink tag={Link} to="/admin">
-              <h5>Admin</h5>
+              <span className="header--link">Admin</span>
             </NavLink>
           </NavItem>
         </Nav>
@@ -38,11 +38,11 @@ class Header extends Component {
         <Nav className="ml-auto" navbar>
           <NavItem>
             <NavLink tag={Link} to="/adminDash">
-              <h5>Dashboard</h5>
+              <span className="header--link">Dashboard</span>
             </NavLink>
           </NavItem>
           <NavItem>
-            <NavLink tag={Link} to="" onClick={this.logout}><h5>Logout</h5></NavLink>
+            <NavLink tag={Link} to="" onClick={this.logout}><span className="header--link">Logout</span></NavLink>
           </NavItem>
         </Nav>
       );
@@ -55,25 +55,27 @@ class Header extends Component {
         <Nav className="ml-auto" navbar>
           <NavItem>
             <NavLink tag={Link} to="/userHomePage">
-              <h5>Profile</h5>
+              <span className="header--link">Profile</span>
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink tag={Link} to="" onClick={this.logout}>
-              <h5>Logout</h5>
+              <span className="header--link">Logout</span>
             </NavLink>
           </NavItem>
         </Nav>
       );
 
     return (
-      <div>
-        <Navbar color="light" light expand="md">
-          <NavbarBrand>
-            <h5>Ogma Employee Recognition</h5>
-          </NavbarBrand>
-          {item}
-        </Navbar>
+      <div className="header">
+        <Container>
+          <Navbar light expand="md">
+            <NavbarBrand>
+              <h1 className="header__title">Ogma Employee Recognition</h1>
+            </NavbarBrand>
+            {item}
+          </Navbar>
+        </Container>
       </div>
     );
   }
