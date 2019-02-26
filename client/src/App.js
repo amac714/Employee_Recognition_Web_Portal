@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
-import './App.css';
 import UserLogin from './components/userLogin';
 import Header from './components/header';
 import AdminLogin from './components/adminLogin';
@@ -16,6 +15,7 @@ import CreateAdmin from './components/createAdmin';
 import EditAdmin from './components/editAdmin';
 import CreateUser from './components/createUser';
 import EditUser from './components/editUser';
+import './styles/styles.scss';
 
 // import { Provider } from "react-redux"
 
