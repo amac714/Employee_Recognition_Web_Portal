@@ -35,7 +35,7 @@ class UserViewMyAwards extends Component {
                         time_granted,
                     }) => {
         return (
-            <tr key={id}>
+            <tr key={id} className="award_data">
                 <th scope="row">{award_type}</th>
                 <th>{recipient_first_name}</th>
                 <th>{recipient_last_name}</th>
@@ -52,13 +52,13 @@ class UserViewMyAwards extends Component {
     render() {
         return (
             <Container>
-                <h2 className="text-center">Given Awards</h2>
-                <Table>
+                <h2 className="text-center section_header">Given Awards</h2>
+                <Table bordered striped responsive className="text-center award_table">
                     <thead>
                     <tr>
                         <th>Award Type</th>
-                        <th>Recipient First Name</th>
-                        <th>Recipient Last Name</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
                         <th>Date Given</th>
                         <th>Time Given</th>
                         <th>Delete Award</th>

@@ -1,0 +1,51 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.side_section {
+  background-color: #4e555b;
+}
+
+.side_section {
+  color: white;
+}
+
+.submit_button {
+  text-align: center;
+}
+
+.side_section_date {
+  font-size: 1.3em;
+  padding-top: 10px;
+}
+
+.side_section_user_data {
+  padding-top: 30px;
+}
+
+.side_section_stats {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.side_section_stats h2 {
+  font-size: 1.2em;
+}
+
+.section_header {
+  font-size: 2em;
+  padding-bottom: 20px;
+  padding-top: 40px;
+}
+
+
+.award_table thead{
+  font-size: .85em;
+  font-weight: bold;
+}
+
+.award_data th{
+  font-weight: normal;
+}
