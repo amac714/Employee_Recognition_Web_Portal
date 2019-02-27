@@ -11,7 +11,6 @@ import StatsSection from './sideViewComponents/stats'
 import UserAccountInfoSection from './sideViewComponents/userAccountInfo'
 import UpdateUserInfo from './updateUserInfo'
 import axios from 'axios';
-import './userHomePageStyle.css'
 import Container from "reactstrap/es/Container";
 
 
@@ -271,8 +270,8 @@ export default class UserHomePage extends Component {
         }
 
         return (
-            <Container fluid className="page" style={{border: '1px solid black'}}>
-                <Row style={{border: '1px solid red'}}>
+            <Container fluid className="page">
+                <Row>
                     <Col xs="2" className="side_section">
                         <div className="side_section_date">
                             <DateSection
@@ -291,7 +290,6 @@ export default class UserHomePage extends Component {
                             />
                         </div>
                     </Col>
-
 
                     {this.state.displayType === "homepage" &&
                     <Col xs="4">
