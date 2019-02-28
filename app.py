@@ -215,6 +215,11 @@ def postAward(u_id):
                           request.json['time_granted'],  # 00:00:00
                           request.json['date_granted'],  # yyyy-mm-dd
                           u_id)
+
+        # check if recipient is in the database
+        if check_user_in_db(newAward.recipient_first_name, newAward.recipient_last_name):
+            return jsonify({"User": "User does not exist. Cannot create award."}), 400
+
         db.session.add(newAward)
         db.session.commit()
 
