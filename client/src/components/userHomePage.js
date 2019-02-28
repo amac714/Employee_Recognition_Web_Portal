@@ -63,7 +63,7 @@ export default class UserHomePage extends Component {
                 employeeOfTheWeek: 0,
                 employeeOfTheMonth: 0,
             },
-            displayType: 'homepage',
+            displayType: 'updateUserInfo',
             dateData: {
                 currentDate: currentDate,
                 currentDay: currentDay,
@@ -208,6 +208,8 @@ export default class UserHomePage extends Component {
                 {
                     first_name: e.first_name,
                     last_name: e.last_name,
+                    username: localStorage.getItem('username'),
+                    password: localStorage.getItem('password')
                 },
                 this.state.config
             )
