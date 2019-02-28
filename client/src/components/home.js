@@ -42,9 +42,6 @@ class HomePage extends Component {
                         <p>{this.state.textMessage}</p>
 
                         <div className="buttons">
-                            <Link to="/">
-                                <button>Signup</button>
-                            </Link>
                             <Link to="/userLogin">
                                 <button>Login</button>
                             </Link>
