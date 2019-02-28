@@ -26,12 +26,19 @@ class CreateAdmin extends Component {
       validate: false,
       visible: false,
       invalidAdmin: false,
+      invalidPW: false,
+      errorMsg: '',
     };
   }
 
   // Sets state on input change
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({
+      [e.target.name]: e.target.value,
+      validate: false,
+      invalidAdmin: false,
+      invalidPW: false,
+    });
   };
 
   // On submit function. Makes post request to endpoint.
@@ -42,11 +49,20 @@ class CreateAdmin extends Component {
     let config = {
       headers: { Authorization: `Bearer ${token}` },
     };
-    // Confirm password
-    const { password, confirmPW } = this.state;
-    if (password !== confirmPW) {
+
+    const { password, confirmPW, admin_name } = this.state;
+
+    // Confirm password, makes sure form is not empty
+    if (admin_name !== '' && password !== confirmPW) {
       this.setState({ validate: true });
-    } else {
+    } else if (admin_name === '') {
+      this.setState({
+        invalidAdmin: true,
+        errorMsg: 'You must enter a username',
+      });
+    } else if (password === '') {
+      this.setState({ invalidPW: true });
+    } else if (admin_name !== '' && password !== '') {
       // Post request. Passing new admin info and auth token
       axios
         .post(
@@ -68,21 +84,25 @@ class CreateAdmin extends Component {
               invalidAdmin: false,
             },
             () => {
-              // Redirect back to admin dashboard after 2 seconds on success
+              // Redirect back to admin dashboard after 1 second
               window.setTimeout(() => {
                 this.props.history.push({
                   pathname: '/adminDash',
                   state: {
                     from: 2,
-                  }
+                  },
                 });
-              }, 2000);
+              }, 1000);
             }
           );
         })
         .catch(err => {
+          // Catching this error means Username is unvailable
           console.log(err);
-          this.setState({ invalidAdmin: true });
+          this.setState({
+            invalidAdmin: true,
+            errorMsg: 'This username is unvailable.',
+          });
         });
     }
   };
@@ -111,7 +131,7 @@ class CreateAdmin extends Component {
                   onChange={this.onChange}
                 />
                 <FormFeedback invalid="true">
-                  Username is already taken!
+                  {this.state.errorMsg}
                 </FormFeedback>
               </FormGroup>
             </Col>
@@ -120,12 +140,16 @@ class CreateAdmin extends Component {
               <FormGroup>
                 <Label>Password</Label>
                 <Input
+                  invalid={this.state.invalidPW}
                   type="password"
                   name="password"
                   id="pw_id"
                   value={this.state.password}
                   onChange={this.onChange}
                 />
+                <FormFeedback invalid="true">
+                  You must enter a password
+                </FormFeedback>
               </FormGroup>
             </Col>
 

@@ -27,11 +27,11 @@ class AdminLogin extends Component {
     };
   }
 
-  // Handles logging in. 
+  // Handles logging in.
   // Makes post request to API. Sets access token
   login = e => {
     e.preventDefault();
-    if(this.state.username !== '' && this.state.password !== ''){
+    if (this.state.username !== '' && this.state.password !== '') {
       axios
         .post('/admin/login', {
           username: this.state.username,
@@ -46,40 +46,42 @@ class AdminLogin extends Component {
         })
         .catch(err => {
           console.log(err);
-          this.setState({ visible: true })
+          this.setState({ visible: true });
         });
-    }
-    else if(this.state.username === '') {
-      this.setState({ validUN: true })
-    }
-    else if(this.state.password === '') {
-      this.setState({ validPW: true })
+    } else if (this.state.username === '') {
+      this.setState({ validUN: true });
+    } else if (this.state.password === '') {
+      this.setState({ validPW: true });
     }
   };
 
   // On change handler
   onChange = e => {
-    this.setState({ 
-      [e.target.name]: e.target.value, 
-      validPW: this.state.validPW ? false : null, 
-      validUN: this.state.validUN ? false : null, 
+    this.setState({
+      [e.target.name]: e.target.value,
+      validPW: this.state.validPW ? false : null,
+      validUN: this.state.validUN ? false : null,
     });
   };
 
   // Closes alert, clears form
   onDismiss = () => {
-    this.setState({ 
+    this.setState({
       visible: false,
       username: '',
       password: '',
-    })
-  }
+    });
+  };
 
   render() {
     return (
       <Container>
         <div>
-          <Alert color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
+          <Alert
+            color="danger"
+            isOpen={this.state.visible}
+            toggle={this.onDismiss}
+          >
             Username or password is incorrect!
           </Alert>
         </div>
@@ -101,7 +103,9 @@ class AdminLogin extends Component {
                     value={this.state.username}
                     onChange={this.onChange}
                   />
-                  <FormFeedback invalid="true">You must enter a username!</FormFeedback>
+                  <FormFeedback invalid="true">
+                    You must enter a username!
+                  </FormFeedback>
                 </FormGroup>
               </Col>
               <Col sm="12" md={{ size: 6, offset: 3 }}>
@@ -116,11 +120,15 @@ class AdminLogin extends Component {
                     value={this.state.password}
                     onChange={this.onChange}
                   />
-                  <FormFeedback invalid="true">You must enter a password</FormFeedback>
+                  <FormFeedback invalid="true">
+                    You must enter a password
+                  </FormFeedback>
                 </FormGroup>
               </Col>
               <Col sm="12" md={{ size: 6, offset: 3 }}>
-                <Button color="primary" block className="input--login">SIGN IN</Button>
+                <Button color="primary" block className="input--login">
+                  SIGN IN
+                </Button>
               </Col>
             </Form>
           </div>

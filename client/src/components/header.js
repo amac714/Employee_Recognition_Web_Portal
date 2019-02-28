@@ -3,7 +3,14 @@
  */
 
 import React, { Component } from 'react';
-import { Nav, NavItem, Navbar, NavbarBrand, NavLink, Container } from 'reactstrap';
+import {
+  Nav,
+  NavItem,
+  Navbar,
+  NavbarBrand,
+  NavLink,
+  Container,
+} from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
 
 class Header extends Component {
@@ -28,8 +35,18 @@ class Header extends Component {
           </NavItem>
         </Nav>
       );
+    else if (path === '/adminDash')
+      item = (
+        <Nav className="ml-auto" navbar>
+          <NavItem>
+            <NavLink tag={Link} to="" onClick={this.logout}>
+              <span className="header--link">Logout</span>
+            </NavLink>
+          </NavItem>
+        </Nav>
+      );
     else if (
-      path === '/adminDash' ||
+      path === '/editAdmin' ||
       path === '/addAdmin' ||
       path === '/createUser' ||
       path === '/editUser'
@@ -42,7 +59,9 @@ class Header extends Component {
             </NavLink>
           </NavItem>
           <NavItem>
-            <NavLink tag={Link} to="" onClick={this.logout}><span className="header--link">Logout</span></NavLink>
+            <NavLink tag={Link} to="" onClick={this.logout}>
+              <span className="header--link">Logout</span>
+            </NavLink>
           </NavItem>
         </Nav>
       );
@@ -53,8 +72,7 @@ class Header extends Component {
     )
       item = (
         <Nav className="ml-auto" navbar>
-          <NavItem>
-          </NavItem>
+          <NavItem />
           <NavItem>
             <NavLink tag={Link} to="" onClick={this.logout}>
               <span className="header--link">Logout</span>

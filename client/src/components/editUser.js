@@ -26,9 +26,13 @@ class EditUser extends Component {
       last_name: '',
       password: '',
       confirmPW: '',
+      sig: '',
       validate: false,
       invalidEmail: false,
+      invalidPW: false,
+      invalidSig: false,
       visible: false,
+      errorMsg: '',
       config: {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
@@ -43,7 +47,12 @@ class EditUser extends Component {
 
   // On form input change handler to set state
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({
+      [e.target.name]: e.target.value,
+      invalidEmail: false,
+      validate: false,
+      invalidPW: false,
+    });
   };
 
   // Handle upload of signature, show preview
@@ -55,6 +64,7 @@ class EditUser extends Component {
       this.setState({
         sig: file,
         previewSig: reader.result,
+        invalidSig: false,
       });
     };
     reader.readAsDataURL(file);
@@ -74,10 +84,19 @@ class EditUser extends Component {
   // Save update
   saveEdit = e => {
     e.preventDefault();
-    const { password, confirmPW, id } = this.state;
+    const { password, confirmPW, id, user_name, sig } = this.state;
     // PW validation
-    if (password !== confirmPW) {
+    if (user_name !== '' && password !== confirmPW) {
       this.setState({ validate: true });
+    } else if (user_name === '') {
+      this.setState({
+        invalidEmail: true,
+        errorMsg: 'You must enter an email',
+      });
+    } else if (password === '') {
+      this.setState({ invalidPW: true });
+    } else if (sig === '') {
+      this.setState({ invalidSig: true });
     } else {
       // Patch request to API endpoint to update user.
       // Passes access token for auth.
@@ -112,14 +131,17 @@ class EditUser extends Component {
                   state: {
                     from: 1,
                   },
-                })
+                });
               }, 1000);
             }
           );
         })
         .catch(err => {
           console.log(err);
-          this.setState({ invalidEmail: true });
+          this.setState({
+            invalidEmail: true,
+            errorMsg: 'This email already exists',
+          });
         });
     }
   };
@@ -162,7 +184,7 @@ class EditUser extends Component {
                   onChange={this.onChange}
                 />
                 <FormFeedback invalid="true">
-                  Username is already taken!
+                  {this.state.errorMsg}
                 </FormFeedback>
               </FormGroup>
             </Col>
@@ -194,6 +216,7 @@ class EditUser extends Component {
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <FormGroup>
                 <Input
+                  invalid={this.state.invalidPW}
                   type="password"
                   name="password"
                   id="pw_id"
@@ -201,6 +224,9 @@ class EditUser extends Component {
                   placeholder="New Password"
                   onChange={this.onChange}
                 />
+                <FormFeedback invalid="true">
+                  You must enter a password.
+                </FormFeedback>
               </FormGroup>
             </Col>
 
@@ -224,7 +250,15 @@ class EditUser extends Component {
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <FormGroup>
                 <Label>Signature</Label>
-                <Input type="file" name="sig" onChange={this.onImageChange} />
+                <Input
+                  type="file"
+                  invalid={this.state.invalidSig}
+                  name="sig"
+                  onChange={this.onImageChange}
+                />
+                <FormFeedback invalid="true">
+                  Please upload a signature.
+                </FormFeedback>
               </FormGroup>
             </Col>
             <Col sm="12" md={{ size: 6, offset: 3 }}>
