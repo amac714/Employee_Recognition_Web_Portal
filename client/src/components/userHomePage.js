@@ -157,7 +157,7 @@ export default class UserHomePage extends Component {
                 this.state.config
             )
             .then(res => {
-                // console.log(res);
+                console.log(res);
                 // console.log(res.data);
                 this.renderPage();
                 this.props.history.push('/userHomePage'); //route to user homepage
@@ -166,7 +166,6 @@ export default class UserHomePage extends Component {
             .catch(function (error) {
                 console.log(error);
             });
-
     };
 
     /*
