@@ -95,6 +95,8 @@ def patchUser(u_id):
     user = Users.query.get(u_id)
 
     if user:
+        prev_first = user.first_name
+        prev_last = user.last_name
         schema = UserSchema()
         user.first_name = request.json['first_name']
         user.last_name = request.json['last_name']
@@ -102,6 +104,7 @@ def patchUser(u_id):
         passHash = bcrypt.generate_password_hash(request.json['password'])
         user.user_password = passHash
         db.session.commit()
+        updateAwardEntry(prev_first,prev_last, user.first_name,user.last_name)
         return schema.jsonify(user)
     else:
         return jsonify({"User": "User not found."})
@@ -242,6 +245,16 @@ def deleteAward(u_id, aw_id):
         return jsonify({"Award": "Award is deleted."})
     else:
         return jsonify({"Error": "User or award does not exist."})
+
+# Update Award Entry after User PATCH first/last name
+def updateAwardEntry(prev_first,prev_last,new_first, new_last): 
+    awards = Awards.query.filter_by(recipient_first_name=prev_first,recipient_last_name=prev_last).all()
+
+    if awards: 
+        for x in awards: 
+            x.recipient_first_name = new_first
+            x.recipient_last_name = new_last
+            db.session.commit()
 
 
 ''' ################################################ SEND MAIL ################################################ '''
