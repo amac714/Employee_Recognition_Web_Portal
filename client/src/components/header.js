@@ -54,9 +54,6 @@ class Header extends Component {
       item = (
         <Nav className="ml-auto" navbar>
           <NavItem>
-            <NavLink tag={Link} to="/userHomePage">
-              <span className="header--link">Profile</span>
-            </NavLink>
           </NavItem>
           <NavItem>
             <NavLink tag={Link} to="" onClick={this.logout}>
