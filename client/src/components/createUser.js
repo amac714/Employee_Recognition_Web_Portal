@@ -30,12 +30,19 @@ class CreateUser extends Component {
       visible: false,
       validate: false,
       invalidUsername: false,
+      invalidSig: false,
+      errorMsg: '',
     };
   }
 
   // Sets state for inputs of type=text
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({
+      [e.target.name]: e.target.value,
+      invalidUsername: false,
+      validate: false,
+      invalidPW: false,
+    });
   };
 
   // Set state for user's signature
@@ -47,6 +54,7 @@ class CreateUser extends Component {
       this.setState({
         sig: file,
         previewSig: reader.result,
+        invalidSig: false,
       });
     };
     reader.readAsDataURL(file);
@@ -57,10 +65,20 @@ class CreateUser extends Component {
   // and make post request to API endpoint
   handleSubmit = e => {
     e.preventDefault();
-    const { password, confirmPW } = this.state;
-    if (password !== confirmPW) {
+    const { password, confirmPW, user_name, sig } = this.state;
+    if (user_name !== '' && password !== confirmPW) {
       this.setState({ validate: true });
-    } else {
+    } else if (user_name === '') {
+      this.setState({
+        invalidUsername: true,
+        errorMsg: 'You must enter a username.',
+      });
+    } else if (password === '') {
+      this.setState({ invalidPW: true })
+    } else if (sig === '') {
+      this.setState({ invalidSig: true })
+    }
+    else {
       const formData = new FormData();
       formData.append('username', this.state.user_name);
       formData.append('password', this.state.password);
@@ -90,7 +108,7 @@ class CreateUser extends Component {
               invalidUsername: false,
             },
             () => {
-              // Redirect back to admin dashboard after 2 seconds on success
+              // Redirect back to admin dashboard after 1 second
               window.setTimeout(() => {
                 this.props.history.push({
                   pathname: '/adminDash',
@@ -98,19 +116,22 @@ class CreateUser extends Component {
                     from: 1,
                   },
                 });
-              }, 2000);
+              }, 1000);
             }
           );
         })
         .catch(err => {
           console.log(err);
-          this.setState({ invalidUsername: true });
+          this.setState({
+            invalidUsername: true,
+            errorMsg: 'This username is unvailable.',
+          });
         });
     }
   };
 
   render() {
-    let { previewSig } = this.state;
+    let { previewSig, errorMsg } = this.state;
     let $previewSig = null;
     if (previewSig) {
       $previewSig = (
@@ -146,9 +167,7 @@ class CreateUser extends Component {
                   value={this.state.user_name}
                   onChange={this.onChange}
                 />
-                <FormFeedback invalid="true">
-                  Username is already taken!
-                </FormFeedback>
+                <FormFeedback invalid="true">{errorMsg}</FormFeedback>
               </FormGroup>
             </Col>
 
@@ -181,11 +200,15 @@ class CreateUser extends Component {
                 <Label>Password</Label>
                 <Input
                   type="password"
+                  invalid={this.state.invalidPW}
                   name="password"
                   id="pw_id"
                   value={this.state.password}
                   onChange={this.onChange}
                 />
+                <FormFeedback invalid="true">
+                  You must enter a password.
+                </FormFeedback>
               </FormGroup>
             </Col>
 
@@ -208,7 +231,10 @@ class CreateUser extends Component {
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <FormGroup>
                 <Label>Signature</Label>
-                <Input type="file" name="sig" onChange={this.onImageChange} />
+                <Input type="file" invalid={this.state.invalidSig} name="sig" onChange={this.onImageChange} />
+                <FormFeedback invalid="true">
+                  Please upload a signature.
+                </FormFeedback>
               </FormGroup>
             </Col>
             <Col sm="12" md={{ size: 6, offset: 3 }}>

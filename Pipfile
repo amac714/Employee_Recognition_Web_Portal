@@ -21,6 +21,7 @@ flask-mail = "*"
 sqlalchemy = "*"
 flask-heroku = "*"
 gunicorn = "*"
+requests = "*"
 
 [requires]
 python_version = "2.7"

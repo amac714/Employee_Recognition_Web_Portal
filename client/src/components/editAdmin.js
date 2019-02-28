@@ -26,6 +26,7 @@ class EditAdmin extends Component {
       validate: false,
       invalidAdmin: false,
       visible: false,
+      errorMsg: '',
     };
   }
 
@@ -35,7 +36,12 @@ class EditAdmin extends Component {
 
   // On form input change handler to set state
   onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({
+      [e.target.name]: e.target.value,
+      invalidAdmin: false,
+      validate: false,
+      invalidPW: false,
+    });
   };
 
   // Get Admin that will be edited
@@ -54,10 +60,17 @@ class EditAdmin extends Component {
     };
 
     e.preventDefault();
-    const { password, confirmPW, id } = this.state;
+    const { password, confirmPW, id, admin_name } = this.state;
     // PW validation
-    if (password !== confirmPW) {
+    if (admin_name !== '' && password !== confirmPW) {
       this.setState({ validate: true });
+    } else if (admin_name === '') {
+      this.setState({
+        invalidAdmin: true,
+        errorMsg: 'You must enter a username.',
+      });
+    } else if (password === '') {
+      this.setState({ invalidPW: true });
     } else {
       // Patch request to API endpoint to update admin.
       // Passes access token for auth.
@@ -96,7 +109,10 @@ class EditAdmin extends Component {
         })
         .catch(err => {
           console.log(err);
-          this.setState({ invalidAdmin: true });
+          this.setState({
+            invalidAdmin: true,
+            errorMsg: 'This username is unvailable.',
+          });
         });
     }
   };
@@ -124,7 +140,7 @@ class EditAdmin extends Component {
                   onChange={this.onChange}
                 />
                 <FormFeedback invalid="true">
-                  Username is already taken!
+                  {this.state.errorMsg}
                 </FormFeedback>
               </FormGroup>
             </Col>
@@ -132,6 +148,7 @@ class EditAdmin extends Component {
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <FormGroup>
                 <Input
+                  invalid={this.state.invalidPW}
                   type="password"
                   name="password"
                   id="pw_id"
@@ -139,6 +156,9 @@ class EditAdmin extends Component {
                   placeholder="New Password"
                   onChange={this.onChange}
                 />
+                <FormFeedback invalid="true">
+                  You must enter a password.
+                </FormFeedback>
               </FormGroup>
             </Col>
 
