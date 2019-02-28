@@ -64,10 +64,11 @@ def getIndUser(u_id):
 # Get user's username
 def check_user_in_db(firstName, lastName):
     user = Users.query.filter_by(first_name=firstName, last_name=lastName).first()
+    print(user)
     if user:
         return user.user_name
     else:
-        return jsonify({"User": "User not found."})
+        return False
 
 
 # POST : Create new user 
@@ -220,8 +221,9 @@ def postAward(u_id):
                           u_id)
 
         # check if recipient is in the database
-        if check_user_in_db(newAward.recipient_first_name, newAward.recipient_last_name):
+        if check_user_in_db(newAward.recipient_first_name, newAward.recipient_last_name) is False:
             return jsonify({"User": "User does not exist. Cannot create award."}), 400
+
 
         db.session.add(newAward)
         db.session.commit()
@@ -323,7 +325,7 @@ def generateAward(newAward, authorizedUser):
                 auth=("api", "36f4224c5acce803c1cf49d621a0a802-7caa9475-e1c40c13"),
                 files=[("attachment", ("test.pdf", open("awardPDF.pdf", "rb").read()))],
                 data={"from": "ogmaemployeeawards@gmail.com",
-                      "to": 'phairb@oregonstate.edu',
+                      "to": recipient_email,
                       "subject": "Test",
                       "text": "Testing some Mailgun awesomness!",
                       # "o:deliverytime": "27 Feb 2019 20:59:00 EST"})
