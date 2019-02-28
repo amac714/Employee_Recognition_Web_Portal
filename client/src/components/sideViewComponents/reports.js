@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Bar, Doughnut, HorizontalBar} from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import { Form, FormGroup, Label, Input } from 'reactstrap';
 import axios from 'axios';
 
@@ -47,50 +47,23 @@ class Reports extends Component {
       .catch(err => console.log(err));
   }
 
-  // Total number of awards created by users
+  // 1. Generates Bar graph for total number of awards created by users
   totalGrantedAwardsReport = () => {
     const labels = [];
     const dataset = [];
-    const bgColor = [];
+
     for (let i = 0; i < this.state.grantedAwards.length; i++) {
-      labels.push(this.state.grantedAwards[i][0]);
+      labels.push(
+        this.state.grantedAwards[i][0] + ' ' + this.state.grantedAwards[i][1]
+      );
       dataset.push(this.state.grantedAwards[i][2]);
-      bgColor.push(this.getRandomColor());
     }
 
     const data = {
       labels: labels,
       datasets: [
         {
-          data: dataset,
-          backgroundColor: bgColor,
-          hoverBackgroundColor: bgColor,
-        },
-      ],
-    };
-
-    return (
-      <div>
-        <h2>Most Awards Granted Report</h2>
-        <Doughnut data={data} />
-      </div>
-    );
-  };
-
-  // Total number of Awards won
-  totalAwardsWonReport = () => {
-    const labels = [];
-    const dataset = [];
-    for (let i = 0; i < this.state.withMostAwards.length; i++) {
-      labels.push(this.state.withMostAwards[i][0]);
-      dataset.push(this.state.withMostAwards[i][2]);
-    }
-
-    const data = {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Awards Won',
+          label: 'Total Awards Granted',
           backgroundColor: 'rgba(255,99,132,0.2)',
           borderColor: 'rgba(255,99,132,1)',
           borderWidth: 1,
@@ -103,46 +76,113 @@ class Reports extends Component {
 
     return (
       <div>
-        <h2>Most Awards Won Report</h2>
-        <Bar
-          data={data}
-          height={100}
-          options={{
-            scales: {
-              yAxes: [
-                {
-                  display: true,
-                  ticks: {
-                    beginAtZero: true,
-                    suggestedMax: 10,
-                  },
+        <div>
+          <h1>Granted Awards</h1>
+          {dataset.length > 0 ? (
+            <Bar
+              data={data}
+              // height={100}
+              options={{
+                scales: {
+                  yAxes: [
+                    {
+                      display: true,
+                      ticks: {
+                        beginAtZero: true,
+                        suggestedMax: 10,
+                      },
+                    },
+                  ],
                 },
-              ],
-            },
-          }}
-        />
+              }}
+            />
+          ) : (
+            <p>No data in this report</p>
+          )}
+        </div>
       </div>
     );
   };
 
-  // Report for Emp of the Week awards created by users
-  weeklyAwardsGranted = () => {
+  // 2. Generates Bar graph for total number of Awards won
+  totalAwardsWonReport = () => {
     const labels = [];
-    const granted = [];
-    const bgColor = [];
-    for (let i = 0; i < this.state.grantedMostWeek.length; i++) {
-      labels.push(this.state.grantedMostWeek[i][0]);
-      granted.push(this.state.grantedMostWeek[i][2]);
-      bgColor.push(this.getRandomColor());
+    const dataset = [];
+    for (let i = 0; i < this.state.withMostAwards.length; i++) {
+      labels.push(
+        this.state.withMostAwards[i][0] + ' ' + this.state.withMostAwards[i][1]
+      );
+      dataset.push(this.state.withMostAwards[i][2]);
     }
 
     const data = {
       labels: labels,
       datasets: [
         {
+          label: 'Total Awards Received',
+          backgroundColor: 'rgba(255,99,132,0.2)',
+          borderColor: 'rgba(255,99,132,1)',
+          borderWidth: 1,
+          hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+          hoverBorderColor: 'rgba(255,99,132,1)',
+          data: dataset,
+        },
+      ],
+    };
+
+    return (
+      <div>
+        <h1>Received Awards</h1>
+        {dataset.length > 0 ? (
+          <Bar
+            data={data}
+            // height={100}
+            options={{
+              scales: {
+                yAxes: [
+                  {
+                    display: true,
+                    ticks: {
+                      beginAtZero: true,
+                      suggestedMax: 10,
+                    },
+                  },
+                ],
+              },
+            }}
+          />
+        ) : (
+          <p>No data in this report</p>
+        )}
+      </div>
+    );
+  };
+
+  // 3. Generates Bar graph for Emp of the Week awards created by users
+  weeklyAwardsGranted = () => {
+    const labels = [];
+    const granted = [];
+
+    for (let i = 0; i < this.state.grantedMostWeek.length; i++) {
+      labels.push(
+        this.state.grantedMostWeek[i][0] +
+          ' ' +
+          this.state.grantedMostWeek[i][1]
+      );
+      granted.push(this.state.grantedMostWeek[i][2]);
+    }
+
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Emp of the Week Awards Granted',
+          backgroundColor: 'rgba(255,99,132,0.2)',
+          borderColor: 'rgba(255,99,132,1)',
+          borderWidth: 1,
+          hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+          hoverBorderColor: 'rgba(255,99,132,1)',
           data: granted,
-          backgroundColor: bgColor,
-          hoverBackgroundColor: bgColor,
         },
       ],
     };
@@ -150,17 +190,39 @@ class Reports extends Component {
     return (
       <div>
         <h2>Employee of the Week (Granted)</h2>
-        <Doughnut data={data} />
+        {granted.length > 0 ? (
+          <Bar
+            data={data}
+            // height={100}
+            options={{
+              scales: {
+                yAxes: [
+                  {
+                    display: true,
+                    ticks: {
+                      beginAtZero: true,
+                      suggestedMax: 10,
+                    },
+                  },
+                ],
+              },
+            }}
+          />
+        ) : (
+          <p>No data in this report</p>
+        )}
       </div>
     );
   };
 
-  // Report for Emp of the Week awards won by users
+  // 4. Generates Bar graph for Emp of the Week awards won by users
   weeklyAwardsReceived = () => {
     const labels = [];
     const received = [];
     for (let i = 0; i < this.state.mostWeekAwards.length; i++) {
-      labels.push(this.state.mostWeekAwards[i][0]);
+      labels.push(
+        this.state.mostWeekAwards[i][0] + ' ' + this.state.mostWeekAwards[i][1]
+      );
       received.push(this.state.mostWeekAwards[i][2]);
     }
 
@@ -182,33 +244,42 @@ class Reports extends Component {
     return (
       <div>
         <h2>Employee of the Week Awards (Received)</h2>
-        <HorizontalBar
-          data={data}
-          options={{
-            scales: {
-              xAxes: [
-                {
-                  display: true,
-                  ticks: {
-                    beginAtZero: true,
-                    suggestedMax: 10,
+        {received.length > 0 ? (
+          <Bar
+            data={data}
+            // height={100}
+            options={{
+              scales: {
+                yAxes: [
+                  {
+                    display: true,
+                    ticks: {
+                      beginAtZero: true,
+                      suggestedMax: 10,
+                    },
                   },
-                },
-              ],
-            },
-          }}
-        />
+                ],
+              },
+            }}
+          />
+        ) : (
+          <p>No data in this report</p>
+        )}
       </div>
     );
   };
 
-  // Report for Emp of the Month Created by Users
+  // 5. Generates Bar graph for Emp of the Month Created by Users
   monthlyAwardsGranted = () => {
     const labels = [];
     const granted = [];
     const bgColor = [];
     for (let i = 0; i < this.state.grantedMostMonth.length; i++) {
-      labels.push(this.state.grantedMostMonth[i][0]);
+      labels.push(
+        this.state.grantedMostMonth[i][0] +
+          ' ' +
+          this.state.grantedMostMonth[i][1]
+      );
       granted.push(this.state.grantedMostMonth[i][2]);
       bgColor.push(this.getRandomColor());
     }
@@ -217,9 +288,13 @@ class Reports extends Component {
       labels: labels,
       datasets: [
         {
+          label: 'Emp of the Month Awards Granted',
+          backgroundColor: 'rgba(249,105,14,0.2)',
+          borderColor: 'rgba(249,105,14,1)',
+          borderWidth: 1,
+          hoverBackgroundColor: 'rgba(249,105,14,0.4)',
+          hoverBorderColor: 'rgba(249,105,14,1)',
           data: granted,
-          backgroundColor: bgColor,
-          hoverBackgroundColor: bgColor,
         },
       ],
     };
@@ -227,17 +302,41 @@ class Reports extends Component {
     return (
       <div>
         <h2>Employee of the Month (Granted)</h2>
-        <Doughnut data={data} />
+        {granted.length > 0 ? (
+          <Bar
+            data={data}
+            // height={100}
+            options={{
+              scales: {
+                yAxes: [
+                  {
+                    display: true,
+                    ticks: {
+                      beginAtZero: true,
+                      suggestedMax: 10,
+                    },
+                  },
+                ],
+              },
+            }}
+          />
+        ) : (
+          <p>No data in this report</p>
+        )}
       </div>
     );
   };
 
-  // Report for Emp of Month Awards received by users
+  // 6. Generates Bar graph for Emp of Month Awards received by users
   monthlyAwardsReceived = () => {
     const labels = [];
     const received = [];
     for (let i = 0; i < this.state.mostMonthAwards.length; i++) {
-      labels.push(this.state.mostMonthAwards[i][0]);
+      labels.push(
+        this.state.mostMonthAwards[i][0] +
+          ' ' +
+          this.state.mostMonthAwards[i][0]
+      );
       received.push(this.state.mostMonthAwards[i][2]);
     }
 
@@ -259,59 +358,84 @@ class Reports extends Component {
     return (
       <div>
         <h2>Employee of the Month Awards (Received)</h2>
-        <p>Total: {}</p>
-        <Bar
-          data={data}
-          height={100}
-          options={{
-            scales: {
-              yAxes: [
-                {
-                  display: true,
-                  ticks: {
-                    beginAtZero: true,
-                    suggestedMax: 10,
+        {received.length > 0 ? (
+          <Bar
+            data={data}
+            // height={100}
+            options={{
+              scales: {
+                yAxes: [
+                  {
+                    display: true,
+                    ticks: {
+                      beginAtZero: true,
+                      suggestedMax: 10,
+                    },
                   },
-                },
-              ],
-            },
-          }}
-        />
+                ],
+              },
+            }}
+          />
+        ) : (
+          <p>No data in this report</p>
+        )}
       </div>
     );
   };
 
-  // Report for general statistics
+  // 7. lists general statistics
   generalStats = () => {
     return (
       <div>
-        Total Users: {this.state.totalUser} <br/>
-        Total Admins: {this.state.totalAdmin} <br/>
-        Total Award Winners: {this.state.withMostAwards.length} <br/>
-        Total Employee of the Week Winners: {this.state.mostWeekAwards.length} <br/>
-        Total Employee of the Month Winners: {this.state.mostMonthAwards.length}
+        <h1>General Stats</h1>
+        Total Users: {this.state.totalUser} <br />
+        Total Admins: {this.state.totalAdmin} <br />
+        {/* Total # of Award Winners: {this.state.withMostAwards.length} */}
       </div>
-    )
+    );
+  };
+
+  // report 1: totals
+  totalsReport = () => {
+    return (
+      <div>
+        {this.generalStats()}
+        {this.totalAwardsWonReport()}
+        {this.totalGrantedAwardsReport()}
+      </div>
+    );
+  };
+
+  // report 2: awards received
+  awardsReceivedReport = () => {
+    return (
+      <div>
+        {this.monthlyAwardsReceived()}
+        {this.weeklyAwardsReceived()}
+      </div>
+    );
+  };
+
+  // report 3: awards granted
+  awardsGrantedReport = () => {
+    return (
+      <div>
+        {this.monthlyAwardsGranted()}
+        {this.weeklyAwardsGranted()}
+      </div>
+    );
   };
 
   // Displays chosen report
   RunReport = () => {
     if (this.state.option === '1') {
-      return this.totalGrantedAwardsReport();
+      return this.totalsReport();
     } else if (this.state.option === '2') {
-      return this.totalAwardsWonReport();
+      return this.awardsReceivedReport();
     } else if (this.state.option === '3') {
-      return this.weeklyAwardsGranted();
-    } else if (this.state.option === '4') {
-      return this.weeklyAwardsReceived();
-    } else if (this.state.option === '5') {
-      return this.monthlyAwardsGranted();
-    } else if (this.state.option === '6') {
-      return this.monthlyAwardsReceived();
-    } else if(this.state.option === '7') {
-      return this.generalStats();
+      return this.awardsGrantedReport();
     } else {
-      return <div>No reports</div>;
+      return <div>No reports selected</div>;
     }
   };
 
@@ -348,13 +472,9 @@ class Reports extends Component {
               onChange={this.onChange}
             >
               <option>-</option>
-              <option value="1">Total Most Awards Granted</option>
-              <option value="2">Total Most Awards Received</option>
-              <option value="3">Employee of the Week (Granted)</option>
-              <option value="4">Employee of the Week (Received)</option>
-              <option value="5">Employee of the Month (Granted)</option>
-              <option value="6">Employee of the Month (Received)</option>
-              <option value="7">General Statistics</option>
+              <option value="1">Totals</option>
+              <option value="2">Received Awards</option>
+              <option value="3">Granted Awards</option>
             </Input>
           </FormGroup>
         </Form>

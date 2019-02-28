@@ -21,7 +21,7 @@ class Header extends Component {
   };
 
   render() {
-    var awardType = 'Week';
+    // var awardType = 'Week';
     // NavItems on Navbar changes based on pathname
     const path = this.props.location.pathname;
     let item;
