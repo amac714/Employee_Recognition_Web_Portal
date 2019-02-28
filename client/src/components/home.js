@@ -40,11 +40,8 @@ class HomePage extends Component {
                     <Col xs={{size: 4, offset: 1}} style={{paddingTop: '200px'}}>
                         <h1 className="headerText">{this.state.textTitle}</h1>
                         <p>{this.state.textMessage}</p>
-
+ 
                         <div className="buttons">
-                            <Link to="/">
-                                <button>Signup</button>
-                            </Link>
                             <Link to="/userLogin">
                                 <button>Login</button>
                             </Link>
