@@ -9,15 +9,16 @@ from flask_jwt_extended import (JWTManager, jwt_required, verify_jwt_in_request,
                                 get_jwt_identity)
 from werkzeug.exceptions import HTTPException
 from flask_mail import Mail, Message
-import os,subprocess
+import os, subprocess
 from flask_heroku import Heroku
-
+import smtplib
+from email.mime.text import MIMEText
+import requests
 
 app = Flask(__name__, template_folder="client/build", static_folder="client/build/static")
 
 CORS(app)
 app.config.from_object(os.environ['APP_SETTINGS'])
-
 
 heroku = Heroku(app)
 mail = Mail(app)
@@ -106,10 +107,7 @@ def patchUser(u_id):
         return jsonify({"User": "User not found."})
 
 
-
-
-
-# DELETE : Delete user given id 
+# DELETE : Delete user given id
 @app.route('/user/<int:u_id>', methods=['DELETE'])
 @admin_only
 def deleteUser(u_id):
@@ -204,7 +202,6 @@ def getAwardByUser(u_id):
         return jsonify({"User": "User does not exist."})
 
 
-
 # POST : Create new award
 @app.route('/user/<int:u_id>/award', methods=['POST'])
 @user_only
@@ -223,7 +220,7 @@ def postAward(u_id):
 
         # Create Award
         generateAward(newAward, user)
-        
+
         return awardSchema.jsonify(newAward)
     else:
         return jsonify({"User": "User does not exist. Cannot create award."})
@@ -246,7 +243,6 @@ def deleteAward(u_id, aw_id):
 
 
 def generateAward(newAward, authorizedUser):
-
     print(newAward.date_granted)
 
     # Latex document sections
@@ -259,8 +255,7 @@ def generateAward(newAward, authorizedUser):
     footer = r'''   \end{center}
                     \end{document}'''
 
-
-    awardTypeSection = r'''\begin{center}{\huge\textbf{''' +  str(newAward.award_type) + r'''}}\end{center}'''
+    awardTypeSection = r'''\begin{center}{\huge\textbf{''' + str(newAward.award_type) + r'''}}\end{center}'''
 
     inputDate = r'''\begin{center}{\large\textbf{''' + str(newAward.date_granted) + r'''}}\end{center}'''
 
@@ -278,7 +273,6 @@ def generateAward(newAward, authorizedUser):
               recipeint + \
               footer
 
-
     # Generate pdf file
     with open('awardPDF.tex', 'w') as f:
         f.write(content)
@@ -286,23 +280,42 @@ def generateAward(newAward, authorizedUser):
     commandLine = subprocess.Popen(['pdflatex', 'awardPDF.tex'])
     commandLine.communicate()
 
-
     # Get recipient's email address (username)
     recipient_email = check_user_in_db(newAward.recipient_first_name, newAward.recipient_last_name)
 
-
     # Send email
     try:
-        msg = Message("Employee Portal",
-                      sender='ogmaemployeeawards@gmail.com',
-                      recipients=[recipient_email])
-        msg.body = "Congrats on the award!!!\n"
+        hour = str(newAward.time_granted)[:2]
 
-        with app.open_resource("awardPDF.pdf") as fp:
-            msg.attach("awardPDS.pdf", "award/pdf", fp.read())
+        # if(int(hour) > 12):
+        #     hour = str(int(hour) - 12)
+
+        min = str(newAward.time_granted)[3:5]
+
+        day = str(newAward.date_granted)[-2:]
+        month = int(str(newAward.date_granted)[5:7])
+        year = str(newAward.date_granted)[:4]
 
 
-        mail.send(msg)
+        monthList = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+        currDate = day + " " + monthList[month -1] + " " + year
+        currTime = hour + ":" + min + " EST"
+        date = currDate + " " + currTime
+
+
+        send_mail = requests.post(
+                "https://api.mailgun.net/v3/sandbox0c4c3e3ed0eb42d787dc02449a8e9b46.mailgun.org/messages",
+                auth=("api", "36f4224c5acce803c1cf49d621a0a802-7caa9475-e1c40c13"),
+                files=[("attachment", ("test.pdf", open("awardPDF.pdf", "rb").read()))],
+                data={"from": "ogmaemployeeawards@gmail.com",
+                      "to": recipient_email,
+                      "subject": "Test",
+                      "text": "Testing some Mailgun awesomness!",
+                      # "o:deliverytime": "27 Feb 2019 20:59:00 EST"})
+                       "o:deliverytime": date})
+
+        print(send_mail)
 
     # Error with sending email
     except Exception as e:
@@ -313,6 +326,7 @@ def generateAward(newAward, authorizedUser):
     os.unlink('awardPDF.log')
     os.unlink('awardPDF.tex')
     # os.unlink('awardPDF.pdf') !!! DON'T FORGET TO UNCOMMENT !!!
+
 
 
 
@@ -360,54 +374,53 @@ def getBIReport():
         .join(Awards, Users.first_name == Awards.recipient_first_name) \
         .group_by(Users.first_name, Users.last_name) \
         .order_by(func.count(Awards.award_type) \
-        .desc()).all()
+                  .desc()).all()
 
     userWithMostAwards_Month = db.session.query(Users.first_name, Users.last_name, func.count(Awards.award_type)) \
         .join(Awards, Users.first_name == Awards.recipient_first_name) \
-        .filter(Awards.award_type=='Employee of the Month') \
+        .filter(Awards.award_type == 'Employee of the Month') \
         .group_by(Users.first_name, Users.last_name, Awards.award_type) \
         .order_by(func.count(Awards.award_type) \
-        .desc()).all()
+                  .desc()).all()
 
     userWithMostAwards_Week = db.session.query(Users.first_name, Users.last_name, func.count(Awards.award_type)) \
         .join(Awards, Users.first_name == Awards.recipient_first_name) \
-        .filter(Awards.award_type=='Employee of the Week') \
+        .filter(Awards.award_type == 'Employee of the Week') \
         .group_by(Users.first_name, Users.last_name, Awards.award_type) \
         .order_by(func.count(Awards.award_type) \
-        .desc()).all()
-
+                  .desc()).all()
 
     # User that granted the most awards - descending
     userGrantedMostAwards_Total = db.session.query(Users.first_name, Users.last_name, func.count(Awards.created_by_user)) \
         .join(Awards, Users.id == Awards.created_by_user) \
         .group_by(Users.first_name, Users.last_name) \
         .order_by(func.count(Awards.created_by_user) \
-        .desc()).all()
+                  .desc()).all()
 
     userGrantedMostAwards_Month = db.session.query(Users.first_name, Users.last_name, func.count(Awards.created_by_user)) \
         .join(Awards, Users.id == Awards.created_by_user) \
-        .filter(Awards.award_type=='Employee of the Month') \
+        .filter(Awards.award_type == 'Employee of the Month') \
         .group_by(Users.first_name, Users.last_name) \
         .order_by(func.count(Awards.created_by_user) \
-        .desc()).all()
+                  .desc()).all()
 
     userGrantedMostAwards_Week = db.session.query(Users.first_name, Users.last_name, func.count(Awards.created_by_user)) \
         .join(Awards, Users.id == Awards.created_by_user) \
-        .filter(Awards.award_type=='Employee of the Week') \
+        .filter(Awards.award_type == 'Employee of the Week') \
         .group_by(Users.first_name, Users.last_name) \
         .order_by(func.count(Awards.created_by_user) \
-        .desc()).all()
+                  .desc()).all()
 
     return jsonify({"totalAdmin": totalAdmin,
                     'totalUser': totalUser,
                     'totalAward': totalAward,
                     'totalEmpMonth': totalEmpMonth,
                     'totalEmpWeek': totalEmpWeek,
-                    'userWithMostAwards': {"total":userWithMostAwards_Total, 
-                                           "month": userWithMostAwards_Month, 
+                    'userWithMostAwards': {"total": userWithMostAwards_Total,
+                                           "month": userWithMostAwards_Month,
                                            "week": userWithMostAwards_Week},
-                    'userGrantedMostAwards': {"total": userGrantedMostAwards_Total, 
-                                              "month": userGrantedMostAwards_Month, 
+                    'userGrantedMostAwards': {"total": userGrantedMostAwards_Total,
+                                              "month": userGrantedMostAwards_Month,
                                               "week": userGrantedMostAwards_Week}
                     })
 
