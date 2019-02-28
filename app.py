@@ -286,10 +286,6 @@ def generateAward(newAward, authorizedUser):
     # Send email
     try:
         hour = str(newAward.time_granted)[:2]
-
-        # if(int(hour) > 12):
-        #     hour = str(int(hour) - 12)
-
         min = str(newAward.time_granted)[3:5]
 
         day = str(newAward.date_granted)[-2:]
@@ -309,7 +305,7 @@ def generateAward(newAward, authorizedUser):
                 auth=("api", "36f4224c5acce803c1cf49d621a0a802-7caa9475-e1c40c13"),
                 files=[("attachment", ("test.pdf", open("awardPDF.pdf", "rb").read()))],
                 data={"from": "ogmaemployeeawards@gmail.com",
-                      "to": recipient_email,
+                      "to": 'phairb@oregonstate.edu',
                       "subject": "Test",
                       "text": "Testing some Mailgun awesomness!",
                       # "o:deliverytime": "27 Feb 2019 20:59:00 EST"})

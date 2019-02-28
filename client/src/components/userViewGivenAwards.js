@@ -34,13 +34,26 @@ class UserViewMyAwards extends Component {
                         date_granted,
                         time_granted,
                     }) => {
+        var time_of_day;
+        var hour = time_granted.substr(0,2);
+        const min = time_granted.substr(2,3);
+
+        if(hour > 12){
+            time_of_day = "PM";
+            hour -= 12;
+        }
+        else{
+            time_of_day = "AM"
+        }
+
+        const time_given = hour + min + " " + time_of_day;
         return (
             <tr key={id} className="award_data">
                 <th scope="row">{award_type}</th>
                 <th>{recipient_first_name}</th>
                 <th>{recipient_last_name}</th>
                 <th>{date_granted}</th>
-                <th>{time_granted}</th>
+                <th>{time_given}</th>
                 <th>
                     <button type="button" onClick={() => this.deleteAward(id)}>Delete</button>
                 </th>
