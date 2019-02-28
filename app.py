@@ -285,27 +285,24 @@ def generateAward(newAward, authorizedUser):
 
     # Send email
     try:
-        # msg = Message("Employee Portal",
-        #               sender='ogmaemployeeawards@gmail.com',
-        #               recipients=[recipient_email])
-        # msg.body = "Congrats on the award!!!\n"
-        #
-        # with app.open_resource("awardPDF.pdf") as fp:
-        #     msg.attach("awardPDS.pdf", "award/pdf", fp.read())
-        #
-        # mail.send(msg)
+        hour = str(newAward.time_granted)[:2]
 
-        # msg = MIMEText('Testing some Mailgun awesomness')
-        # msg['Subject'] = "Hello"
-        # msg['From'] = "ogmaemployeeawards@gmail.com"
-        # msg['To'] = recipient_email
-        # msg['X-Mailgun-Deliver-By'] = "Wed, 27 Feb 2019 20:10:00 -0000"
-        #
-        # s = smtplib.SMTP('smtp.mailgun.org', 587)
-        #
-        # s.login('postmaster@sandbox0c4c3e3ed0eb42d787dc02449a8e9b46.mailgun.org', '4e03c6fc1082f3651ed169dc411d8b92-7caa9475-973c1ba7')
-        # s.sendmail(msg['From'], msg['To'], msg.as_string())
-        # s.quit()
+        # if(int(hour) > 12):
+        #     hour = str(int(hour) - 12)
+
+        min = str(newAward.time_granted)[3:5]
+
+        day = str(newAward.date_granted)[-2:]
+        month = int(str(newAward.date_granted)[5:7])
+        year = str(newAward.date_granted)[:4]
+
+
+        monthList = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+        currDate = day + " " + monthList[month -1] + " " + year
+        currTime = hour + ":" + min + " EST"
+        date = currDate + " " + currTime
+
 
         send_mail = requests.post(
                 "https://api.mailgun.net/v3/sandbox0c4c3e3ed0eb42d787dc02449a8e9b46.mailgun.org/messages",
@@ -315,7 +312,9 @@ def generateAward(newAward, authorizedUser):
                       "to": recipient_email,
                       "subject": "Test",
                       "text": "Testing some Mailgun awesomness!",
-                      "o:deliverytime": "Wed, 27 Feb 2019 20:25:00 EST"})
+                      # "o:deliverytime": "27 Feb 2019 20:59:00 EST"})
+                       "o:deliverytime": date})
+
         print(send_mail)
 
     # Error with sending email
