@@ -165,6 +165,7 @@ export default class UserHomePage extends Component {
             })
             .catch(function (error) {
                 console.log(error);
+                alert("ERROR: User does not exist")
             });
     };
 

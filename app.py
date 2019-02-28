@@ -64,10 +64,11 @@ def getIndUser(u_id):
 # Get user's username
 def check_user_in_db(firstName, lastName):
     user = Users.query.filter_by(first_name=firstName, last_name=lastName).first()
+    print(user)
     if user:
         return user.user_name
     else:
-        return jsonify({"User": "User not found."})
+        return False
 
 
 # POST : Create new user 
@@ -95,6 +96,8 @@ def patchUser(u_id):
     user = Users.query.get(u_id)
 
     if user:
+        prev_first = user.first_name
+        prev_last = user.last_name
         schema = UserSchema()
         user.first_name = request.json['first_name']
         user.last_name = request.json['last_name']
@@ -102,6 +105,7 @@ def patchUser(u_id):
         passHash = bcrypt.generate_password_hash(request.json['password'])
         user.user_password = passHash
         db.session.commit()
+        updateAwardEntry(prev_first,prev_last, user.first_name,user.last_name)
         return schema.jsonify(user)
     else:
         return jsonify({"User": "User not found."})
@@ -217,8 +221,9 @@ def postAward(u_id):
                           u_id)
 
         # check if recipient is in the database
-        if check_user_in_db(newAward.recipient_first_name, newAward.recipient_last_name):
+        if check_user_in_db(newAward.recipient_first_name, newAward.recipient_last_name) is False:
             return jsonify({"User": "User does not exist. Cannot create award."}), 400
+
 
         db.session.add(newAward)
         db.session.commit()
@@ -242,6 +247,16 @@ def deleteAward(u_id, aw_id):
         return jsonify({"Award": "Award is deleted."})
     else:
         return jsonify({"Error": "User or award does not exist."})
+
+# Update Award Entry after User PATCH first/last name
+def updateAwardEntry(prev_first,prev_last,new_first, new_last): 
+    awards = Awards.query.filter_by(recipient_first_name=prev_first,recipient_last_name=prev_last).all()
+
+    if awards: 
+        for x in awards: 
+            x.recipient_first_name = new_first
+            x.recipient_last_name = new_last
+            db.session.commit()
 
 
 ''' ################################################ SEND MAIL ################################################ '''
@@ -310,7 +325,7 @@ def generateAward(newAward, authorizedUser):
                 auth=("api", "36f4224c5acce803c1cf49d621a0a802-7caa9475-e1c40c13"),
                 files=[("attachment", ("test.pdf", open("awardPDF.pdf", "rb").read()))],
                 data={"from": "ogmaemployeeawards@gmail.com",
-                      "to": 'phairb@oregonstate.edu',
+                      "to": recipient_email,
                       "subject": "Test",
                       "text": "Testing some Mailgun awesomness!",
                       # "o:deliverytime": "27 Feb 2019 20:59:00 EST"})
