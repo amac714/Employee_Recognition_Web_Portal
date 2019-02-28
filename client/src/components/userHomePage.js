@@ -87,11 +87,11 @@ export default class UserHomePage extends Component {
     componentDidMount() {
         this.getAwards();
         this.getUser();
-        this.timer = setInterval(() => this.getAwards(), 5000);
+        // this.timer = setInterval(() => this.getAwards(), 5000);
     }
 
     componentWillUnmount() {
-        this.timer = null;
+        // this.timer = null;
     }
 
 
@@ -229,7 +229,8 @@ export default class UserHomePage extends Component {
 
         axios.delete('/user/' + this.state.id + '/award/' + e, this.state.config)
             .then(res => {
-                console.log(res)
+                console.log(res);
+                this.getAwards();
             })
             .catch(err => {
                 console.log(err)
