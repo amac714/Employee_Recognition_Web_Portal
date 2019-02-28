@@ -44,6 +44,7 @@ class UserViewMyAwards extends Component {
         }
         else{
             time_of_day = "AM"
+            hour = hour.substr(1, 2)
         }
 
         const time_given = hour + min + " " + time_of_day;
