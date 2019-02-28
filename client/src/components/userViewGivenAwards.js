@@ -34,8 +34,10 @@ class UserViewMyAwards extends Component {
                         date_granted,
                         time_granted,
                     }) => {
-        var time_of_day;
-        var hour = time_granted.substr(0,2);
+
+        // format time
+        let time_of_day;
+        let hour = time_granted.substr(0,2);
         const min = time_granted.substr(2,3);
 
         if(hour > 12){
@@ -43,17 +45,28 @@ class UserViewMyAwards extends Component {
             hour -= 12;
         }
         else{
-            time_of_day = "AM"
-            hour = hour.substr(1, 2)
+            time_of_day = "AM";
+            hour = hour.substr(1, 2);            // remove the "0" from the first part of the number
         }
 
         const time_given = hour + min + " " + time_of_day;
+
+
+        // format date
+        const month_list = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const year = date_granted.substr(0, 4);
+        const day_month = date_granted.substr(5, 7);
+        const month = day_month.substr(0, 2);
+        const day_of_the_week = day_month.substr(3, 4);
+
+        const date_given = month_list[parseInt(month) - 1] + " " + day_of_the_week + ", " + year;
+
         return (
             <tr key={id} className="award_data">
                 <th scope="row">{award_type}</th>
                 <th>{recipient_first_name}</th>
                 <th>{recipient_last_name}</th>
-                <th>{date_granted}</th>
+                <th>{date_given}</th>
                 <th>{time_given}</th>
                 <th>
                     <button type="button" onClick={() => this.deleteAward(id)}>Delete</button>
