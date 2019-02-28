@@ -3,7 +3,7 @@
  * */
 
 import React, {Component} from 'react';
-import {Container, Form, FormGroup, Input, Col, Label, Button} from 'reactstrap';
+import {Container, Form, FormGroup, Input, Col, Label, Button, Row} from 'reactstrap';
 
 // import './userHomePageStyle.css'
 
@@ -27,6 +27,17 @@ class UserCreateAward extends Component {
 
     sendAward = () => {
         this.props.submitAward(this.state);
+        this.setState({
+            award_type: 'Employee of the Week',
+            first_name: '',
+            last_name: '',
+            time_granted: '',
+            date_granted: '',
+        })
+    };
+
+
+    cancelEntry = () => {
         this.setState({
             award_type: 'Employee of the Week',
             first_name: '',
@@ -118,9 +129,16 @@ class UserCreateAward extends Component {
                         </Col>
                     </FormGroup>
 
-                    <Col sm="12" md={{size: 6, offset: 6}}>
-                        <Button type="button" onClick={this.sendAward}>Submit</Button>
-                    </Col>
+                    <div className="award_creation_buttons">
+                        <Row>
+                            <Col sm={{size: 1, offset: 4}}>
+                                <Button type="button" color="primary" className="submit_create_award" onClick={this.sendAward}>Submit</Button>
+                            </Col>
+                            <Col sm={{size: 1, offset: 1}}>
+                                <Button type="button" color="danger" className="cancel_create_award" onClick={this.cancelEntry}>Cancel</Button>
+                            </Col>
+                        </Row>
+                    </div>
                 </Form>
             </Container>
         );
