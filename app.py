@@ -105,7 +105,7 @@ def patchUser(u_id):
         passHash = bcrypt.generate_password_hash(request.json['password'])
         user.user_password = passHash
         db.session.commit()
-        updateAwardEntry(prev_first,prev_last, user.first_name,user.last_name)
+        updateAwardEntry(prev_first, prev_last, user.first_name, user.last_name)
         return schema.jsonify(user)
     else:
         return jsonify({"User": "User not found."})

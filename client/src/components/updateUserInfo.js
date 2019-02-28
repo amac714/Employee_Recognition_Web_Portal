@@ -45,7 +45,6 @@ class UpdateUserInfo extends Component {
         } else {
             return true
         }
-
     };
 
     render() {
