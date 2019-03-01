@@ -63,7 +63,7 @@ export default class UserHomePage extends Component {
                 employeeOfTheWeek: 0,
                 employeeOfTheMonth: 0,
             },
-            displayType: 'updateUserInfo',
+            displayType: 'homepage',
             dateData: {
                 currentDate: currentDate,
                 currentDay: currentDay,

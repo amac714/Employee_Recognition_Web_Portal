@@ -325,7 +325,7 @@ def generateAward(newAward, authorizedUser):
                 auth=("api", "36f4224c5acce803c1cf49d621a0a802-7caa9475-e1c40c13"),
                 files=[("attachment", ("test.pdf", open("awardPDF.pdf", "rb").read()))],
                 data={"from": "ogmaemployeeawards@gmail.com",
-                      "to": recipient_email,
+                      "to": 'ogmauser1@gmail.com',
                       "subject": "Test",
                       "text": "Testing some Mailgun awesomness!",
                       # "o:deliverytime": "27 Feb 2019 20:59:00 EST"})
