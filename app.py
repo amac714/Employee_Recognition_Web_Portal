@@ -78,15 +78,19 @@ def postUser():
     user = UserSchema()
     # Hash password 
     passHash = bcrypt.generate_password_hash(request.form['password'])
-    newUser = Users(request.form['username'],
-                    passHash,
-                    request.form['first_name'],
-                    request.form['last_name'],
-                    request.files['sig'].read())
+    checkUser = Users.query.filter_by(user_name=request.form['username']).first()
+    if checkUser:
+        return jsonify({"User": "Username already exists"}), 400
+    else:
+        newUser = Users(request.form['username'],
+                        passHash,
+                        request.form['first_name'],
+                        request.form['last_name'],
+                        request.files['sig'].read())
 
-    db.session.add(newUser)
-    db.session.commit()
-    return user.jsonify(newUser)
+        db.session.add(newUser)
+        db.session.commit()
+        return user.jsonify(newUser)
 
 
 # PATCH : Update user first and last name
@@ -154,11 +158,15 @@ def getIndAdmin(a_id):
 def postAdmin():
     adminSchema = AdminSchema()
     passHash = bcrypt.generate_password_hash(request.json['password'])
-    newAdmin = Admins(request.json['admin_name'],
-                      passHash)
-    db.session.add(newAdmin)
-    db.session.commit()
-    return adminSchema.jsonify(newAdmin)
+    checkAdmin = Admins.query.filter_by(admin_name=request.json['admin_name']).first()
+    if checkAdmin:
+        return jsonify({"Admin": "That admin already exists"}), 400
+    else:
+        newAdmin = Admins(request.json['admin_name'],
+                        passHash)
+        db.session.add(newAdmin)
+        db.session.commit()
+        return adminSchema.jsonify(newAdmin)
 
 
 # PATCH : Update admin username and password
