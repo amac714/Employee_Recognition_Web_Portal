@@ -224,7 +224,6 @@ def postAward(u_id):
         if check_user_in_db(newAward.recipient_first_name, newAward.recipient_last_name) is False:
             return jsonify({"User": "User does not exist. Cannot create award."}), 400
 
-
         db.session.add(newAward)
         db.session.commit()
 
@@ -248,12 +247,13 @@ def deleteAward(u_id, aw_id):
     else:
         return jsonify({"Error": "User or award does not exist."})
 
-# Update Award Entry after User PATCH first/last name
-def updateAwardEntry(prev_first,prev_last,new_first, new_last): 
-    awards = Awards.query.filter_by(recipient_first_name=prev_first,recipient_last_name=prev_last).all()
 
-    if awards: 
-        for x in awards: 
+# Update Award Entry after User PATCH first/last name
+def updateAwardEntry(prev_first, prev_last, new_first, new_last):
+    awards = Awards.query.filter_by(recipient_first_name=prev_first, recipient_last_name=prev_last).all()
+
+    if awards:
+        for x in awards:
             x.recipient_first_name = new_first
             x.recipient_last_name = new_last
             db.session.commit()
@@ -263,7 +263,15 @@ def updateAwardEntry(prev_first,prev_last,new_first, new_last):
 
 
 def generateAward(newAward, authorizedUser):
-    print(newAward.date_granted)
+    day = str(newAward.date_granted)[-2:]
+    month = int(str(newAward.date_granted)[5:7])
+    year = str(newAward.date_granted)[:4]
+
+    monthList = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+    currDate = day + " " + monthList[month - 1] + " " + year
+
+    pdfDate = currDate
 
     # Latex document sections
     header = r'''\documentclass{article}
@@ -277,20 +285,22 @@ def generateAward(newAward, authorizedUser):
 
     awardTypeSection = r'''\begin{center}{\huge\textbf{''' + str(newAward.award_type) + r'''}}\end{center}'''
 
-    inputDate = r'''\begin{center}{\large\textbf{''' + str(newAward.date_granted) + r'''}}\end{center}'''
+    inputDate = r'''\begin{center}{\huge\textbf{''' + str(pdfDate) + r'''}}\end{center}'''
 
     recipeint = r'''\begin{center}{\Huge\textbf{''' + str(newAward.recipient_first_name) + ' ' + str(newAward.recipient_last_name) + r'''}}\end{center}'''
 
-    to_section = r'''\begin{center}{\large\textbf{''' + 'To' + r'''}}\end{center}'''
+    on_section = r'''\begin{center}{\bigskip\large{''' + 'On' + r'''}}\end{center}'''
+    to_section = r'''\begin{center}{\bigskip\large{''' + 'Awarded To' + r'''}}\end{center}'''
 
     # sender_signiture = r'''\begin{center}\includegraphics[scale=0.8]''' + authorizedUser.user_signature + r'''\end{center}'''
 
     # Construct latex file
     content = header + \
               awardTypeSection + \
-              inputDate + \
               to_section + \
               recipeint + \
+              on_section + \
+              inputDate + \
               footer
 
     # Generate pdf file
@@ -305,33 +315,15 @@ def generateAward(newAward, authorizedUser):
 
     # Send email
     try:
-        hour = str(newAward.time_granted)[:2]
-        min = str(newAward.time_granted)[3:5]
+        msg = Message("Employee Portal",
+                      sender='ogmaemployeeawards@gmail.com',
+                      recipients=[recipient_email])
+        msg.body = "Congrats on the award!!!\n"
 
-        day = str(newAward.date_granted)[-2:]
-        month = int(str(newAward.date_granted)[5:7])
-        year = str(newAward.date_granted)[:4]
+        with app.open_resource("awardPDF.pdf") as fp:
+            msg.attach("awardPDS.pdf", "award/pdf",fp.read())
 
-
-        monthList = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-
-        currDate = day + " " + monthList[month -1] + " " + year
-        currTime = hour + ":" + min + " EST"
-        date = currDate + " " + currTime
-
-
-        send_mail = requests.post(
-                "https://api.mailgun.net/v3/sandbox0c4c3e3ed0eb42d787dc02449a8e9b46.mailgun.org/messages",
-                auth=("api", "36f4224c5acce803c1cf49d621a0a802-7caa9475-e1c40c13"),
-                files=[("attachment", ("test.pdf", open("awardPDF.pdf", "rb").read()))],
-                data={"from": "ogmaemployeeawards@gmail.com",
-                      "to": 'ogmauser1@gmail.com',
-                      "subject": "Test",
-                      "text": "Testing some Mailgun awesomness!",
-                      # "o:deliverytime": "27 Feb 2019 20:59:00 EST"})
-                       "o:deliverytime": date})
-
-        print(send_mail)
+        mail.send(msg)
 
     # Error with sending email
     except Exception as e:
@@ -342,9 +334,6 @@ def generateAward(newAward, authorizedUser):
     os.unlink('awardPDF.log')
     os.unlink('awardPDF.tex')
     # os.unlink('awardPDF.pdf') !!! DON'T FORGET TO UNCOMMENT !!!
-
-
-
 
 
 ''' ################################################ LOGIN ################################################ '''
