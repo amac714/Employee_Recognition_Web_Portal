@@ -88,7 +88,14 @@ class UpdateUserInfo extends Component {
                                     </FormGroup>
 
                                     <div className="submit_button">
-                                        <Button type="button" color="primary" className="input--login" onClick={this.handleSubmit}>Submit</Button>
+                                        <Row>
+                                            <Col sm={{size: 1, offset: 4}}>
+                                                <Button type="button" color="primary" className="input--login" onClick={this.handleSubmit}>Submit</Button>
+                                            </Col>
+                                            <Col sm={{size: 1, offset: 1}}>
+                                                <Button type="button" color="danger" className="input--login" onClick={this.props.cancelInput}>Cancel</Button>
+                                            </Col>
+                                        </Row>
                                     </div>
                                 </Form>
                             </Col>
