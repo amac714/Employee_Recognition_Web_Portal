@@ -63,7 +63,7 @@ export default class UserHomePage extends Component {
                 employeeOfTheWeek: 0,
                 employeeOfTheMonth: 0,
             },
-            displayType: 'updateUserInfo',
+            displayType: 'homepage',
             dateData: {
                 currentDate: currentDate,
                 currentDay: currentDay,
@@ -267,6 +267,7 @@ export default class UserHomePage extends Component {
                 <div>
                     <UpdateUserInfo
                         updateAccount={this.updateAccount}
+                        cancelInput={this.changeDisplay}
                         currentData={this.state.currentUserData}
                     />
                 </div>
@@ -276,7 +277,7 @@ export default class UserHomePage extends Component {
             <Container fluid className="page">
                 <Row>
                     <Col xs="2" className="side_section">
-                        <div className="side_section_date">
+                        <div className="side_section_date text-center">
                             <DateSection
                                 date={this.state.dateData}
                             />
