@@ -1,0 +1,46 @@
+
+.admin--dash {
+  padding-top: $l-size;
+
+}
+.admin--menu {
+  margin: 0;
+  margin-top: 50px;
+  width: 200px;
+  height: 100%;
+  overflow: auto;
+}
+
+.admin--menu a {
+  display: block;
+  color: black;
+  padding: $s-size;
+  text-decoration: none;
+  text-align: left;
+  border: 1px solid black;
+}
+
+.admin--menu a:hover {
+  background-color: #555;
+  color: white;
+}
+
+.admin--menu h1 {
+  text-align: left;
+  padding: 0 $s-size;
+  text-decoration: underline;
+}
+
+.admin--dash--content {
+  margin-left: 1%;
+  padding: 15px 2px;
+  height: 1000px;
+}
+
+.admin--title h1 {
+  float: left;
+}
+
+.admin--add {
+  float: right;
+}

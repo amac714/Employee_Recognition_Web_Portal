@@ -157,117 +157,122 @@ class EditUser extends Component {
           style={{ height: '200px', width: '500px' }}
         />
       );
-    } else {
-      $previewSig = <div>Upload a signature</div>;
     }
 
     return (
       <div>
         <Container>
-          <Alert color="success" isOpen={this.state.visible}>
+          <Alert color="success" isOpen={this.state.visible} className="form--alert">
             User has been saved!
           </Alert>
 
-          <Col sm="12" md={{ size: 6, offset: 3 }}>
-            <h2>Edit User</h2>
-          </Col>
-          <Form onSubmit={this.saveEdit}>
+          <div className="login--form">
             <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <FormGroup>
-                <Input
-                  type="email"
-                  invalid={this.state.invalidEmail}
-                  name="user_name"
-                  id="user_id"
-                  value={this.state.user_name}
-                  placeholder="New Email"
-                  onChange={this.onChange}
-                />
-                <FormFeedback invalid="true">
-                  {this.state.errorMsg}
+              <h1 className="login--title">Edit User</h1>
+            </Col>
+            <Form onSubmit={this.saveEdit}>
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <FormGroup>
+                  <Input
+                    className="input--form"
+                    type="email"
+                    invalid={this.state.invalidEmail}
+                    name="user_name"
+                    id="user_id"
+                    value={this.state.user_name}
+                    placeholder="New Email"
+                    onChange={this.onChange}
+                  />
+                  <FormFeedback invalid="true">
+                    {this.state.errorMsg}
+                  </FormFeedback>
+                </FormGroup>
+              </Col>
+
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <FormGroup>
+                  <Input
+                    className="input--form"
+                    type="text"
+                    name="first_name"
+                    value={this.state.first_name}
+                    placeholder="First Name"
+                    onChange={this.onChange}
+                  />
+                </FormGroup>
+              </Col>
+
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <FormGroup>
+                  <Input
+                    className="input--form"
+                    type="text"
+                    name="last_name"
+                    value={this.state.last_name}
+                    placeholder="Last Name"
+                    onChange={this.onChange}
+                  />
+                </FormGroup>
+              </Col>
+
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <FormGroup>
+                  <Input
+                    className="input--form"
+                    invalid={this.state.invalidPW}
+                    type="password"
+                    name="password"
+                    id="pw_id"
+                    value={this.state.password}
+                    placeholder="New Password"
+                    onChange={this.onChange}
+                  />
+                  <FormFeedback invalid="true">
+                    You must enter a password.
                 </FormFeedback>
-              </FormGroup>
-            </Col>
+                </FormGroup>
+              </Col>
 
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <FormGroup>
-                <Input
-                  type="text"
-                  name="first_name"
-                  value={this.state.first_name}
-                  placeholder="First Name"
-                  onChange={this.onChange}
-                />
-              </FormGroup>
-            </Col>
-
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <FormGroup>
-                <Input
-                  type="text"
-                  name="last_name"
-                  value={this.state.last_name}
-                  placeholder="Last Name"
-                  onChange={this.onChange}
-                />
-              </FormGroup>
-            </Col>
-
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <FormGroup>
-                <Input
-                  invalid={this.state.invalidPW}
-                  type="password"
-                  name="password"
-                  id="pw_id"
-                  value={this.state.password}
-                  placeholder="New Password"
-                  onChange={this.onChange}
-                />
-                <FormFeedback invalid="true">
-                  You must enter a password.
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <FormGroup>
+                  <Input
+                    className="input--form"
+                    invalid={this.state.validate}
+                    type="password"
+                    name="confirmPW"
+                    id="cpw_id"
+                    value={this.state.confirmPW}
+                    placeholder="Confirm Password"
+                    onChange={this.onChange}
+                  />
+                  <FormFeedback invalid="true">
+                    Password doesn't match!
                 </FormFeedback>
-              </FormGroup>
-            </Col>
+                </FormGroup>
+              </Col>
 
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <FormGroup>
-                <Input
-                  invalid={this.state.validate}
-                  type="password"
-                  name="confirmPW"
-                  id="cpw_id"
-                  value={this.state.confirmPW}
-                  placeholder="Confirm Password"
-                  onChange={this.onChange}
-                />
-                <FormFeedback invalid="true">
-                  Password doesn't match!
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <FormGroup>
+                  <Label>Signature</Label>
+                  <Input
+                    type="file"
+                    invalid={this.state.invalidSig}
+                    name="sig"
+                    onChange={this.onImageChange}
+                  />
+                  <FormFeedback invalid="true">
+                    Please upload a signature.
                 </FormFeedback>
-              </FormGroup>
-            </Col>
-
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <FormGroup>
-                <Label>Signature</Label>
-                <Input
-                  type="file"
-                  invalid={this.state.invalidSig}
-                  name="sig"
-                  onChange={this.onImageChange}
-                />
-                <FormFeedback invalid="true">
-                  Please upload a signature.
-                </FormFeedback>
-              </FormGroup>
-            </Col>
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              {$previewSig}
-            </Col>
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <Button type="submit">Save User</Button>
-            </Col>
-          </Form>
+                </FormGroup>
+              </Col>
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                {$previewSig}
+              </Col>
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <Button color="primary" type="submit" className="user-button input--form">Save User</Button>
+              </Col>
+            </Form>
+          </div>
         </Container>
       </div>
     );

@@ -58,8 +58,9 @@ class AdminLogin extends Component {
   onChange = e => {
     this.setState({
       [e.target.name]: e.target.value,
-      validPW: this.state.validPW ? false : null,
-      validUN: this.state.validUN ? false : null,
+      validPW: false,
+      validUN: false,
+      visible: false,
     });
   };
 
@@ -77,6 +78,7 @@ class AdminLogin extends Component {
       <Container>
         <div>
           <Alert
+            className="form--alert"
             color="danger"
             isOpen={this.state.visible}
             toggle={this.onDismiss}
@@ -96,7 +98,7 @@ class AdminLogin extends Component {
                     type="text"
                     name="username"
                     invalid={this.state.validUN}
-                    className="input--login"
+                    className="input--form"
                     id="admin_id"
                     placeholder="Username"
                     value={this.state.username}
@@ -113,7 +115,7 @@ class AdminLogin extends Component {
                     type="password"
                     name="password"
                     invalid={this.state.validPW}
-                    className="input--login"
+                    className="input--form"
                     id="pw_id"
                     placeholder="Password"
                     value={this.state.password}
@@ -125,7 +127,7 @@ class AdminLogin extends Component {
                 </FormGroup>
               </Col>
               <Col sm="12" md={{ size: 6, offset: 3 }}>
-                <Button color="primary" block className="input--login">
+                <Button color="primary" block className="input--form">
                   SIGN IN
                 </Button>
               </Col>

@@ -11,7 +11,7 @@
   padding: $s-size;
 }
 
-.input--login {
+.input--form {
   font-size: 100%;
   margin-bottom: 15px;
 }
@@ -20,4 +20,15 @@
   text-align: center;
   letter-spacing: 1px;
   margin-bottom: 10px;
+}
+
+.form--alert {
+  text-align: center;
+  width: 50%;
+  margin: 0 auto;
+  letter-spacing: 1px;
+}
+
+.user-button {
+  margin-top: 20px;
 }

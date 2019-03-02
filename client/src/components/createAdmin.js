@@ -111,69 +111,73 @@ class CreateAdmin extends Component {
     return (
       <div>
         <Container>
-          <Alert color="success" isOpen={this.state.visible}>
+          <Alert color="success" isOpen={this.state.visible} className="form--alert">
             Admin has been created!
           </Alert>
-
-          <Col sm="12" md={{ size: 6, offset: 3 }}>
-            <h2>Create New Admin</h2>
-          </Col>
-          <Form onSubmit={this.handleSubmit} method="POST">
+          <div className="login--form">
             <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <FormGroup>
-                <Label>Username</Label>
-                <Input
-                  type="text"
-                  invalid={this.state.invalidAdmin}
-                  name="admin_name"
-                  id="admin_id"
-                  value={this.state.admin_name}
-                  onChange={this.onChange}
-                />
-                <FormFeedback invalid="true">
-                  {this.state.errorMsg}
+              <h1 className="login--title">New Admin</h1>
+            </Col>
+            <Form onSubmit={this.handleSubmit}>
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <FormGroup>
+                  <Input
+                    type="text"
+                    className="input--form"
+                    invalid={this.state.invalidAdmin}
+                    name="admin_name"
+                    id="admin_id"
+                    placeholder="Username"
+                    value={this.state.admin_name}
+                    onChange={this.onChange}
+                  />
+                  <FormFeedback invalid="true">
+                    {this.state.errorMsg}
+                  </FormFeedback>
+                </FormGroup>
+              </Col>
+
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <FormGroup>
+                  <Input
+                    className="input--form"
+                    invalid={this.state.invalidPW}
+                    type="password"
+                    name="password"
+                    id="pw_id"
+                    placeholder="Password"
+                    value={this.state.password}
+                    onChange={this.onChange}
+                  />
+                  <FormFeedback invalid="true">
+                    You must enter a password
                 </FormFeedback>
-              </FormGroup>
-            </Col>
+                </FormGroup>
+              </Col>
 
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <FormGroup>
-                <Label>Password</Label>
-                <Input
-                  invalid={this.state.invalidPW}
-                  type="password"
-                  name="password"
-                  id="pw_id"
-                  value={this.state.password}
-                  onChange={this.onChange}
-                />
-                <FormFeedback invalid="true">
-                  You must enter a password
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <FormGroup>
+                  <Input
+                    className="input--form"
+                    invalid={this.state.validate}
+                    type="password"
+                    name="confirmPW"
+                    id="cpw_id"
+                    placeholder="Confirm Password"
+                    value={this.state.confirmPW}
+                    onChange={this.onChange}
+                  />
+                  <FormFeedback invalid="true">
+                    Password doesn't match!
                 </FormFeedback>
-              </FormGroup>
-            </Col>
+                </FormGroup>
+              </Col>
 
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <FormGroup>
-                <Label>Confirm Password</Label>
-                <Input
-                  invalid={this.state.validate}
-                  type="password"
-                  name="confirmPW"
-                  id="cpw_id"
-                  value={this.state.confirmPW}
-                  onChange={this.onChange}
-                />
-                <FormFeedback invalid="true">
-                  Password doesn't match!
-                </FormFeedback>
-              </FormGroup>
-            </Col>
-
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <Button type="submit">Create Admin</Button>
-            </Col>
-          </Form>
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <Button color="primary" type="submit" className="input--form">Add Admin</Button>
+              </Col>
+            </Form>
+          </div>
         </Container>
       </div>
     );

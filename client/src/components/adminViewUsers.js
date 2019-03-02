@@ -78,9 +78,14 @@ class ViewUsers extends Component {
     return (
       <div>
         <Container>
-          <h1>Users</h1>
-          <Link to="/createUser">Create New User</Link>
-          <Table responsive>
+          <div className="admin--title">
+            <h1>Users</h1>
+            <Link className="admin--add" to="/createUser">
+              <i className="fa fa-plus fa-fw" aria-hidden="true" />
+              Create User
+            </Link>
+          </div>
+          <Table>
             <thead>
               <tr>
                 <th>Id</th>
@@ -91,7 +96,9 @@ class ViewUsers extends Component {
                 <th>Delete</th>
               </tr>
             </thead>
-            <tbody>{users.sort((a, b) => a.id - b.id).map(this.renderUsers)}</tbody>
+            <tbody>
+              {users.sort((a, b) => a.id - b.id).map(this.renderUsers)}
+            </tbody>
           </Table>
         </Container>
       </div>
