@@ -5,11 +5,16 @@ html, body {
 }
 
 .side_section {
-  background-color: #4e555b;
+  //background-color: #4e555b;
+  background: #0F2027; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #2C5364, #203A43, #0F2027); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
+
 .side_section {
-  color: white;
+  color: #F5F5F5;
 }
 
 .submit_button {
@@ -19,19 +24,29 @@ html, body {
 .side_section_date {
   font-size: 1.3em;
   padding-top: 10px;
+  padding-bottom: 30px;
 }
 
 .side_section_user_data {
   padding-top: 30px;
 }
 
+.side_section_user_data h2 {
+  padding-bottom: 10px;
+}
+
+.userData {
+  color: orange;
+}
+
 .side_section_stats {
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 90px;
+  padding-bottom: 90px;
 }
 
 .side_section_stats h2 {
   font-size: 1.2em;
+  padding-bottom: 10px;
 }
 
 .section_header {
@@ -41,20 +56,41 @@ html, body {
 }
 
 
-.award_table thead{
+.award_table thead {
   font-size: .85em;
   font-weight: bold;
 }
 
-.award_data th{
+.award_data th {
   font-weight: normal;
 }
 
 
 .input_width {
-    width: 100%;
+  width: 100%;
 }
 
 .award_creation_buttons {
   text-align: center;
+}
+
+.updateAccountButton {
+  background-color: #BF7517;
+  border: none;
+  border-radius: 5px;
+  color: white;
+}
+
+.updateAccountButton:hover {
+  background-color: #B56F16;
+}
+
+
+.sideSectionRow{
+  font-size: 1em;
+  padding-left: 10px;
+}
+
+.removeColumnPadding {
+    padding: 0;
 }

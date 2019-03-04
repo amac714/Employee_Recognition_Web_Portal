@@ -285,7 +285,9 @@ export default class UserHomePage extends Component {
 
                         <div className="side_section_user_data">
                             <UserAccountInfoSection currentUserData={this.state.currentUserData}/>
-                            <button onClick={this.changeDisplay}>Update Account</button>
+                            <div className="text-center">
+                                <button className="updateAccountButton" onClick={this.changeDisplay}>Update Account</button>
+                            </div>
                         </div>
 
                         <div className="side_section_stats">
