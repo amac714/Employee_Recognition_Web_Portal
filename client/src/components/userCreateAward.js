@@ -107,7 +107,7 @@ class UserCreateAward extends Component {
                                 type='time'
                                 name='time_granted'
                                 id='time_granted'
-                                placeholder="time"
+                                placeholder="hh:mm AM/PM"
                                 value={this.state.time_granted}
                                 onChange={this.onChange}
                             />
@@ -122,7 +122,7 @@ class UserCreateAward extends Component {
                                 type='date'
                                 name='date_granted'
                                 id='date_granted'
-                                placeholder='Date Granted'
+                                placeholder='mm/dd/yyyy'
                                 value={this.state.date_granted}
                                 onChange={this.onChange}
                             />
