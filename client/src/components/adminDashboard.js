@@ -35,16 +35,25 @@ class AdminDashboard extends Component {
     if (this.state.buttonPressed === 1) return <ViewUsers />;
     else if (this.state.buttonPressed === 2) return <ViewAdmins />;
     else if (this.state.buttonPressed === 3) return <Reports />;
-    else return <h2>Admin Dashboard</h2>;
+    else
+      return (
+        <div>
+          <h1>Admin Dashboard</h1>
+          <p>
+            Welcome to the admin dashboard. From here you can add, edit, or delete
+            users and admins. To get started select an option from the menu on
+            the left.
+          </p>
+        </div>
+      );
   };
 
   render() {
     return (
-      <div>
-       <Container>
-          <Row>
-            <Col xs="2" style={{ border: '1px solid black' }}>
-              <h3>Menu</h3>
+      <Container>
+        {/* <Row>
+            <Col xs="2" className="admin--menu">
+              <h1 id="menu">Menu</h1>
               <Nav vertical>
                 <NavItem>
                   <NavLink href="#" onClick={() => this.handleClick(1)}>
@@ -63,12 +72,34 @@ class AdminDashboard extends Component {
                 </NavItem>
               </Nav>
             </Col>
-            <Col sm="12" md={{ size: 6, offset: 1 }}>
+            <Col sm="12" md={{ size: 6, offset: 1 }} className="admin--dash--content">
               {this.renderComponent()}
             </Col>
-          </Row>
-       </Container>
-      </div>
+          </Row> */}
+        <Row className="admin--dash">
+          <Col xs="3">
+            <div className="admin--menu">
+              <h1>Menu</h1>
+              <a href="#0" onClick={() => this.handleClick(1)}>
+                View Users
+              </a>
+              <a href="#0" onClick={() => this.handleClick(2)}>
+                View Admins
+              </a>
+              <a href="#0" onClick={() => this.handleClick(3)}>
+                View Reports
+              </a>
+            </div>
+          </Col>
+          <Col
+            sm="12"
+            md={{ size: 6, offset: 1 }}
+            className="admin--dash--content"
+          >
+            {this.renderComponent()}
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

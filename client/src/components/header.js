@@ -30,7 +30,7 @@ class Header extends Component {
         <Nav className="ml-auto" navbar>
           <NavItem>
             <NavLink tag={Link} to="/admin">
-              <span className="header--link">Admin</span>
+              <span className="header--link"><i className="fas fa-sign-in-alt fa-fw"></i> Admin</span>
             </NavLink>
           </NavItem>
         </Nav>
@@ -83,14 +83,12 @@ class Header extends Component {
 
     return (
       <div className="header">
-        <Container>
-          <Navbar light expand="md">
+          <Navbar expand="md">
             <NavbarBrand>
               <h1 className="header__title">Ogma Employee Recognition</h1>
             </NavbarBrand>
             {item}
           </Navbar>
-        </Container>
       </div>
     );
   }

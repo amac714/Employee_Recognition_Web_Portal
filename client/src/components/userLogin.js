@@ -106,7 +106,7 @@ class UserLogin extends Component {
                     type="text"
                     name="username"
                     invalid={this.state.validUN}
-                    className="input--login"
+                    className="input--form"
                     id="user_id"
                     placeholder="username"
                     value={this.state.username}
@@ -122,7 +122,7 @@ class UserLogin extends Component {
                     type="password"
                     name="password"
                     invalid={this.state.validPW}
-                    className="input--login"
+                    className="input--form"
                     id="pw_id"
                     placeholder="******"
                     value={this.state.password}
@@ -132,7 +132,7 @@ class UserLogin extends Component {
                 </FormGroup>
               </Col>
               <Col sm="12" md={{ size: 6, offset: 3 }}>
-                <Button color="primary" block className="input--login">Login</Button>
+                <Button color="primary" block className="input--form">Login</Button>
               </Col>
             </Form>
           </div>

@@ -14,6 +14,7 @@ from flask_heroku import Heroku
 import smtplib
 from email.mime.text import MIMEText
 import requests
+import base64
 
 app = Flask(__name__, template_folder="client/build", static_folder="client/build/static")
 
@@ -78,15 +79,19 @@ def postUser():
     user = UserSchema()
     # Hash password 
     passHash = bcrypt.generate_password_hash(request.form['password'])
-    newUser = Users(request.form['username'],
-                    passHash,
-                    request.form['first_name'],
-                    request.form['last_name'],
-                    request.files['sig'].read())
+    checkUser = Users.query.filter_by(user_name=request.form['username']).first()
+    if checkUser:
+        return jsonify({"User": "Username already exists"}), 400
+    else:
+        newUser = Users(request.form['username'],
+                        passHash,
+                        request.form['first_name'],
+                        request.form['last_name'],
+                        request.files['sig'].read())
 
-    db.session.add(newUser)
-    db.session.commit()
-    return user.jsonify(newUser)
+        db.session.add(newUser)
+        db.session.commit()
+        return user.jsonify(newUser)
 
 
 # PATCH : Update user first and last name
@@ -154,11 +159,15 @@ def getIndAdmin(a_id):
 def postAdmin():
     adminSchema = AdminSchema()
     passHash = bcrypt.generate_password_hash(request.json['password'])
-    newAdmin = Admins(request.json['admin_name'],
-                      passHash)
-    db.session.add(newAdmin)
-    db.session.commit()
-    return adminSchema.jsonify(newAdmin)
+    checkAdmin = Admins.query.filter_by(admin_name=request.json['admin_name']).first()
+    if checkAdmin:
+        return jsonify({"Admin": "That admin already exists"}), 400
+    else:
+        newAdmin = Admins(request.json['admin_name'],
+                        passHash)
+        db.session.add(newAdmin)
+        db.session.commit()
+        return adminSchema.jsonify(newAdmin)
 
 
 # PATCH : Update admin username and password
@@ -273,6 +282,13 @@ def generateAward(newAward, authorizedUser):
 
     pdfDate = currDate
 
+    user = Users.query.filter_by(id=authorizedUser.id).first()
+    img = base64.b64encode(user.user_signature)
+
+    f = open('testImg.png', 'wb')
+    f.write(img.decode('base64'))
+    f.close()
+
     # Latex document sections
     header = r'''\documentclass{article}
             \usepackage{graphicx}
@@ -289,6 +305,8 @@ def generateAward(newAward, authorizedUser):
 
     recipeint = r'''\begin{center}{\Huge\textbf{''' + str(newAward.recipient_first_name) + ' ' + str(newAward.recipient_last_name) + r'''}}\end{center}'''
 
+    sender_signiture = r'''\begin{center}\includegraphics[scale=0.8]{testImg.png}''' + r'''\end{center}'''
+
     on_section = r'''\begin{center}{\bigskip\large{''' + 'On' + r'''}}\end{center}'''
     to_section = r'''\begin{center}{\bigskip\large{''' + 'Awarded To' + r'''}}\end{center}'''
 
@@ -301,6 +319,7 @@ def generateAward(newAward, authorizedUser):
               recipeint + \
               on_section + \
               inputDate + \
+              sender_signiture + \
               footer
 
     # Generate pdf file

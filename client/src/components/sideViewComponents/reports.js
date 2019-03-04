@@ -64,11 +64,11 @@ class Reports extends Component {
       datasets: [
         {
           label: 'Total Awards Granted',
-          backgroundColor: 'rgba(255,99,132,0.2)',
-          borderColor: 'rgba(255,99,132,1)',
+          backgroundColor: 'rgba(72, 59, 59, 0.2)',
+          borderColor: 'rgba(72, 59, 59, 1)',
           borderWidth: 1,
-          hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-          hoverBorderColor: 'rgba(255,99,132,1)',
+          hoverBackgroundColor: 'rgba(72, 59, 59, 0.5)',
+          hoverBorderColor: 'rgba(72, 59, 59, 1)',
           data: dataset,
         },
       ],
@@ -89,7 +89,7 @@ class Reports extends Component {
                       display: true,
                       ticks: {
                         beginAtZero: true,
-                        suggestedMax: 10,
+                        // suggestedMax: 10,
                       },
                     },
                   ],
@@ -120,11 +120,11 @@ class Reports extends Component {
       datasets: [
         {
           label: 'Total Awards Received',
-          backgroundColor: 'rgba(255,99,132,0.2)',
-          borderColor: 'rgba(255,99,132,1)',
+          backgroundColor: 'rgba(72, 59, 59, 0.2)',
+          borderColor: 'rgba(72, 59, 59, 1)',
           borderWidth: 1,
-          hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-          hoverBorderColor: 'rgba(255,99,132,1)',
+          hoverBackgroundColor: 'rgba(72, 59, 59, 0.5)',
+          hoverBorderColor: 'rgba(72, 59, 59, 1)',
           data: dataset,
         },
       ],
@@ -144,7 +144,7 @@ class Reports extends Component {
                     display: true,
                     ticks: {
                       beginAtZero: true,
-                      suggestedMax: 10,
+                      // suggestedMax: 10,
                     },
                   },
                 ],
@@ -189,7 +189,7 @@ class Reports extends Component {
 
     return (
       <div>
-        <h2>Employee of the Week (Granted)</h2>
+        <h1>Employee of the Week</h1>
         {granted.length > 0 ? (
           <Bar
             data={data}
@@ -201,7 +201,7 @@ class Reports extends Component {
                     display: true,
                     ticks: {
                       beginAtZero: true,
-                      suggestedMax: 10,
+                      // suggestedMax: 10,
                     },
                   },
                 ],
@@ -243,7 +243,7 @@ class Reports extends Component {
 
     return (
       <div>
-        <h2>Employee of the Week Awards (Received)</h2>
+        <h1>Employee of the Week</h1>
         {received.length > 0 ? (
           <Bar
             data={data}
@@ -255,7 +255,7 @@ class Reports extends Component {
                     display: true,
                     ticks: {
                       beginAtZero: true,
-                      suggestedMax: 10,
+                      // suggestedMax: 10,
                     },
                   },
                 ],
@@ -273,7 +273,7 @@ class Reports extends Component {
   monthlyAwardsGranted = () => {
     const labels = [];
     const granted = [];
-    const bgColor = [];
+ 
     for (let i = 0; i < this.state.grantedMostMonth.length; i++) {
       labels.push(
         this.state.grantedMostMonth[i][0] +
@@ -281,7 +281,6 @@ class Reports extends Component {
           this.state.grantedMostMonth[i][1]
       );
       granted.push(this.state.grantedMostMonth[i][2]);
-      bgColor.push(this.getRandomColor());
     }
 
     const data = {
@@ -289,11 +288,11 @@ class Reports extends Component {
       datasets: [
         {
           label: 'Emp of the Month Awards Granted',
-          backgroundColor: 'rgba(249,105,14,0.2)',
-          borderColor: 'rgba(249,105,14,1)',
+          backgroundColor: 'rgba(255,99,132,0.2)',
+          borderColor: 'rgba(255,99,132,1)',
           borderWidth: 1,
-          hoverBackgroundColor: 'rgba(249,105,14,0.4)',
-          hoverBorderColor: 'rgba(249,105,14,1)',
+          hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+          hoverBorderColor: 'rgba(255,99,132,1)',
           data: granted,
         },
       ],
@@ -301,7 +300,7 @@ class Reports extends Component {
 
     return (
       <div>
-        <h2>Employee of the Month (Granted)</h2>
+        <h1>Employee of the Month</h1>
         {granted.length > 0 ? (
           <Bar
             data={data}
@@ -313,7 +312,7 @@ class Reports extends Component {
                     display: true,
                     ticks: {
                       beginAtZero: true,
-                      suggestedMax: 10,
+                      // suggestedMax: 10,
                     },
                   },
                 ],
@@ -345,11 +344,11 @@ class Reports extends Component {
       datasets: [
         {
           label: 'Emp of the Month Awards Received',
-          backgroundColor: 'rgba(249,105,14,0.2)',
-          borderColor: 'rgba(249,105,14,1)',
+          backgroundColor: 'rgba(83,51,237,0.2)',
+          borderColor: 'rgba(83,51,237,1)',
           borderWidth: 1,
-          hoverBackgroundColor: 'rgba(249,105,14,0.4)',
-          hoverBorderColor: 'rgba(249,105,14,1)',
+          hoverBackgroundColor: 'rgba(83,51,237,0.4)',
+          hoverBorderColor: 'rgba(83,51,237,1)',
           data: received,
         },
       ],
@@ -357,7 +356,7 @@ class Reports extends Component {
 
     return (
       <div>
-        <h2>Employee of the Month Awards (Received)</h2>
+        <h1>Employee of the Month</h1>
         {received.length > 0 ? (
           <Bar
             data={data}
@@ -369,7 +368,7 @@ class Reports extends Component {
                     display: true,
                     ticks: {
                       beginAtZero: true,
-                      suggestedMax: 10,
+                      // suggestedMax: 10,
                     },
                   },
                 ],
@@ -399,9 +398,9 @@ class Reports extends Component {
   totalsReport = () => {
     return (
       <div>
-        {this.generalStats()}
-        {this.totalAwardsWonReport()}
-        {this.totalGrantedAwardsReport()}
+        <div className="report">{this.generalStats()}</div>
+        <div className="report">{this.totalAwardsWonReport()}</div>
+        <div className="report">{this.totalGrantedAwardsReport()}</div>
       </div>
     );
   };
@@ -409,9 +408,9 @@ class Reports extends Component {
   // report 2: awards received
   awardsReceivedReport = () => {
     return (
-      <div>
-        {this.monthlyAwardsReceived()}
-        {this.weeklyAwardsReceived()}
+      <div className="report-container">
+        <div className="report">{this.monthlyAwardsReceived()}</div>
+        <div className="report">{this.weeklyAwardsReceived()}</div>
       </div>
     );
   };
@@ -420,8 +419,8 @@ class Reports extends Component {
   awardsGrantedReport = () => {
     return (
       <div>
-        {this.monthlyAwardsGranted()}
-        {this.weeklyAwardsGranted()}
+        <div className="report">{this.monthlyAwardsGranted()}</div>
+        <div className="report">{this.weeklyAwardsGranted()}</div>
       </div>
     );
   };
@@ -435,28 +434,13 @@ class Reports extends Component {
     } else if (this.state.option === '3') {
       return this.awardsGrantedReport();
     } else {
-      return <div>No reports selected</div>;
+      return <div>No report selected</div>;
     }
   };
 
   // On select input change handler
   onChange = e => {
     this.setState({ option: e.target.value });
-  };
-
-  loading = () => {
-    return <div>Loading...</div>;
-  };
-
-  // Returns a random color in hex
-  getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-
-    return color;
   };
 
   render() {
@@ -466,6 +450,7 @@ class Reports extends Component {
           <FormGroup>
             <Label>Select Report</Label>
             <Input
+              className="input--form"
               type="select"
               name="select"
               id="exampleSelect"
