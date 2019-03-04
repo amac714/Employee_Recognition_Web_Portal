@@ -86,11 +86,18 @@ html, body {
 }
 
 
-.sideSectionRow{
+.sideSectionRow {
   font-size: 1em;
   padding-left: 10px;
 }
 
 .removeColumnPadding {
-    padding: 0;
+  padding: 0;
+}
+
+
+.form_padding Input {
+  border-radius: 2px;
+  box-shadow: 1px 1px 4px black;
+  padding: 1px 5px;
 }
