@@ -49,7 +49,7 @@ class UserCreateAward extends Component {
 
     render() {
         return (
-            <Container>
+            <Container className="text_style">
                 <h2 className="text-center section_header">Create Award</h2>
 
                 <Form className="form_padding">
@@ -131,11 +131,11 @@ class UserCreateAward extends Component {
 
                     <div className="award_creation_buttons">
                         <Row>
-                            <Col sm={{size: 1, offset: 4}}>
-                                <Button type="button" color="primary" className="submit_create_award" onClick={this.sendAward}>Submit</Button>
+                            <Col sm={{size: 1, offset: 3}}>
+                                <Button type="button" color="success" className="submit_create_award button_style" onClick={this.sendAward}>Submit</Button>
                             </Col>
-                            <Col sm={{size: 1, offset: 1}}>
-                                <Button type="button" color="danger" className="cancel_create_award" onClick={this.cancelEntry}>Cancel</Button>
+                            <Col sm={{size: 1, offset: 2}}>
+                                <Button type="button" color="danger" className="cancel_create_award button_style" onClick={this.cancelEntry}>Cancel</Button>
                             </Col>
                         </Row>
                     </div>
