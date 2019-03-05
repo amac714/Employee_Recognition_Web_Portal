@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import axios from 'axios';
-import {Row, Col} from 'reactstrap';
+import {Row, Col, Jumbotron, Button} from 'reactstrap';
 import './homePage.css';
 import {Link} from 'react-router-dom';
 import Container from "reactstrap/es/Container";
@@ -33,35 +33,48 @@ class HomePage extends Component {
 
     render() {
         return (
-            <Container>
-                <h1>{this.state.msg}</h1>
+            <div className="home">
+                <div className="home--login">
+                    <h1 className="home--title">{this.state.textTitle}</h1>
+                    <Link to="/userLogin">
+                        <Button className="home--button" color="primary" size="lg">Login</Button>
+                    </Link>
+                </div>
+            </div>
+            // <Container>
+            //     <div className="home">
+            //         <h1>{this.state.textTitle}</h1>
+            //         <Link to="/userLogin">
+            //             <button>Login</button>
+            //         </Link>
+            //     </div>
 
-                <Row className="content">
-                    <Col xs={{size: 4, offset: 1}} style={{paddingTop: '200px'}}>
-                        <h1 className="headerText">{this.state.textTitle}</h1>
-                        <p>{this.state.textMessage}</p>
+            //     <Row className="content">
+            //         <Col xs={{size: 4, offset: 1}} style={{paddingTop: '200px'}}>
+            //             <h1 className="headerText">{this.state.textTitle}</h1>
+            //             <p>{this.state.textMessage}</p>
  
-                        <div className="buttons">
-                            <Link to="/userLogin">
-                                <button>Login</button>
-                            </Link>
-                        </div>
-                    </Col>
-                    <Col xs={{size: 1, offset: 2}}>
-                        <a href="https://placeholder.com">
-                            <img src="https://via.placeholder.com/500x300" alt="firstImg"/>
-                        </a>
-                    </Col>
-                </Row>
+            //             <div className="buttons">
+            //                 <Link to="/userLogin">
+            //                     <button>Login</button>
+            //                 </Link>
+            //             </div>
+            //         </Col>
+            //         <Col xs={{size: 1, offset: 2}}>
+            //             <a href="https://placeholder.com">
+            //                 <img src="/images/homeImage.jpg" alt="firstImg" style={{height: '300px', width: '500px'}}/>
+            //             </a>
+            //         </Col>
+            //     </Row>
 
-                <Row>
-                    <Col xs={{size: 2, offset: 7}}>
-                        <a href="https://placeholder.com">
-                            <img src="https://via.placeholder.com/500x300" alt="secondImg"/>
-                        </a>
-                    </Col>
-                </Row>
-            </Container>
+            //     <Row>
+            //         <Col xs={{size: 2, offset: 7}}>
+            //             <a href="https://placeholder.com">
+            //                 <img src="https://via.placeholder.com/500x300" alt="secondImg"/>
+            //             </a>
+            //         </Col>
+            //     </Row>
+            // </Container>
         );
     }
 }
