@@ -87,7 +87,7 @@ class UserLogin extends Component {
         return (
             <Container>
                 <div>
-                    <Alert color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
+                    <Alert className="form--alert" color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
                         Username or password is incorrect!
                     </Alert>
                 </div>

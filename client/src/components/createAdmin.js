@@ -10,7 +10,6 @@ import {
   FormGroup,
   Input,
   Col,
-  Label,
   FormFeedback,
   Alert,
 } from 'reactstrap';

@@ -9,7 +9,6 @@ import {
   Navbar,
   NavbarBrand,
   NavLink,
-  Container,
 } from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
 
