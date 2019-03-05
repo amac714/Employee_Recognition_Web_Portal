@@ -3,7 +3,7 @@
  * */
 
 import React, {Component} from 'react';
-import {Table} from 'reactstrap';
+import {Table, Button} from 'reactstrap';
 import Container from "reactstrap/es/Container";
 
 class UserViewMyAwards extends Component {
@@ -64,12 +64,11 @@ class UserViewMyAwards extends Component {
         return (
             <tr key={id} className="award_data">
                 <th scope="row">{award_type}</th>
-                <th>{recipient_first_name}</th>
-                <th>{recipient_last_name}</th>
+                <th>{recipient_first_name} {recipient_last_name}</th>
                 <th>{date_given}</th>
                 <th>{time_given}</th>
                 <th>
-                    <button type="button" onClick={() => this.deleteAward(id)}>Delete</button>
+                    <Button type="button" color="danger" className="delete_award_button" onClick={() => this.deleteAward(id)}>Delete</Button>
                 </th>
             </tr>
         );
@@ -84,8 +83,7 @@ class UserViewMyAwards extends Component {
                     <thead>
                     <tr>
                         <th>Award Type</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
+                        <th>Recipient</th>
                         <th>Date Given</th>
                         <th>Time Given</th>
                         <th>Delete Award</th>
