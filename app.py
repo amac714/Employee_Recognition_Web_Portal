@@ -13,7 +13,6 @@ import os, subprocess
 from flask_heroku import Heroku
 import smtplib
 from email.mime.text import MIMEText
-import requests
 import base64
 
 app = Flask(__name__, template_folder="client/build", static_folder="client/build/static")
