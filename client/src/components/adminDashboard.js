@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import { Nav, NavItem, NavLink, Col, Row, Container } from 'reactstrap';
+import { Col, Row, Container } from 'reactstrap';
 import ViewUsers from './adminViewUsers';
 import ViewAdmins from './adminViewAdmins';
 import Reports from './sideViewComponents/reports';
@@ -51,31 +51,6 @@ class AdminDashboard extends Component {
   render() {
     return (
       <Container>
-        {/* <Row>
-            <Col xs="2" className="admin--menu">
-              <h1 id="menu">Menu</h1>
-              <Nav vertical>
-                <NavItem>
-                  <NavLink href="#" onClick={() => this.handleClick(1)}>
-                    View Users
-                </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="#" onClick={() => this.handleClick(2)}>
-                    View Admins
-                </NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="#" onClick={() => this.handleClick(3)}>
-                    View Reports
-                </NavLink>
-                </NavItem>
-              </Nav>
-            </Col>
-            <Col sm="12" md={{ size: 6, offset: 1 }} className="admin--dash--content">
-              {this.renderComponent()}
-            </Col>
-          </Row> */}
         <Row className="admin--dash">
           <Col xs="3">
             <div className="admin--menu">

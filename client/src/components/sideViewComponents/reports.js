@@ -334,7 +334,7 @@ class Reports extends Component {
       labels.push(
         this.state.mostMonthAwards[i][0] +
           ' ' +
-          this.state.mostMonthAwards[i][0]
+          this.state.mostMonthAwards[i][1]
       );
       received.push(this.state.mostMonthAwards[i][2]);
     }
