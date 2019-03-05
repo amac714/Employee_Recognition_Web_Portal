@@ -14,6 +14,7 @@ from flask_heroku import Heroku
 import smtplib
 from email.mime.text import MIMEText
 import requests
+import base64
 
 app = Flask(__name__, template_folder="client/build", static_folder="client/build/static")
 
@@ -281,6 +282,13 @@ def generateAward(newAward, authorizedUser):
 
     pdfDate = currDate
 
+    user = Users.query.filter_by(id=authorizedUser.id).first()
+    img = base64.b64encode(user.user_signature)
+
+    f = open('testImg.png', 'wb')
+    f.write(img.decode('base64'))
+    f.close()
+
     # Latex document sections
     header = r'''\documentclass{article}
             \usepackage{graphicx}
@@ -297,6 +305,8 @@ def generateAward(newAward, authorizedUser):
 
     recipeint = r'''\begin{center}{\Huge\textbf{''' + str(newAward.recipient_first_name) + ' ' + str(newAward.recipient_last_name) + r'''}}\end{center}'''
 
+    sender_signiture = r'''\begin{center}\includegraphics[scale=0.8]{testImg.png}''' + r'''\end{center}'''
+
     on_section = r'''\begin{center}{\bigskip\large{''' + 'On' + r'''}}\end{center}'''
     to_section = r'''\begin{center}{\bigskip\large{''' + 'Awarded To' + r'''}}\end{center}'''
 
@@ -309,6 +319,7 @@ def generateAward(newAward, authorizedUser):
               recipeint + \
               on_section + \
               inputDate + \
+              sender_signiture + \
               footer
 
     # Generate pdf file
