@@ -121,6 +121,8 @@ def patchUser(u_id):
 def deleteUser(u_id):
     user = Users.query.get(u_id)
     if user:
+        # Delete award for that user 
+        deleteUserAwards(user)
         db.session.delete(user)
         db.session.commit()
         return jsonify({"User": "User is deleted"})
@@ -266,6 +268,14 @@ def updateAwardEntry(prev_first, prev_last, new_first, new_last):
             x.recipient_last_name = new_last
             db.session.commit()
 
+def deleteUserAwards(user): 
+    awards = Awards.query.filter_by(recipient_first_name=user.first_name, recipient_last_name=user.last_name).all()
+    if awards: 
+        for x in awards: 
+            db.session.delete(x)
+            db.session.commit()
+
+
 
 ''' ################################################ SEND MAIL ################################################ '''
 
@@ -351,7 +361,7 @@ def generateAward(newAward, authorizedUser):
     os.unlink('awardPDF.aux')
     os.unlink('awardPDF.log')
     os.unlink('awardPDF.tex')
-    # os.unlink('awardPDF.pdf') !!! DON'T FORGET TO UNCOMMENT !!!
+    os.unlink('awardPDF.pdf') 
 
 
 ''' ################################################ LOGIN ################################################ '''
