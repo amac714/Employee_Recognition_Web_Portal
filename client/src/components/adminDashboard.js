@@ -55,13 +55,13 @@ class AdminDashboard extends Component {
           <Col xs="3">
             <div className="admin--menu">
               <h1>Menu</h1>
-              <a href="#0" onClick={() => this.handleClick(1)}>
+              <a href="#0" className={this.state.buttonPressed === 1 ? 'active' : 'not-active'} onClick={() => this.handleClick(1)}>
                 View Users
               </a>
-              <a href="#0" onClick={() => this.handleClick(2)}>
+              <a href="#0" className={this.state.buttonPressed === 2 ? 'active' : 'not-active'} onClick={() => this.handleClick(2)}>
                 View Admins
               </a>
-              <a href="#0" onClick={() => this.handleClick(3)}>
+              <a href="#0" className={this.state.buttonPressed === 3 ? 'active' : 'not-active'} onClick={() => this.handleClick(3)}>
                 View Reports
               </a>
             </div>

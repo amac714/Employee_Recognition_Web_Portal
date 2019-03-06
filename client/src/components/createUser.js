@@ -162,7 +162,6 @@ class CreateUser extends Component {
                     type="email"
                     invalid={this.state.invalidUsername}
                     name="user_name"
-                    id="user_id"
                     placeholder="Email"
                     value={this.state.user_name}
                     onChange={this.onChange}
@@ -204,7 +203,6 @@ class CreateUser extends Component {
                     type="password"
                     invalid={this.state.invalidPW}
                     name="password"
-                    id="pw_id"
                     placeholder="Password"
                     value={this.state.password}
                     onChange={this.onChange}
