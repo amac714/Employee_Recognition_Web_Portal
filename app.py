@@ -314,12 +314,13 @@ def generateAward(newAward, authorizedUser):
 
     recipeint = r'''\begin{center}{\Huge\textbf{''' + str(newAward.recipient_first_name) + ' ' + str(newAward.recipient_last_name) + r'''}}\end{center}'''
 
+    sender_name= r'''\begin{center}{\huge\textbf{''' + authorizedUser.first_name + ' ' + authorizedUser.last_name + r'''}}\end{center}'''
+
     sender_signiture = r'''\begin{center}\includegraphics[scale=0.8]{testImg.png}''' + r'''\end{center}'''
 
     on_section = r'''\begin{center}{\bigskip\large{''' + 'On' + r'''}}\end{center}'''
     to_section = r'''\begin{center}{\bigskip\large{''' + 'Awarded To' + r'''}}\end{center}'''
-
-    # sender_signiture = r'''\begin{center}\includegraphics[scale=0.8]''' + authorizedUser.user_signature + r'''\end{center}'''
+    from_section = r'''\begin{center}{\bigskip\large{''' + 'From' + r'''}}\end{center}'''
 
     # Construct latex file
     content = header + \
@@ -328,6 +329,8 @@ def generateAward(newAward, authorizedUser):
               recipeint + \
               on_section + \
               inputDate + \
+              from_section + \
+              sender_name + \
               sender_signiture + \
               footer
 
@@ -361,7 +364,7 @@ def generateAward(newAward, authorizedUser):
     os.unlink('awardPDF.aux')
     os.unlink('awardPDF.log')
     os.unlink('awardPDF.tex')
-    os.unlink('awardPDF.pdf') 
+    os.unlink('awardPDF.pdf')
 
 
 ''' ################################################ LOGIN ################################################ '''
