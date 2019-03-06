@@ -25,3 +25,20 @@
   text-align: center;
 }
 
+.blurred--background {
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.5); /* Black w/opacity/see-through */
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  //border: 2px solid #f1f1f1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 75%;
+  padding: 60px 0;
+  text-align: center;
+  //font-size: 9rem;
+}
