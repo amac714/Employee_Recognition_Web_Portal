@@ -20,7 +20,14 @@
   border: 1px solid black;
 }
 
-.admin--menu a:hover {
+.admin--menu a.active {
+  background: #0F2027; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #2C5364, #203A43, #0F2027); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #2C5364, #203A43, #0F2027);
+  color: white;
+}
+
+.admin--menu a:hover:not(.active) {
   background: #0F2027; /* fallback for old browsers */
   background: -webkit-linear-gradient(to bottom, #2C5364, #203A43, #0F2027); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to bottom, #2C5364, #203A43, #0F2027);
