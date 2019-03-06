@@ -3,7 +3,7 @@
  * */
 
 import React, {Component} from 'react';
-import {Row, Col} from 'reactstrap';
+import {Alert, Row, Col} from 'reactstrap';
 import UserCreateAward from './userCreateAward';
 import UserViewGivenAwards from './userViewGivenAwards';
 import DateSection from './sideViewComponents/date'
@@ -74,6 +74,7 @@ export default class UserHomePage extends Component {
             last_name: '',
             time_granted: '',
             date_granted: '',
+            visible: false,
             currentUserData: [],
             config: {
                 headers: {
@@ -144,9 +145,12 @@ export default class UserHomePage extends Component {
     * Description: Create award
     * */
     submitAward = (e) => {
+        if(this.state.visible === true) {
+            this.setState({visible: false})
+        }
         axios
             .post(
-                'http://localhost:5000/user/' + this.state.id + '/award',
+                '/user/' + this.state.id + '/award',
                 {
                     award_type: e.award_type,
                     first_name: e.first_name,
@@ -163,9 +167,9 @@ export default class UserHomePage extends Component {
                 this.props.history.push('/userHomePage'); //route to user homepage
                 this.getAwards()
             })
-            .catch(function (error) {
+            .catch((error) => {
                 console.log(error);
-                alert("ERROR: User does not exist")
+                this.setState({ visible: true })
             });
     };
 
@@ -179,6 +183,7 @@ export default class UserHomePage extends Component {
             last_name: '',
             time_granted: '',
             date_granted: '',
+            visible: false,
         })
     };
 
@@ -240,6 +245,13 @@ export default class UserHomePage extends Component {
 
     };
 
+    /*
+    * Description: Close alert
+    * */
+    onDismiss = () => {
+        this.setState({visible: false})
+    }
+
     render() {
         const display = this.state.displayType;
         let displayPage;
@@ -248,6 +260,14 @@ export default class UserHomePage extends Component {
         if (display === "homepage") {
             displayPage =
                 <div>
+                    <Alert
+                        className="form--alert"
+                        color="danger"
+                        isOpen={this.state.visible}
+                        toggle={this.onDismiss}
+                    >
+                    User does not exist
+                    </Alert>
                     <UserCreateAward
                         clearForm={this.state.sent}
                         submitAward={this.submitAward}
