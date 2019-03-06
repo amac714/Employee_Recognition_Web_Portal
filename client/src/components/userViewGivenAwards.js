@@ -12,14 +12,7 @@ class UserViewMyAwards extends Component {
     * Description: Will send the award id to parent (userHomePage.js) and delete that award
     * */
     deleteAward = (e) => {
-
-        if (window.confirm("Confirm Delete")) {
-            this.props.deleteAward(e)
-        } else {
-            console.log("I'm done")
-        }
-
-
+        this.props.deleteAward(e)
     };
 
 
@@ -37,16 +30,24 @@ class UserViewMyAwards extends Component {
 
         // format time
         let time_of_day;
-        let hour = time_granted.substr(0,2);
-        const min = time_granted.substr(2,3);
+        let hour = time_granted.substr(0, 2);
+        const min = time_granted.substr(2, 3);
 
-        if(hour > 12){
-            time_of_day = "PM";
-            hour -= 12;
-        }
-        else{
+        // AM
+        if (hour < 12) {
+            if (hour === "00") {    //set hour to 12
+                hour = 12;
+            }
             time_of_day = "AM";
-            hour = hour.substr(1, 2);            // remove the "0" from the first part of the number
+        }
+        // PM
+        else {
+            if (hour === "12") {    //set hour to 12
+                hour = 12;
+            } else {                //set hour between 1 and 11
+                hour -= 12;
+            }
+            time_of_day = "PM";
         }
 
         const time_given = hour + min + " " + time_of_day;

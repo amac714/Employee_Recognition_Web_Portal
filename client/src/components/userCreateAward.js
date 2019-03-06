@@ -5,9 +5,6 @@
 import React, {Component} from 'react';
 import {Container, Form, FormGroup, Input, Col, Label, Button, Row} from 'reactstrap';
 
-// import './userHomePageStyle.css'
-
-
 class UserCreateAward extends Component {
     constructor(props) {
         super(props);
@@ -46,6 +43,7 @@ class UserCreateAward extends Component {
             date_granted: '',
         })
     };
+
 
     render() {
         return (
@@ -103,13 +101,13 @@ class UserCreateAward extends Component {
                         <Label sm={4} className="input_text">Time Granted:</Label>
                         <Col sm={8}>
                             <input
-                                className="input_width"
-                                type='time'
-                                name='time_granted'
-                                id='time_granted'
-                                placeholder="hh:mm AM/PM"
-                                value={this.state.time_granted}
-                                onChange={this.onChange}
+                            className="input_width"
+                            type='time'
+                            name='time_granted'
+                            id='time_granted'
+                            placeholder="hh:mm AM/PM"
+                            value={this.state.time_granted}
+                            onChange={this.onChange}
                             />
                         </Col>
                     </FormGroup>
