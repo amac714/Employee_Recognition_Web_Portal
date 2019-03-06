@@ -3,10 +3,19 @@
  * */
 
 import React, {Component} from 'react';
-import {Table, Button} from 'reactstrap';
+import {Table, Button, Row, Col} from 'reactstrap';
 import Container from "reactstrap/es/Container";
 
 class UserViewMyAwards extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            show_buttons: 'delete',
+        }
+    }
+
 
     /*
     * Description: Will send the award id to parent (userHomePage.js) and delete that award
@@ -15,6 +24,17 @@ class UserViewMyAwards extends Component {
         this.props.deleteAward(e)
     };
 
+    confirmDeletion = (e) => {
+        this.setState({
+            show_buttons: "confirm"
+        })
+    };
+
+    cancelDelete = () => {
+        this.setState({
+            show_buttons: "delete"
+        })
+    };
 
     /*
      *  Description: Format how the awards are displayed to the screen.
@@ -69,7 +89,17 @@ class UserViewMyAwards extends Component {
                 <th>{date_given}</th>
                 <th>{time_given}</th>
                 <th>
-                    <Button type="button" color="danger" className="delete_award_button" onClick={() => this.deleteAward(id)}>Delete</Button>
+                    {/*<Button type="button" color="danger" className="delete_award_button" onClick={() => this.deleteAward(id)}>Delete</Button>*/}
+                    {this.state.show_buttons === 'delete' &&
+                    <Button type="button" color="danger" className="delete_award_button" onClick={() => this.confirmDeletion(id)}>Delete</Button>
+                    }
+
+                    {this.state.show_buttons === 'confirm' &&
+                    <div className="confirm_button_spacing">
+                        <Button type="button" color="success" className="confirm_buttons" onClick={() => this.deleteAward(id)}>Confirm</Button>
+                        <Button type="button" color="danger" className="confirm_buttons delete_button_color" onClick={() => this.cancelDelete(id)}>Cancel</Button>
+                    </div>
+                    }
                 </th>
             </tr>
         );
