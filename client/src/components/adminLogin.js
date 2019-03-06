@@ -99,7 +99,6 @@ class AdminLogin extends Component {
                     name="username"
                     invalid={this.state.validUN}
                     className="input--form"
-                    id="admin_id"
                     placeholder="Username"
                     value={this.state.username}
                     onChange={this.onChange}
@@ -116,7 +115,6 @@ class AdminLogin extends Component {
                     name="password"
                     invalid={this.state.validPW}
                     className="input--form"
-                    id="pw_id"
                     placeholder="Password"
                     value={this.state.password}
                     onChange={this.onChange}
