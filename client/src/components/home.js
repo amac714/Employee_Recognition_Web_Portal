@@ -7,6 +7,7 @@ import axios from 'axios';
 import {Button} from 'reactstrap';
 import './homePage.css';
 import {Link} from 'react-router-dom';
+
 //import Container from "reactstrap/es/Container";
 
 
@@ -34,11 +35,13 @@ class HomePage extends Component {
     render() {
         return (
             <div className="home">
-                <div className="home--login">
-                    <h1 className="home--title">{this.state.textTitle}</h1>
-                    <Link to="/userLogin">
-                        <Button className="home--button" color="primary" size="lg">Login</Button>
-                    </Link>
+                <div className="blurred--background"> 
+                    <div className="home--login">
+                        <h1 className="home--title">{this.state.textTitle}</h1>
+                        <Link to="/userLogin">
+                            <Button className="home--button" color="primary" size="lg">Login</Button>
+                        </Link>
+                    </div>
                 </div>
             </div>
             // <Container>
@@ -53,7 +56,7 @@ class HomePage extends Component {
             //         <Col xs={{size: 4, offset: 1}} style={{paddingTop: '200px'}}>
             //             <h1 className="headerText">{this.state.textTitle}</h1>
             //             <p>{this.state.textMessage}</p>
- 
+
             //             <div className="buttons">
             //                 <Link to="/userLogin">
             //                     <button>Login</button>
