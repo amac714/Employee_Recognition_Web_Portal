@@ -4,10 +4,10 @@
 
 import React, {Component} from 'react';
 import axios from 'axios';
-import {Row, Col, Jumbotron, Button} from 'reactstrap';
+import {Button} from 'reactstrap';
 import './homePage.css';
 import {Link} from 'react-router-dom';
-import Container from "reactstrap/es/Container";
+//import Container from "reactstrap/es/Container";
 
 
 class HomePage extends Component {
