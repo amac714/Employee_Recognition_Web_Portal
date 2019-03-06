@@ -129,7 +129,7 @@ class UserCreateAward extends Component {
 
                     <div className="award_creation_buttons">
                         <Row>
-                            <Col sm={{size: 1, offset: 3}}>
+                            <Col sm={{size: 1, offset: 4}}>
                                 <Button type="button" color="success" className="submit_create_award button_style" onClick={this.sendAward}>Submit</Button>
                             </Col>
                             <Col sm={{size: 1, offset: 2}}>
