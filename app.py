@@ -92,10 +92,27 @@ def postUser():
         db.session.commit()
         return user.jsonify(newUser)
 
-
-# PATCH : Update user first and last name
-@app.route('/user/<int:u_id>', methods=['PATCH'])
+# PATCH: Updates User First and Last name only
+@app.route('/user/update/<int:u_id>', methods=['PATCH'])
 @jwt_required
+def updateAccount(u_id):
+    user = Users.query.get(u_id)
+
+    if user:
+        prev_first = user.first_name
+        prev_last = user.last_name
+        schema = UserSchema()
+        user.first_name = request.json['first_name']
+        user.last_name = request.json['last_name']
+        db.session.commit()
+        updateAwardEntry(prev_first, prev_last, user.first_name, user.last_name)
+        return schema.jsonify(user)
+    else:
+        return jsonify({"User": "User not found."})
+
+# PATCH : Update user info
+@app.route('/user/<int:u_id>', methods=['PATCH'])
+@admin_only
 def patchUser(u_id):
     user = Users.query.get(u_id)
 
