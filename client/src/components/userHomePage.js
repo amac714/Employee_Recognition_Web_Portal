@@ -209,12 +209,12 @@ export default class UserHomePage extends Component {
     updateAccount = e => {
         axios
             .patch(
-                '/user/' + this.state.id,
+                '/user/update/' + this.state.id,
                 {
                     first_name: e.first_name,
                     last_name: e.last_name,
-                    username: localStorage.getItem('username'),
-                    password: localStorage.getItem('password')
+                    // username: localStorage.getItem('username'),
+                    // password: localStorage.getItem('password')
                 },
                 this.state.config
             )

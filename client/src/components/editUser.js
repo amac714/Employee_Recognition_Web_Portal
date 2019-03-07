@@ -98,19 +98,16 @@ class EditUser extends Component {
     } else if (sig === '') {
       this.setState({ invalidSig: true });
     } else {
+      const formData = new FormData();
+      formData.append('username', this.state.user_name);
+      formData.append('password', this.state.password);
+      formData.append('first_name', this.state.first_name);
+      formData.append('last_name', this.state.last_name);
+      formData.append('sig', this.state.sig);
       // Patch request to API endpoint to update user.
       // Passes access token for auth.
       axios
-        .patch(
-          `/user/${id}`,
-          {
-            username: this.state.user_name,
-            first_name: this.state.first_name,
-            last_name: this.state.last_name,
-            password: this.state.password,
-          },
-          this.state.config
-        )
+        .patch(`/user/${id}`, formData, this.state.config)
         .then(res => {
           console.log(res);
           this.setState(
@@ -162,7 +159,11 @@ class EditUser extends Component {
     return (
       <div>
         <Container>
-          <Alert color="success" isOpen={this.state.visible} className="form--alert">
+          <Alert
+            color="success"
+            isOpen={this.state.visible}
+            className="form--alert"
+          >
             User has been saved!
           </Alert>
 
@@ -229,7 +230,7 @@ class EditUser extends Component {
                   />
                   <FormFeedback invalid="true">
                     You must enter a password.
-                </FormFeedback>
+                  </FormFeedback>
                 </FormGroup>
               </Col>
 
@@ -247,7 +248,7 @@ class EditUser extends Component {
                   />
                   <FormFeedback invalid="true">
                     Password doesn't match!
-                </FormFeedback>
+                  </FormFeedback>
                 </FormGroup>
               </Col>
 
@@ -262,14 +263,20 @@ class EditUser extends Component {
                   />
                   <FormFeedback invalid="true">
                     Please upload a signature.
-                </FormFeedback>
+                  </FormFeedback>
                 </FormGroup>
               </Col>
               <Col sm="12" md={{ size: 6, offset: 3 }}>
                 {$previewSig}
               </Col>
               <Col sm="12" md={{ size: 6, offset: 3 }}>
-                <Button color="primary" type="submit" className="user-button input--form">Save User</Button>
+                <Button
+                  color="primary"
+                  type="submit"
+                  className="user-button input--form"
+                >
+                  Save User
+                </Button>
               </Col>
             </Form>
           </div>
