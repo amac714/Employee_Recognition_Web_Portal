@@ -365,6 +365,7 @@ def generateAward(newAward, authorizedUser):
     os.unlink('awardPDF.log')
     os.unlink('awardPDF.tex')
     os.unlink('awardPDF.pdf')
+    os.unlink('testImg.png')
 
 
 ''' ################################################ LOGIN ################################################ '''
