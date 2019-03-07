@@ -103,10 +103,11 @@ def patchUser(u_id):
         prev_first = user.first_name
         prev_last = user.last_name
         schema = UserSchema()
-        user.first_name = request.json['first_name']
-        user.last_name = request.json['last_name']
-        user.user_name = request.json['username']
-        passHash = bcrypt.generate_password_hash(request.json['password'])
+        user.first_name = request.form['first_name']
+        user.last_name = request.form['last_name']
+        user.user_name = request.form['username']
+        user.user_signature = request.files['sig'].read()
+        passHash = bcrypt.generate_password_hash(request.form['password'])
         user.user_password = passHash
         db.session.commit()
         updateAwardEntry(prev_first, prev_last, user.first_name, user.last_name)
