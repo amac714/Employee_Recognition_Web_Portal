@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Col, Form, FormGroup, Input, Label, Row} from 'reactstrap';
+import {Alert, Button, Col, Form, FormGroup, Input, Label, Row} from 'reactstrap';
 import Container from 'reactstrap/es/Container';
 
 class UpdateUserInfo extends Component {
@@ -9,6 +9,7 @@ class UpdateUserInfo extends Component {
         this.state = {
             first_name: '',
             last_name: '',
+            visible: false,
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -30,7 +31,7 @@ class UpdateUserInfo extends Component {
         if (this.confirmNonEmptyFields()) {
             this.props.updateAccount(this.state);
         } else {
-            alert('Cannot have empty fields');
+            this.setState({visible: true})
         }
     };
 
@@ -47,6 +48,13 @@ class UpdateUserInfo extends Component {
     render() {
         return (
             <Container>
+                <Alert
+                    color="warning"
+                    isOpen={this.state.visible}
+                    className="form--alert"
+                >
+                    Cannot have empty fields
+                </Alert>
                 <Row>
                     <div className="login--form">
                         <div className="login--inner">
