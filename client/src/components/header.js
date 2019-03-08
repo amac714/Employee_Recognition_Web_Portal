@@ -24,7 +24,7 @@ class Header extends Component {
     // NavItems on Navbar changes based on pathname
     const path = this.props.location.pathname;
     let item;
-    if (path === '/')
+    if (path === '/' || path === '/userLogin')
       item = (
         <Nav className="ml-auto" navbar>
           <NavItem>
@@ -64,6 +64,14 @@ class Header extends Component {
           </NavItem>
         </Nav>
       );
+    else if (path === '/admin')
+      item = (<Nav className="ml-auto" navbar>
+        <NavItem>
+          <NavLink tag={Link} to="/userLogin">
+            <span className="header--link"><i className="fas fa-sign-in-alt fa-fw"></i> User</span>
+          </NavLink>
+        </NavItem>
+      </Nav>);
     else if (
       path === '/userHomePage' ||
       path === '/updateUserInfo' ||

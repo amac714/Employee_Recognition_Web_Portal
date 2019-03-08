@@ -484,12 +484,12 @@ def getBIReport():
 
 
 # Error handlers for exceptions
-@app.errorhandler(Exception)
-def bad_request(error):
-    if isinstance(error, HTTPException):
-        return jsonify(str(error)), error.code
-    else:
-        return jsonify({"Error": "500 - Internal Server"}), 500
+# @app.errorhandler(Exception)
+# def bad_request(error):
+#     if isinstance(error, HTTPException):
+#         return jsonify(str(error)), error.code
+#     else:
+#         return jsonify({"Error": "500 - Internal Server"}), 500
 
 
 if __name__ == '__main__':

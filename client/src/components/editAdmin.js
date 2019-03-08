@@ -124,7 +124,7 @@ class EditAdmin extends Component {
           <Alert color="success" isOpen={this.state.visible} className="form--alert">
             Admin has been saved!
           </Alert>
-          <div className="login--form">
+          <div className="login--form login--inner">
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <h1 className="login--title">Edit Admin</h1>
             </Col>
@@ -136,7 +136,6 @@ class EditAdmin extends Component {
                     type="text"
                     invalid={this.state.invalidAdmin}
                     name="admin_name"
-                    id="admin_id"
                     value={this.state.admin_name}
                     placeholder="Admin Name"
                     onChange={this.onChange}
@@ -154,7 +153,6 @@ class EditAdmin extends Component {
                     invalid={this.state.invalidPW}
                     type="password"
                     name="password"
-                    id="pw_id"
                     value={this.state.password}
                     placeholder="New Password"
                     onChange={this.onChange}
@@ -172,7 +170,6 @@ class EditAdmin extends Component {
                     invalid={this.state.validate}
                     type="password"
                     name="confirmPW"
-                    id="cpw_id"
                     value={this.state.confirmPW}
                     placeholder="Confirm Password"
                     onChange={this.onChange}

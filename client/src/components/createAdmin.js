@@ -113,7 +113,7 @@ class CreateAdmin extends Component {
           <Alert color="success" isOpen={this.state.visible} className="form--alert">
             Admin has been created!
           </Alert>
-          <div className="login--form">
+          <div className="login--form login--inner">
             <Col sm="12" md={{ size: 6, offset: 3 }}>
               <h1 className="login--title">New Admin</h1>
             </Col>
