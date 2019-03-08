@@ -26,7 +26,7 @@ class UpdateUserInfo extends Component {
     };
 
     handleSubmit = () => {
-        let {new_password1, new_password2} = this.state;
+        //let {new_password1, new_password2} = this.state;
 
         if (this.confirmNonEmptyFields()) {
             this.props.updateAccount(this.state);

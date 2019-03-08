@@ -179,7 +179,6 @@ class EditUser extends Component {
                     type="email"
                     invalid={this.state.invalidEmail}
                     name="user_name"
-                    id="user_id"
                     value={this.state.user_name}
                     placeholder="New Email"
                     onChange={this.onChange}
@@ -223,7 +222,6 @@ class EditUser extends Component {
                     invalid={this.state.invalidPW}
                     type="password"
                     name="password"
-                    id="pw_id"
                     value={this.state.password}
                     placeholder="New Password"
                     onChange={this.onChange}
@@ -241,7 +239,6 @@ class EditUser extends Component {
                     invalid={this.state.validate}
                     type="password"
                     name="confirmPW"
-                    id="cpw_id"
                     value={this.state.confirmPW}
                     placeholder="Confirm Password"
                     onChange={this.onChange}
