@@ -1,3 +1,7 @@
+/*
+* Description: Will display the user data (username, first name, last name)
+* */
+
 import React, {Component} from 'react';
 import {Row, Col} from 'reactstrap';
 
@@ -16,12 +20,6 @@ class UserAccountInfo extends Component {
                         <p>Last Name</p>
                         <p><strong className="userData">{this.props.currentUserData.last_name}</strong></p>
                     </Col>
-
-                    {/*<Col sm="7" className="removeColumnPadding">*/}
-                        {/*<p><strong className="userData">{this.props.currentUserData.user_name}</strong></p>*/}
-                        {/*<p><strong className="userData">{this.props.currentUserData.first_name}</strong></p>*/}
-                        {/*<p><strong className="userData">{this.props.currentUserData.last_name}</strong></p>*/}
-                    {/*</Col>*/}
                 </Row>
             </div>
         );

@@ -88,19 +88,19 @@ export default class UserHomePage extends Component {
     componentDidMount() {
         this.getAwards();
         this.getUser();
-        // this.timer = setInterval(() => this.getAwards(), 5000);
     }
 
     componentWillUnmount() {
-        // this.timer = null;
     }
 
 
+    /*
+    * Description: Get the user's data
+    * */
     getUser = () => {
         axios
             .get('/user/' + localStorage.getItem('id'))
             .then(res => {
-                // console.log(res.data);
                 this.setState({
                     currentUserData: res.data
                 });
@@ -113,16 +113,16 @@ export default class UserHomePage extends Component {
     * Description: Makes call to endpoint getting all of the awards given by the user. Will pass the web token to the endpoint for authentication.
     */
     getAwards = () => {
-        var weekAwardCount = 0;
-        var monthAwardCount = 0;
+        let weekAwardCount = 0;
+        let monthAwardCount = 0;
 
         axios
             .get('/user/' + this.state.id + '/award', this.state.config)
             .then(res => {
-                res.data.forEach(function (item) {
-                    if (item.award_type === "Employee of the Week") {
+                res.data.forEach(function (item) {                              //update the number of week/month awards given
+                    if (item.award_type === "Employee of the Week") {           //update week
                         weekAwardCount++;
-                    } else if (item.award_type === "Employee of the Month") {
+                    } else if (item.award_type === "Employee of the Month") {   //update month
                         monthAwardCount++;
                     }
                 });
@@ -162,7 +162,6 @@ export default class UserHomePage extends Component {
             )
             .then(res => {
                 console.log(res);
-                // console.log(res.data);
                 this.renderPage();
                 this.props.history.push('/userHomePage'); //route to user homepage
                 this.getAwards()
@@ -172,6 +171,7 @@ export default class UserHomePage extends Component {
                 this.setState({ visible: true })
             });
     };
+
 
     /*
     * Description: Clears award form
@@ -186,6 +186,7 @@ export default class UserHomePage extends Component {
             visible: false,
         })
     };
+
 
     /*
     * Description: Change main display between award + db award info AND updating info form
@@ -213,8 +214,6 @@ export default class UserHomePage extends Component {
                 {
                     first_name: e.first_name,
                     last_name: e.last_name,
-                    // username: localStorage.getItem('username'),
-                    // password: localStorage.getItem('password')
                 },
                 this.state.config
             )
@@ -250,13 +249,14 @@ export default class UserHomePage extends Component {
     * */
     onDismiss = () => {
         this.setState({visible: false})
-    }
+    };
 
     render() {
         const display = this.state.displayType;
         let displayPage;
         let displayAwardData;
 
+        //if display is set to "homepage", display the create award form and given award table
         if (display === "homepage") {
             displayPage =
                 <div>
@@ -282,7 +282,9 @@ export default class UserHomePage extends Component {
                     />
                 </div>
 
-        } else if (display === "updateUserInfo") {
+        }
+        //if display is set to "updateUserInfo", display the form to update first/last name
+        else if (display === "updateUserInfo") {
             displayPage =
                 <div>
                     <UpdateUserInfo

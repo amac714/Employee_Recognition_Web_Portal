@@ -17,11 +17,15 @@ class UserCreateAward extends Component {
         };
     }
 
-    /**/
+
     onChange = e => {
         this.setState({[e.target.name]: e.target.value});
     };
 
+
+    /*
+    * Description: Send form data to submitAward function in userHomePage to create the award, then clears the form
+    * */
     sendAward = () => {
         this.props.submitAward(this.state);
         this.setState({
@@ -34,6 +38,9 @@ class UserCreateAward extends Component {
     };
 
 
+    /*
+    * Description: Cancels the award form entry, will clear the form
+    * */
     cancelEntry = () => {
         this.setState({
             award_type: 'Employee of the Week',
