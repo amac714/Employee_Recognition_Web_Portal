@@ -1,3 +1,7 @@
+/*
+* Description: Component will allow user to update their first and last name.
+* */
+
 import React, {Component} from 'react';
 import {Alert, Button, Col, Form, FormGroup, Input, Label, Row} from 'reactstrap';
 import Container from 'reactstrap/es/Container';
@@ -14,6 +18,9 @@ class UpdateUserInfo extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    /*
+    * Description: Get the user's first/last name stored in database, for prepopulating the form
+    * */
     componentDidMount() {
         this.setState({
             first_name: this.props.currentData.first_name,
@@ -25,9 +32,11 @@ class UpdateUserInfo extends Component {
         this.setState({[e.target.name]: e.target.value});
     };
 
-    handleSubmit = () => {
-        //let {new_password1, new_password2} = this.state;
 
+    /*
+    * Description: Handles action when user clicks submit button. Function will check if form is empty, if not, submit data.
+    * */
+    handleSubmit = () => {
         if (this.confirmNonEmptyFields()) {
             this.props.updateAccount(this.state);
         } else {
@@ -35,6 +44,9 @@ class UpdateUserInfo extends Component {
         }
     };
 
+    /*
+    * Description: Checks if form is empty
+    * */
     confirmNonEmptyFields = () => {
         const {first_name, last_name} = this.state;
 

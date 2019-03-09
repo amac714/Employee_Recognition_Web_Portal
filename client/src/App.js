@@ -10,7 +10,7 @@ import ViewUsers from './components/adminViewUsers';
 import UserHomePage from './components/userHomePage';
 import UpdateUserInfo from './components/updateUserInfo';
 import AdminDashboard from './components/adminDashboard';
-import DesignAward from './components/designAward';
+// import DesignAward from './components/designAward';
 import CreateAdmin from './components/createAdmin';
 import EditAdmin from './components/editAdmin';
 import CreateUser from './components/createUser';
@@ -41,8 +41,8 @@ class App extends Component {
             <Route path="/editUser" component={EditUser} />
             <Route path="/createUser" component={CreateUser} />
             <Route path="/adminViewUsers" component={ViewUsers} />
-            <Route path="/updateUserInfo" component={UpdateUserInfo} />
-            <Route path="/designAward" component={DesignAward} />
+            {/*<Route path="/updateUserInfo" component={UpdateUserInfo} />*/}
+            {/*<Route path="/designAward" component={DesignAward} />*/}
             <Route component={ErrorPage} />
           </Switch>
         </div>

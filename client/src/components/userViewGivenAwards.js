@@ -24,12 +24,19 @@ class UserViewMyAwards extends Component {
         this.props.deleteAward(e)
     };
 
+
+    /*
+    * Description: Will display the buttons to either confirm award deletion or cancel deletion
+    * */
     confirmDeletion = (e) => {
         this.setState({
             show_buttons: "confirm"
         })
     };
 
+    /*
+    * Description: User deleted
+    * */
     cancelDelete = () => {
         this.setState({
             show_buttons: "delete"

@@ -1,3 +1,7 @@
+/*
+* Description: Will display the user stats (Employee of the week/month and total awards)
+* */
+
 import React, { Component } from 'react';
 import {Row, Col} from 'reactstrap';
 
