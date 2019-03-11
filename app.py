@@ -411,6 +411,18 @@ def userLogin():
         return jsonify({"Credentials": "Wrong Credentials."}), 400
 
 
+# POST : Change password with user email
+@app.route('/reset-password', methods=['PUT'])
+def resetPass(): 
+    user = Users.query.filter_by(user_name=request.json['username']).first()
+    if user: 
+        user.user_password = bcrypt.generate_password_hash(request.json['password'])
+        db.session.commit()
+        return jsonify({"Password": "Password is reset."})
+    else: 
+        return jsonify({"Username": "Email not found."})
+
+
 ''' ################################################ BI REPORT ################################################ '''
 
 
