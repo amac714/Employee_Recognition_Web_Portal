@@ -3,13 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import {
-  Nav,
-  NavItem,
-  Navbar,
-  NavbarBrand,
-  NavLink,
-} from 'reactstrap';
+import { Nav, NavItem, Navbar, NavbarBrand, NavLink } from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
 
 class Header extends Component {
@@ -29,7 +23,9 @@ class Header extends Component {
         <Nav className="ml-auto" navbar>
           <NavItem>
             <NavLink tag={Link} to="/admin">
-              <span className="header--link"><i className="fas fa-sign-in-alt fa-fw"></i> Admin</span>
+              <span className="header--link">
+                <i className="fas fa-sign-in-alt fa-fw" /> Admin
+              </span>
             </NavLink>
           </NavItem>
         </Nav>
@@ -65,13 +61,17 @@ class Header extends Component {
         </Nav>
       );
     else if (path === '/admin')
-      item = (<Nav className="ml-auto" navbar>
-        <NavItem>
-          <NavLink tag={Link} to="/userLogin">
-            <span className="header--link"><i className="fas fa-sign-in-alt fa-fw"></i> User</span>
-          </NavLink>
-        </NavItem>
-      </Nav>);
+      item = (
+        <Nav className="ml-auto" navbar>
+          <NavItem>
+            <NavLink tag={Link} to="/userLogin">
+              <span className="header--link">
+                <i className="fas fa-sign-in-alt fa-fw" /> User
+              </span>
+            </NavLink>
+          </NavItem>
+        </Nav>
+      );
     else if (
       path === '/userHomePage' ||
       path === '/updateUserInfo' ||
@@ -90,12 +90,22 @@ class Header extends Component {
 
     return (
       <div className="header">
-          <Navbar expand="md">
-            <NavbarBrand>
-              <h1 className="header__title">Ogma Employee Recognition</h1>
-            </NavbarBrand>
-            {item}
-          </Navbar>
+        <Navbar expand="md">
+          <NavbarBrand>
+            <h1 className="header__title">
+              Ogma Employee Recognition
+              {/* display home icon only for certain path names */}
+              {path === '/' || path === '/admin' || path === '/userLogin' || path === '/resetPassword' ? (
+                <Link to="/">
+                  <i className="fas fa-home fa-sm header--link home-icon" />
+                </Link>
+              ) : (
+                ''
+              )}
+            </h1>
+          </NavbarBrand>
+          {item}
+        </Navbar>
       </div>
     );
   }
