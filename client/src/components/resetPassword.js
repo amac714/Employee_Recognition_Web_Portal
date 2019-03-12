@@ -93,7 +93,7 @@ class ResetPassword extends Component {
 
   render() {
     return (
-      <div>
+      <div className="userSigninPage">
         <Container>
           <Alert
             color={this.state.color}
