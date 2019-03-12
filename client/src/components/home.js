@@ -30,7 +30,6 @@ class HomePage extends Component {
   render() {
     return (
       <div className="home">
-        <div className="blurred--background">
           <div className="home--login">
             <h1 className="home--title">{this.state.textTitle}</h1>
             <Link to="/userLogin">
@@ -39,7 +38,6 @@ class HomePage extends Component {
               </Button>
             </Link>
           </div>
-        </div>
       </div>
     );
   }

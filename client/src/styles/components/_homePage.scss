@@ -2,9 +2,11 @@
   align-items: center;
   background-size: cover;
   display: flex;
-  //height: 95vh;
+  height: 95vh;
   justify-content: center;
-  
+  background: #8360c3; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #2ebf91, #8360c3); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #2ebf91, #8360c3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .home--title {
@@ -24,20 +26,4 @@
   text-align: center;
 }
 
-.blurred--background {
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.5); /* Black w/opacity/see-through */
-  color: white;
-  font-weight: bold;
-  border-radius: 5px;
-  //border: 2px solid #f1f1f1;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  width: 75%;
-  padding: 60px 0;
-  text-align: center;
-  //font-size: 9rem;
-}
+

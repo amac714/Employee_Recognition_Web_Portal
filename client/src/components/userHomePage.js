@@ -296,7 +296,7 @@ export default class UserHomePage extends Component {
         }
 
         return (
-            <Container fluid className="page">
+            <Container fluid>
                 <Row>
                     <Col xs="2" className="side_section">
                         <div className="side_section_date text-center">

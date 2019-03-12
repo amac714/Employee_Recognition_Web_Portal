@@ -117,7 +117,7 @@ class UserViewMyAwards extends Component {
         return (
             <Container>
                 <h2 className="text-center section_header">Given Awards</h2>
-                <Table bordered striped responsive className="text-center award_table">
+                <table className="text-center award_table">
                     <thead>
                     <tr>
                         <th>Award Type</th>
@@ -128,7 +128,7 @@ class UserViewMyAwards extends Component {
                     </tr>
                     </thead>
                     <tbody>{this.props.awards.map(this.getAwardData)}</tbody>
-                </Table>
+                </table>
             </Container>
         );
     }
