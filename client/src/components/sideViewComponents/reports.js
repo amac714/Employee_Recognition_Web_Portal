@@ -1,3 +1,7 @@
+/*
+* Description: Admin reports component. Displays multiple different reports
+* */
+
 import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Form, FormGroup, Label, Input } from 'reactstrap';

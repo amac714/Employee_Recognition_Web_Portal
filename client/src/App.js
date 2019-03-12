@@ -18,9 +18,6 @@ import EditUser from './components/editUser';
 import './styles/styles.scss';
 import ResetPassword from './components/resetPassword';
 
-// import { Provider } from "react-redux"
-
-// const userDataStore = createStore(allReducers);
 
 export const history = createHistory();
 

@@ -8,10 +8,13 @@
   h1 {
     margin: 0;
   }
-  //padding-left: $xl-size;
 }
 
 .header--link {
   color: $off-white;
   padding-right: $xl-size;
+}
+
+.home-icon {
+  margin-left: $s-size;
 }
