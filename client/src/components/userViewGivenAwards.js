@@ -3,7 +3,7 @@
  * */
 
 import React, {Component} from 'react';
-import {Table, Button, Row, Col} from 'reactstrap';
+import {Table, Button} from 'reactstrap';
 import Container from "reactstrap/es/Container";
 
 class UserViewMyAwards extends Component {

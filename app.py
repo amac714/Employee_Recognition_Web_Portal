@@ -420,7 +420,7 @@ def resetPass():
         db.session.commit()
         return jsonify({"Password": "Password is reset."})
     else: 
-        return jsonify({"Username": "Email not found."})
+        return jsonify({"Username": "Email not found."}), 400
 
 
 ''' ################################################ BI REPORT ################################################ '''
@@ -496,12 +496,12 @@ def getBIReport():
 
 
 # Error handlers for exceptions
-# @app.errorhandler(Exception)
-# def bad_request(error):
-#     if isinstance(error, HTTPException):
-#         return jsonify(str(error)), error.code
-#     else:
-#         return jsonify({"Error": "500 - Internal Server"}), 500
+@app.errorhandler(Exception)
+def bad_request(error):
+    if isinstance(error, HTTPException):
+        return jsonify(str(error)), error.code
+    else:
+        return jsonify({"Error": "500 - Internal Server"}), 500
 
 
 if __name__ == '__main__':

@@ -3,6 +3,7 @@
  * */
 
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Alert,
   Container,
@@ -141,6 +142,9 @@ class UserLogin extends Component {
                 </Button>
               </Col>
             </Form>
+            <Col sm="12" md={{ size: 6, offset: 3 }}>
+              <Link to="resetPassword" className="reset-pw">Reset Password?</Link>
+            </Col>
           </div>
         </div>
       </Container>
