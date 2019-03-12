@@ -85,7 +85,7 @@ class ViewUsers extends Component {
               Create User
             </Link>
           </div>
-          <Table>
+          <Table responsive>
             <thead>
               <tr>
                 <th>Id</th>

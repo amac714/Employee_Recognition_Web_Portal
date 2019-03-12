@@ -75,64 +75,66 @@ class AdminLogin extends Component {
 
   render() {
     return (
-      <Container>
-        <div>
-          <Alert
-            className="form--alert"
-            color="danger"
-            isOpen={this.state.visible}
-            toggle={this.onDismiss}
-          >
-            Username or password is incorrect!
+      <div className="userSigninPage">
+        <Container>
+          <div>
+            <Alert
+              className="form--alert"
+              color="danger"
+              isOpen={this.state.visible}
+              toggle={this.onDismiss}
+            >
+              Username or password is incorrect!
           </Alert>
-        </div>
-        <div className="login--form">
-          <div className="login--inner">
-            <Col sm="12" md={{ size: 6, offset: 3 }}>
-              <h1 className="login--title">Admin Login</h1>
-            </Col>
-            <Form onSubmit={this.login}>
-              <Col sm="12" md={{ size: 6, offset: 3 }}>
-                <FormGroup>
-                  <Input
-                    type="text"
-                    name="username"
-                    invalid={this.state.validUN}
-                    className="input--form"
-                    placeholder="Username"
-                    value={this.state.username}
-                    onChange={this.onChange}
-                  />
-                  <FormFeedback invalid="true">
-                    You must enter a username!
-                  </FormFeedback>
-                </FormGroup>
-              </Col>
-              <Col sm="12" md={{ size: 6, offset: 3 }}>
-                <FormGroup>
-                  <Input
-                    type="password"
-                    name="password"
-                    invalid={this.state.validPW}
-                    className="input--form"
-                    placeholder="Password"
-                    value={this.state.password}
-                    onChange={this.onChange}
-                  />
-                  <FormFeedback invalid="true">
-                    You must enter a password
-                  </FormFeedback>
-                </FormGroup>
-              </Col>
-              <Col sm="12" md={{ size: 6, offset: 3 }}>
-                <Button color="primary" block className="input--form">
-                  SIGN IN
-                </Button>
-              </Col>
-            </Form>
           </div>
-        </div>
-      </Container>
+          <div className="login--form">
+            <div className="login--inner">
+              <Col sm="12" md={{ size: 6, offset: 3 }}>
+                <h1 className="login--title">Admin Login</h1>
+              </Col>
+              <Form onSubmit={this.login}>
+                <Col sm="12" md={{ size: 6, offset: 3 }}>
+                  <FormGroup>
+                    <Input
+                      type="text"
+                      name="username"
+                      invalid={this.state.validUN}
+                      className="input--form"
+                      placeholder="Username"
+                      value={this.state.username}
+                      onChange={this.onChange}
+                    />
+                    <FormFeedback invalid="true">
+                      You must enter a username!
+                  </FormFeedback>
+                  </FormGroup>
+                </Col>
+                <Col sm="12" md={{ size: 6, offset: 3 }}>
+                  <FormGroup>
+                    <Input
+                      type="password"
+                      name="password"
+                      invalid={this.state.validPW}
+                      className="input--form"
+                      placeholder="Password"
+                      value={this.state.password}
+                      onChange={this.onChange}
+                    />
+                    <FormFeedback invalid="true">
+                      You must enter a password
+                  </FormFeedback>
+                  </FormGroup>
+                </Col>
+                <Col sm="12" md={{ size: 6, offset: 3 }}>
+                  <Button color="primary" block className="input--form">
+                    SIGN IN
+                </Button>
+                </Col>
+              </Form>
+            </div>
+          </div>
+        </Container>
+      </div>
     );
   }
 }
