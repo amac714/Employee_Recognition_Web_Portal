@@ -8,7 +8,7 @@ import ErrorPage from './components/error';
 import HomePage from './components/home';
 import ViewUsers from './components/adminViewUsers';
 import UserHomePage from './components/userHomePage';
-import UpdateUserInfo from './components/updateUserInfo';
+//import UpdateUserInfo from './components/updateUserInfo';
 import AdminDashboard from './components/adminDashboard';
 // import DesignAward from './components/designAward';
 import CreateAdmin from './components/createAdmin';
@@ -16,6 +16,7 @@ import EditAdmin from './components/editAdmin';
 import CreateUser from './components/createUser';
 import EditUser from './components/editUser';
 import './styles/styles.scss';
+import ResetPassword from './components/resetPassword';
 
 // import { Provider } from "react-redux"
 
@@ -41,6 +42,7 @@ class App extends Component {
             <Route path="/editUser" component={EditUser} />
             <Route path="/createUser" component={CreateUser} />
             <Route path="/adminViewUsers" component={ViewUsers} />
+            <Route path="/resetPassword" component={ResetPassword} />
             {/*<Route path="/updateUserInfo" component={UpdateUserInfo} />*/}
             {/*<Route path="/designAward" component={DesignAward} />*/}
             <Route component={ErrorPage} />
