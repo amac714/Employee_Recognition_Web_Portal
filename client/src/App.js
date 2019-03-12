@@ -30,7 +30,7 @@ class App extends Component {
           <Switch>
             {/* Add routes here */}
             <Route exact path="/" component={HomePage} />
-            <Route path="/userLogin" component={UserLogin} />
+            <Route path="/userLogin" component={UserLogin}/>
             <Route path="/userHomePage" component={UserHomePage} />
             <Route exact path="/admin" component={AdminLogin} />
             <Route path="/adminDash" component={AdminDashboard} />
@@ -40,8 +40,6 @@ class App extends Component {
             <Route path="/createUser" component={CreateUser} />
             <Route path="/adminViewUsers" component={ViewUsers} />
             <Route path="/resetPassword" component={ResetPassword} />
-            {/*<Route path="/updateUserInfo" component={UpdateUserInfo} />*/}
-            {/*<Route path="/designAward" component={DesignAward} />*/}
             <Route component={ErrorPage} />
           </Switch>
         </div>
