@@ -1,5 +1,5 @@
 # Ogma Employee Portal
-
+To test website: log in as admin with username: admin, password: password1
 ## Description
 
 As the CS467 capstone project for team Ogma, we are building an online application serving as a tool for creating and managing employee recognition awards.
