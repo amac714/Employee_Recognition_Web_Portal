@@ -53,3 +53,5 @@ Phung Ton
 ![ScreenShot](https://raw.github.com/amac714/Employee_Recognition_Web_Portal/master/ogma.png)
 
 ![ScreenShot](https://raw.github.com/amac714/Employee_Recognition_Web_Portal/master/ogma1.png)
+
+![ScreenShot](https://raw.github.com/amac714/Employee_Recognition_Web_Portal/master/ogma2.png)
